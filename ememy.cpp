@@ -1,44 +1,44 @@
-#include "bricks.h"
+#include "enemy.h"
 
 //=============================================================================
 // default constructor
 //=============================================================================
-Brick::Brick() : Entity()
+Enemy::Enemy() : Entity()
 {
-    spriteData.width = brickNS::WIDTH;           
-    spriteData.height = brickNS::HEIGHT;
-    spriteData.x = brickNS::X;                   // location on screen
-    spriteData.y = brickNS::Y;
-    spriteData.rect.bottom = brickNS::HEIGHT/2;    // rectangle to select parts of an image
-    spriteData.rect.right = brickNS::WIDTH;
+    spriteData.width = enemyNS::WIDTH;           
+    spriteData.height = enemyNS::HEIGHT;
+    spriteData.x = enemyNS::X;                   // location on screen
+    spriteData.y = enemyNS::Y;
+    spriteData.rect.bottom = enemyNS::HEIGHT/2;    // rectangle to select parts of an image
+    spriteData.rect.right = enemyNS::WIDTH;
     
 	velocity = D3DXVECTOR2(0,0);
     startFrame = 0;              // first frame of ship animation
     endFrame     = 0;              // last frame of ship animation
     currentFrame = startFrame;
-    radius = brickNS::WIDTH/2.0;                 // collision radius
+    radius = enemyNS::WIDTH/2.0;                 // collision radius
     collision = false;
     collisionType =entityNS::BOX;// entityNS::CIRCLE;
     target = false;
-	edge.bottom = -brickNS::HEIGHT/2;
+	edge.bottom = -enemyNS::HEIGHT/2;
 	spriteData.scale = 1;
 	active = true;
 	speed = 50;
 }
 
-bool Brick::initialize(Game *gamePtr, int width, int height, int ncols,
+bool Enemy::initialize(Game *gamePtr, int width, int height, int ncols,
     TextureManager *textureM)
 {
     return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
-void Brick::setInvisible()
+void Enemy::setInvisible()
 {
 	Image::setVisible(false);
 	active = false;
 }
 
-void Brick::setVisible()
+void Enemy::setVisible()
 {
 	Image::setVisible(true);
 	active = true;
@@ -49,7 +49,7 @@ void Brick::setVisible()
 // typically called once per frame
 // frameTime is used to regulate the speed of movement and animation
 //=============================================================================
-void Brick::update(float frameTime)
+void Enemy::update(float frameTime)
 {
 	VECTOR2 foo = velocity*frameTime*speed;
 	if (getPositionX() + Image::getWidth()*Image::getScale() > GAME_WIDTH)
@@ -76,14 +76,14 @@ void Brick::update(float frameTime)
     Entity::update(frameTime);
 }
 
-void Brick::evade()
+void Enemy::evade()
 {
 	//add code here
 	
 	return;
 }
 
-void Brick::deltaTrack()
+void Enemy::deltaTrack()
 {
 	/*//add code here
 	VECTOR2 vel = getCenterPoint()-targetEntity.getCenterPoint();
@@ -103,7 +103,7 @@ void Brick::deltaTrack()
 	VECTOR2* foo = D3DXVec2Normalize(&vel, &vel);
 	setVelocity(-vel);
 }
-void Brick::vectorTrack()//We're going to want to change this so that it takes an argument that is what we want to track
+void Enemy::vectorTrack()//We're going to want to change this so that it takes an argument that is what we want to track
 {
 	VECTOR2 vel = getCenterPoint()-targetEntity.getCenterPoint();
 	if(vel.x == 0 && vel.y==0)
@@ -112,7 +112,7 @@ void Brick::vectorTrack()//We're going to want to change this so that it takes a
 	setVelocity(-vel);
 }
 
-void Brick::ai(float time, Entity &t)
+void Enemy::ai(float time, Entity &t)
 { 
 	targetEntity = t;
 	/*vectorTrack();

@@ -31,34 +31,44 @@ void CollisionTypes::initialize(HWND hwnd)
     Game::initialize(hwnd); // throws GameError
 
 
-    if (!paddleTM.initialize(graphics,PADDLE_IMAGE))
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle texture"));
+    if (!playerTM.initialize(graphics,PADDLE_IMAGE))
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player texture"));
 
-   if (!brickTM.initialize(graphics,PUCK_IMAGE))
+   if (!enemyTM.initialize(graphics,PUCK_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing puck textures"));
 
-	if (!paddle.initialize(this, paddleTM.getWidth(), paddleTM.getHeight(), 0,&paddleTM))
-		throw(GameError(gameErrorNS::WARNING, "Paddle not initialized"));
-	paddle.setPosition(VECTOR2(GAME_WIDTH/2, GAME_HEIGHT-150));
-    paddle.setCollisionType(entityNS::BOX);
-    paddle.setEdge(COLLISION_BOX_PADDLE);
-    paddle.setCollisionRadius(COLLISION_RADIUS);
-	paddle.setScale(.5);
+	if (!player.initialize(this, playerTM.getWidth(), playerTM.getHeight(), 0,&playerTM))
+		throw(GameError(gameErrorNS::WARNING, "player not initialized"));
 
-	if (!bricks.initialize(this, 0, 0, 0,&brickTM))
-		throw(GameError(gameErrorNS::WARNING, "Brick not initialized"));
-	bricks.setPosition(VECTOR2(100, 100));
-	bricks.setCollision(entityNS::BOX);
-	bricks.setEdge(COLLISION_BOX_PUCK);
-	bricks.setX(bricks.getPositionX());
-	bricks.setY(bricks.getPositionY());
-	bricks.setScale(.5);
+	if (!backgroundTM.initialize(graphics, BACKGROUND_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "My texture initialization failed"));
+	if (!background.initialize(graphics, 0,0,0, &backgroundTM))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error init my background"));
+
+	player.setPosition(VECTOR2(GAME_WIDTH/2, GAME_HEIGHT-150));
+    player.setCollisionType(entityNS::BOX);
+    player.setEdge(COLLISION_BOX_player);
+    player.setCollisionRadius(COLLISION_RADIUS);
+	player.setScale(.5);
+
+	if (!enemy.initialize(this, 0, 0, 0,&enemyTM))
+		throw(GameError(gameErrorNS::WARNING, "Enemy not initialized"));
+	enemy.setPosition(VECTOR2(100, 100));
+	enemy.setCollision(entityNS::BOX);
+	enemy.setEdge(COLLISION_BOX_PUCK);
+	enemy.setX(enemy.getPositionX());
+	enemy.setY(enemy.getPositionY());
+	enemy.setScale(.5);
+
+	background.setX(0);
+	background.setY(0);
+	background.setScale(BACKGROUND_SCALE);
 
 	//patternsteps
 	patternStepIndex = 0;
 	for (int i = 0; i< maxPatternSteps; i++)
 	{
-		patternSteps[i].initialize(&bricks);
+		patternSteps[i].initialize(&enemy);
 		patternSteps[i].setActive();
 	}
 	patternSteps[0].setAction(RIGHT);
@@ -80,17 +90,17 @@ void CollisionTypes::initialize(HWND hwnd)
 //=============================================================================
 void CollisionTypes::update()
 {
-	if(input->isKeyDown(PADDLE_LEFT))
-            paddle.left();
-    if(input->isKeyDown(PADDLE_RIGHT))
-			paddle.right();
-	if(input->isKeyDown(PADDLE_UP))
-            paddle.up();
-    if(input->isKeyDown(PADDLE_DOWN))
-			paddle.down();
-	paddle.update(frameTime);
+	if(input->isKeyDown(player_LEFT))
+            player.left();
+    if(input->isKeyDown(player_RIGHT))
+			player.right();
+	if(input->isKeyDown(player_UP))
+            player.up();
+    if(input->isKeyDown(player_DOWN))
+			player.down();
+	player.update(frameTime);
 
-	bricks.update(frameTime);
+	enemy.update(frameTime);
 	
 }
 
@@ -99,7 +109,7 @@ void CollisionTypes::update()
 //=============================================================================
 void CollisionTypes::ai()
 {
-	bricks.ai(frameTime, paddle);
+	enemy.ai(frameTime, player);
 	if (patternStepIndex == maxPatternSteps)
 		return;
 	if (patternSteps[patternStepIndex].isFinished())
@@ -114,7 +124,7 @@ void CollisionTypes::collisions()
 {
     collisionVector = D3DXVECTOR2(0,0);
 	collision = false;
-	if (paddle.collidesWith(bricks, collisionVector))
+	if (player.collidesWith(enemy, collisionVector))
 	{
 		collision = true;
 		puck.changeDirectionY();
@@ -128,9 +138,10 @@ void CollisionTypes::collisions()
 void CollisionTypes::render()
 {
     graphics->spriteBegin();                // begin drawing sprites
-	paddle.draw();
+	background.draw();
+	player.draw();
 
-	bricks.draw();
+	enemy.draw();
     graphics->spriteEnd();                  // end drawing sprites
 }
 
@@ -140,7 +151,7 @@ void CollisionTypes::render()
 //=============================================================================
 void CollisionTypes::releaseAll()
 {
-	paddleTM.onLostDevice();
+	playerTM.onLostDevice();
 	puckTM.onLostDevice();
     Game::releaseAll();
     return;
@@ -152,7 +163,7 @@ void CollisionTypes::releaseAll()
 //=============================================================================
 void CollisionTypes::resetAll()
 {
-	paddleTM.onResetDevice();
+	playerTM.onResetDevice();
 	puckTM.onResetDevice();
     Game::resetAll();
     return;

@@ -13,9 +13,9 @@ class CollisionTypes;
 #include "textureManager.h"
 #include "image.h"
 #include <cmath>
-#include "paddle.h"
+#include "player.h"
 #include "puck.h"
-#include "bricks.h"
+#include "enemy.h"
 #include "patternStep.h"
 
 
@@ -28,13 +28,14 @@ class CollisionTypes : public Game
 {
 private:
     // game items
-    TextureManager paddleTM, puckTM, brickTM, backgroundTM;   // game texture
+    TextureManager playerTM, puckTM, enemyTM, backgroundTM;   // game texture
+	Image background;
     VECTOR2 collisionVector;    // collision vector
-	Paddle paddle;
+	Player player;
 	Puck puck;
 	int score;
 	bool collision;
-	Brick bricks;	
+	Enemy enemy;	
 	PatternStep patternSteps[maxPatternSteps];
 	int patternStepIndex;
 

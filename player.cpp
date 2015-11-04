@@ -1,37 +1,37 @@
 
-#include "paddle.h"
+#include "player.h"
 
 //=============================================================================
 // default constructor
 //=============================================================================
-Paddle::Paddle() : Entity()
+Player::Player() : Entity()
 {
-    spriteData.width = paddleNS::WIDTH;           // size of Ship1
-    spriteData.height = paddleNS::HEIGHT;
-    spriteData.x = paddleNS::X;                   // location on screen
-    spriteData.y = paddleNS::Y;
-    spriteData.rect.bottom = paddleNS::HEIGHT/2;    // rectangle to select parts of an image
-    spriteData.rect.right = paddleNS::WIDTH;
+    spriteData.width = playerNS::WIDTH;           // size of Ship1
+    spriteData.height = playerNS::HEIGHT;
+    spriteData.x = playerNS::X;                   // location on screen
+    spriteData.y = playerNS::Y;
+    spriteData.rect.bottom = playerNS::HEIGHT/2;    // rectangle to select parts of an image
+    spriteData.rect.right = playerNS::WIDTH;
     velocity.x = 0;                             // velocity X
     velocity.y = 0;                             // velocity Y
     startFrame = 0;              // first frame of ship animation
     endFrame     = 0;              // last frame of ship animation
     currentFrame = startFrame;
-    //radius = paddleNS::WIDTH/2.0;                 // collision radius
+    //radius = playerNS::WIDTH/2.0;                 // collision radius
     collision = false;
     collisionType =entityNS::BOX;
     target = false;
-	edge.bottom = -paddleNS::HEIGHT/2;
-	edge.top = paddleNS::HEIGHT/2;
-	edge.right = -paddleNS::WIDTH/2;
-	edge.left = paddleNS::WIDTH/2;
+	edge.bottom = -playerNS::HEIGHT/2;
+	edge.top = playerNS::HEIGHT/2;
+	edge.right = -playerNS::WIDTH/2;
+	edge.left = playerNS::WIDTH/2;
 }
 
 //=============================================================================
 // Initialize the Ship.
 // Post: returns true if successful, false if failed
 //=============================================================================
-bool Paddle::initialize(Game *gamePtr, int width, int height, int ncols,
+bool Player::initialize(Game *gamePtr, int width, int height, int ncols,
     TextureManager *textureM)
 {
     return(Entity::initialize(gamePtr, width, height, ncols, textureM));
@@ -42,7 +42,7 @@ bool Paddle::initialize(Game *gamePtr, int width, int height, int ncols,
 // typically called once per frame
 // frameTime is used to regulate the speed of movement and animation
 //=============================================================================
-void Paddle::update(float frameTime)
+void Player::update(float frameTime)
 {
 	
 	Entity::update(frameTime);

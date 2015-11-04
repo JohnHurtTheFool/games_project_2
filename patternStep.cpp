@@ -9,7 +9,7 @@ PatternStep::PatternStep()
 	action = NONE;
 }
 
-void PatternStep::initialize(Brick *e)
+void PatternStep::initialize(Enemy *e)
 {
 	entity = e;
 }

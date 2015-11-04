@@ -1,45 +1,35 @@
 
               // file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
-#ifndef BRICK_H                 // Prevent multiple definitions if this 
-#define BRICK_H   
-class Brick;
+#ifndef _PLAYER_H                 // Prevent multiple definitions if this 
+#define _PLAYER_H   
+class player;
 
 #include "entity.h"
 #include "constants.h"
-#include "graphics.h"
 
-namespace brickNS
+namespace playerNS
 {
-    const int WIDTH = 64;                   // image width
-    const int HEIGHT = 64;                  // image height
+    const int WIDTH = 90;                   // image width
+    const int HEIGHT = 20;                  // image height
     const int X = GAME_WIDTH/2 - WIDTH/2;   // location on screen
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
-    const float SPEED_X = 0;                
-	const float SPEED_Y = -0;
- 
+    const float SPEED = 120;             
+	
+   
 }
 
 // inherits from Entity class
-class Brick : public Entity
+class Player : public Entity
 {
 private:
-   // puckNS::DIRECTION direction;    
+  
     bool collision;                 
-    bool target;  
-	int directionX;
-	int directionY;
-	VECTOR2 velocity;
-	float speed;
-	Entity targetEntity;
-	//void vectorTrack();
-	//void deltaTrack();
-	//void evade();
-	VECTOR2 dir;
+    bool target;                    
 
 public:
     // constructor
-    Brick();
+    Player();
 
     // inherited member functions
     virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
@@ -66,19 +56,22 @@ public:
     // Get collision type
     entityNS::COLLISION_TYPE getCollisionType() {return collisionType;}
 
-	void setInvisible();
-
-	void setVisible();
-
-	void setVelocity(VECTOR2 v) {velocity = v;}
-
-	VECTOR2 getVelocity() {return velocity;}
-
-	void ai(float time, Entity &t);
-
-	void vectorTrack();
-	void deltaTrack();
-	void evade();
+    void right()
+    {
+        velocity.x = playerNS::SPEED;
+    }
+    void left()
+    {
+        velocity.x = -playerNS::SPEED;
+    }
+	void up()
+    {
+        velocity.y = -playerNS::SPEED;
+    }
+	void down()
+    {
+        velocity.y = playerNS::SPEED;
+    }
 };
 #endif
 

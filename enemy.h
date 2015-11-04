@@ -1,35 +1,44 @@
 
               // file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
-#ifndef _PADDLE_H                 // Prevent multiple definitions if this 
-#define _PADDLE_H   
-class Paddle;
+#ifndef ENEMY_H                 // Prevent multiple definitions if this 
+#define ENEMY_H   
+class Enemy;
 
 #include "entity.h"
 #include "constants.h"
+#include "graphics.h"
 
-namespace paddleNS
+namespace enemyNS
 {
-    const int WIDTH = 90;                   // image width
-    const int HEIGHT = 20;                  // image height
+    const int WIDTH = 64;                   // image width
+    const int HEIGHT = 64;                  // image height
     const int X = GAME_WIDTH/2 - WIDTH/2;   // location on screen
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
-    const float SPEED = 120;             
-	
-   
+    const float SPEED_X = 0;                
+	const float SPEED_Y = -0;
+ 
 }
 
 // inherits from Entity class
-class Paddle : public Entity
+class Enemy : public Entity
 {
-private:
-  
+private: 
     bool collision;                 
-    bool target;                    
+    bool target;  
+	int directionX;
+	int directionY;
+	VECTOR2 velocity;
+	float speed;
+	Entity targetEntity;
+	//void vectorTrack();
+	//void deltaTrack();
+	//void evade();
+	VECTOR2 dir;
 
 public:
     // constructor
-    Paddle();
+    Enemy();
 
     // inherited member functions
     virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
@@ -56,22 +65,19 @@ public:
     // Get collision type
     entityNS::COLLISION_TYPE getCollisionType() {return collisionType;}
 
-    void right()
-    {
-        velocity.x = paddleNS::SPEED;
-    }
-    void left()
-    {
-        velocity.x = -paddleNS::SPEED;
-    }
-	void up()
-    {
-        velocity.y = -paddleNS::SPEED;
-    }
-	void down()
-    {
-        velocity.y = paddleNS::SPEED;
-    }
+	void setInvisible();
+
+	void setVisible();
+
+	void setVelocity(VECTOR2 v) {velocity = v;}
+
+	VECTOR2 getVelocity() {return velocity;}
+
+	void ai(float time, Entity &t);
+
+	void vectorTrack();
+	void deltaTrack();
+	void evade();
 };
 #endif
 

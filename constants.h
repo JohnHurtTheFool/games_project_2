@@ -79,6 +79,7 @@ const char GAME_TITLE[] = "AI";
 const bool FULLSCREEN = false;              // windowed or fullscreen
 const UINT GAME_WIDTH =  640;               // width of game in pixels
 const UINT GAME_HEIGHT = 480;               // height of game in pixels
+const float BACKGROUND_SCALE = 0.8;
 
 // game
 const double PI = 3.14159265;
@@ -87,25 +88,25 @@ const float MIN_FRAME_RATE = 10.0f;             // the minimum frame rate
 const float MIN_FRAME_TIME = 1.0f/FRAME_RATE;   // minimum desired time for 1 frame
 const float MAX_FRAME_TIME = 1.0f/MIN_FRAME_RATE; // maximum time used in calculations
 const RECT  COLLISION_RECTANGLE = {-30,-16,30,16};
-const RECT  COLLISION_BOX_PADDLE = {-45,-10,45,10};
+const RECT  COLLISION_BOX_player = {-45,-10,45,10};
 const RECT COLLISION_BOX_PUCK = {-32, -32, 32, 32};
 const float   COLLISION_RADIUS = 29;
 
 // graphic images
 const char PUCK_IMAGE[] = "..\\games_project_2\\pictures\\homework.jpg";  // game textures
 const char PADDLE_IMAGE[] =     "..\\games_project_2\\pictures\\student.jpg";      // menu texture
-const char BACKGROUND_IMAGE[] =     "..\\games_project_2\\pictures\\Background.jpg";      // menu texture
+const char BACKGROUND_IMAGE[] =     "..\\games_project_2\\pictures\\Background.png";      // menu texture
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
 // it would be possible to save and restore key mappings from a data file.
 const UCHAR ESC_KEY      = VK_ESCAPE;       // escape key
 const UCHAR ALT_KEY      = VK_MENU;         // Alt key
-const UCHAR PADDLE_LEFT    = VK_LEFT;     // left arrow
-const UCHAR PADDLE_RIGHT   = VK_RIGHT;    // right arrow
+const UCHAR player_LEFT    = VK_LEFT;     // left arrow
+const UCHAR player_RIGHT   = VK_RIGHT;    // right arrow
 const UCHAR ENTER_KEY    = VK_RETURN; 
-const UCHAR PADDLE_UP = VK_UP;
-const UCHAR PADDLE_DOWN = VK_DOWN;
+const UCHAR player_UP = VK_UP;
+const UCHAR player_DOWN = VK_DOWN;
 
 //
 
