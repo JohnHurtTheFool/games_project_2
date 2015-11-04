@@ -94,6 +94,7 @@ const float   COLLISION_RADIUS = 29;
 // graphic images
 const char PUCK_IMAGE[] = "..\\games_project_2\\pictures\\homework.jpg";  // game textures
 const char PADDLE_IMAGE[] =     "..\\games_project_2\\pictures\\student.jpg";      // menu texture
+const char BACKGROUND_IMAGE[] =     "..\\games_project_2\\pictures\\Background.jpg";      // menu texture
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used

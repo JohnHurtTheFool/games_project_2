@@ -28,7 +28,7 @@ class CollisionTypes : public Game
 {
 private:
     // game items
-    TextureManager paddleTM, puckTM, brickTM;   // game texture
+    TextureManager paddleTM, puckTM, brickTM, backgroundTM;   // game texture
     VECTOR2 collisionVector;    // collision vector
 	Paddle paddle;
 	Puck puck;
