@@ -91,11 +91,15 @@ const RECT  COLLISION_RECTANGLE = {-30,-16,30,16};
 const RECT  COLLISION_BOX_player = {-45,-10,45,10};
 const RECT COLLISION_BOX_PUCK = {-32, -32, 32, 32};
 const float   COLLISION_RADIUS = 29;
+const int SPACESHIP_SIZE = 64;
+const int NUM_ENEMIES_INITIAL = 15;
 
 // graphic images
 const char PUCK_IMAGE[] = "..\\games_project_2\\pictures\\homework.jpg";  // game textures
 const char PADDLE_IMAGE[] =     "..\\games_project_2\\pictures\\student.jpg";      // menu texture
 const char BACKGROUND_IMAGE[] =     "..\\games_project_2\\pictures\\Background.png";      // menu texture
+const char PLAYER_IMAGE[] =     "..\\games_project_2\\pictures\\player spritesheet.png";      // menu texture
+const char ENEMY_IMAGE[] =     "..\\games_project_2\\pictures\\enemy spritesheet.png";      // menu texture
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used

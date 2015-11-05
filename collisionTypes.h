@@ -35,8 +35,8 @@ private:
 	Puck puck;
 	int score;
 	bool collision;
-	Enemy enemy;	
-	PatternStep patternSteps[maxPatternSteps];
+	Enemy enemy[NUM_ENEMIES_INITIAL];	
+	PatternStep allPatterns[NUM_ENEMIES_INITIAL][maxPatternSteps];
 	int patternStepIndex;
 
 
