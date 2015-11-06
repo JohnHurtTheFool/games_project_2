@@ -91,7 +91,7 @@ void CollisionTypes::initialize(HWND hwnd)
 		allPatterns[j][2].setAction(TRACK);
 		allPatterns[j][2].setTimeForStep(4);
 		allPatterns[j][3].setAction(NONE);
-		allPatterns[j][3].setTimeForStep(2);
+		allPatterns[j][3].setTimeForStep(10);
 		//allPatterns[j][3].setAction(EVADE);
 		//allPatterns[j][3].setTimeForStep(2);
 	}
