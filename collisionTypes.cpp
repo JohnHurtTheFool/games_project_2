@@ -87,7 +87,6 @@ void CollisionTypes::initialize(HWND hwnd)
 	}
 	for(int j = 0; j < NUM_ENEMIES_INITIAL; j++)
 	{
-<<<<<<< HEAD
 		allPatterns[j][0].setAction(TRACK);
 		allPatterns[j][0].setTimeForStep(4);
 		allPatterns[j][1].setAction(RIGHT);
@@ -100,20 +99,6 @@ void CollisionTypes::initialize(HWND hwnd)
 		allPatterns[j][4].setTimeForStep(2);
 		allPatterns[j][5].setAction(TRACK);
 		allPatterns[j][5].setTimeForStep(4);
-		/*allPatterns[j][3].setAction(NONE);
-		allPatterns[j][3].setTimeForStep(2);*/
-=======
-		allPatterns[j][0].setAction(RIGHT);
-		allPatterns[j][0].setTimeForStep(3);
-		allPatterns[j][1].setAction(DOWN);
-		allPatterns[j][1].setTimeForStep(2);
-		allPatterns[j][2].setAction(TRACK);
-		allPatterns[j][2].setTimeForStep(4);
-		allPatterns[j][3].setAction(NONE);
-		allPatterns[j][3].setTimeForStep(10);
->>>>>>> origin/master
-		//allPatterns[j][3].setAction(EVADE);
-		//allPatterns[j][3].setTimeForStep(2);
 	}
 	return;
 }
