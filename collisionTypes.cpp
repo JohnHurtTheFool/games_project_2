@@ -30,7 +30,6 @@ CollisionTypes::~CollisionTypes()
 void CollisionTypes::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
-	srand(time(NULL));
 
     if (!playerTM.initialize(graphics,PLAYER_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player texture"));
@@ -68,12 +67,16 @@ void CollisionTypes::initialize(HWND hwnd)
 		enemy[i].setScale(.5);
 	}
 
+
 	background.setX(0);
 	background.setY(0);
 	background.setScale(BACKGROUND_SCALE);
 
 	//patternsteps
-	patternStepIndex = 0;
+	for(int j = 0; j < NUM_ENEMIES_INITIAL; j++)
+	{
+		patternStepIndex[j] = rand()%maxPatternSteps;
+	}
 	for(int j = 0; j < NUM_ENEMIES_INITIAL; j++)
 	{
 		for (int i = 0; i< maxPatternSteps; i++)
@@ -84,14 +87,20 @@ void CollisionTypes::initialize(HWND hwnd)
 	}
 	for(int j = 0; j < NUM_ENEMIES_INITIAL; j++)
 	{
-		allPatterns[j][0].setAction(RIGHT);
-		allPatterns[j][0].setTimeForStep(3);
-		allPatterns[j][1].setAction(DOWN);
-		allPatterns[j][1].setTimeForStep(2);
-		allPatterns[j][2].setAction(TRACK);
-		allPatterns[j][2].setTimeForStep(4);
-		allPatterns[j][3].setAction(NONE);
+		allPatterns[j][0].setAction(TRACK);
+		allPatterns[j][0].setTimeForStep(4);
+		allPatterns[j][1].setAction(RIGHT);
+		allPatterns[j][1].setTimeForStep(3);
+		allPatterns[j][2].setAction(DOWN);
+		allPatterns[j][2].setTimeForStep(2);
+		allPatterns[j][3].setAction(LEFT);
 		allPatterns[j][3].setTimeForStep(2);
+		allPatterns[j][4].setAction(UP);
+		allPatterns[j][4].setTimeForStep(2);
+		allPatterns[j][5].setAction(TRACK);
+		allPatterns[j][5].setTimeForStep(4);
+		/*allPatterns[j][3].setAction(NONE);
+		allPatterns[j][3].setTimeForStep(2);*/
 		//allPatterns[j][3].setAction(EVADE);
 		//allPatterns[j][3].setTimeForStep(2);
 	}
@@ -128,16 +137,17 @@ void CollisionTypes::ai()
 	{
 		enemy[i].ai(frameTime, player);
 	}
-	if (patternStepIndex == maxPatternSteps)
-		return;
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
-		if (allPatterns[i][patternStepIndex].isFinished())
-			patternStepIndex++;
+		if (allPatterns[i][patternStepIndex[i]].isFinished())
+		{
+			allPatterns[i][patternStepIndex[i]].setActive();
+			patternStepIndex[i]=(rand())%maxPatternSteps;
+		}
 	}
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
-		allPatterns[i][patternStepIndex].update(frameTime);
+		allPatterns[i][patternStepIndex[i]].update(frameTime);
 	}
 }
 

@@ -50,14 +50,22 @@ void Player::update(float frameTime)
 	incPosition(D3DXVECTOR2(velocity*frameTime));
 	velocity = D3DXVECTOR2(0,0);
 
-    if (getPositionX() > GAME_WIDTH-getWidth()*getScale()) 
-		setPositionX(GAME_WIDTH-getWidth()*getScale()); 
-    if (getPositionX() < 0) 
-        setPositionX(0);
-	if (getPositionY() > GAME_HEIGHT-getHeight()*getScale())
-		setPositionY(GAME_HEIGHT-getHeight()*getScale());
+   if (getPositionX() + Image::getWidth()*Image::getScale() > GAME_WIDTH)
+	{
+		setPosition(D3DXVECTOR2(0,getPositionY()));
+	}
+	if (getPositionX() < 0)
+	{
+		setPosition(D3DXVECTOR2(GAME_WIDTH-Image::getWidth()*Image::getScale(),getPositionY()));
+	}
+	if (getPositionY() + Image::getHeight()*Image::getScale() > GAME_HEIGHT)
+	{
+		setPosition(D3DXVECTOR2(getPositionX(),0));
+	}
 	if (getPositionY() < 0)
-		setPositionY(0);
+	{
+		setPosition(D3DXVECTOR2(getPositionX(),GAME_HEIGHT-Image::getHeight()*Image::getScale()));
+	}
 	spriteData.x = getPositionX();
 	spriteData.y = getPositionY();
 }

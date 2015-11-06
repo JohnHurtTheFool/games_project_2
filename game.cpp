@@ -4,6 +4,7 @@
 // Chapter 6 game.cpp v1.0
 
 #include "game.h"
+#include <ctime>
 
 // The primary class should inherit from Game class
 
@@ -18,6 +19,7 @@ Game::Game()
     graphics = NULL;
 	audio = NULL;
     initialized = false;
+	srand(time(NULL));
 }
 
 //=============================================================================

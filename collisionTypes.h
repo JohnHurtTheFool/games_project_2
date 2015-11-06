@@ -19,7 +19,7 @@ class CollisionTypes;
 #include "patternStep.h"
 
 
-#define maxPatternSteps 4
+#define maxPatternSteps 6
 
 //=============================================================================
 // This class is the core of the game
@@ -37,7 +37,7 @@ private:
 	bool collision;
 	Enemy enemy[NUM_ENEMIES_INITIAL];	
 	PatternStep allPatterns[NUM_ENEMIES_INITIAL][maxPatternSteps];
-	int patternStepIndex;
+	int patternStepIndex[NUM_ENEMIES_INITIAL];
 
 
 public:

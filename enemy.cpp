@@ -66,7 +66,7 @@ void Enemy::update(float frameTime)
 	}
 	if (getPositionY() < 0)
 	{
-		setPosition(D3DXVECTOR2(getPositionX(),GAME_WIDTH-Image::getHeight()*Image::getScale()));
+		setPosition(D3DXVECTOR2(getPositionX(),GAME_HEIGHT-Image::getHeight()*Image::getScale()));
 	}
 
 	velocity = D3DXVECTOR2(0,0);
