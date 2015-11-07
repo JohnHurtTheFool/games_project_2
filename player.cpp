@@ -12,7 +12,7 @@ Player::Player() : Entity()
     spriteData.y = playerNS::Y;
     spriteData.rect.bottom = playerNS::HEIGHT/2;    // rectangle to select parts of an image
     spriteData.rect.right = playerNS::WIDTH;
-    velocity.x = 0;                             // velocity X
+    velocity.x = 1;                             // velocity X
     velocity.y = 0;                             // velocity Y
     startFrame = 0;              // first frame of ship animation
     endFrame     = 0;              // last frame of ship animation
@@ -49,7 +49,7 @@ void Player::update(float frameTime)
 	Entity::update(frameTime);
 
 	incPosition(D3DXVECTOR2(velocity*frameTime));
-	velocity = D3DXVECTOR2(0,0);
+	//velocity = D3DXVECTOR2(0,0);
 
    if (getPositionX() + Image::getWidth()*Image::getScale() > GAME_WIDTH)
 	{

@@ -7,15 +7,15 @@ class player;
 
 #include "entity.h"
 #include "constants.h"
-
+#include <cmath>
 namespace playerNS
 {
     const int WIDTH = 90;                   // image width
     const int HEIGHT = 20;                  // image height
     const int X = GAME_WIDTH/2 - WIDTH/2;   // location on screen
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
-    const float SPEED = 120;             
-	
+    const float SPEED = 120;
+	const float ACCELERATION = 0.1f;
    
 }
 
@@ -75,19 +75,21 @@ public:
 
     void right()
     {
-        velocity.x = playerNS::SPEED;
+        setDegrees(getDegrees()+1);
     }
     void left()
     {
-        velocity.x = -playerNS::SPEED;
+		setDegrees(getDegrees()-1);
     }
 	void up()
     {
-        velocity.y = -playerNS::SPEED;
+		velocity.x += playerNS::ACCELERATION * sin(getRadians());
+		velocity.y -= playerNS::ACCELERATION * cos(getRadians());
     }
 	void down()
     {
-        velocity.y = playerNS::SPEED;
+		velocity.x -= playerNS::ACCELERATION * sin(getRadians());
+		velocity.y += playerNS::ACCELERATION * cos(getRadians());
     }
 };
 #endif

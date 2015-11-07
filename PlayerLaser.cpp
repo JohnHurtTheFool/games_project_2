@@ -50,9 +50,9 @@ void PlayerLaser::setMissedPosition()
 void PlayerLaser::update(float frameTime)
 {
     Entity::update(frameTime);
-	float foo =playerLaserNS::SPEED_X * directionX * frameTime;
+	float foo = velocity.x * directionX * frameTime;
 	Entity::incPositionX(foo);
-	foo = playerLaserNS::SPEED_Y * directionY * frameTime;
+	foo = velocity.y * directionY * frameTime;
 	Entity::incPositionY(foo);
 
 	if (Entity::getPositionX()+spriteData.width > GAME_WIDTH)  

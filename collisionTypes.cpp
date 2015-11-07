@@ -137,10 +137,13 @@ void CollisionTypes::update()
 	if(input->isKeyDown(PLAYER_SHOOT) && !shootKeyDownLastFrame)
 	{
 		(playerLaser[playerNextLaserIndex]).setVisible();
-		(playerLaser[playerNextLaserIndex]).setPositionX((player.getPositionX()+SPACESHIP_SIZE/4)-LASER_WIDTH/2);//Center of the player's width
-		(playerLaser[playerNextLaserIndex]).setPositionY(player.getPositionY());//top of player
-		playerNextLaserIndex=(playerNextLaserIndex+1)%MAX_PLAYER_LASERS;
+		(playerLaser[playerNextLaserIndex]).setPositionX((player.getPositionX()+SPACESHIP_SIZE/4));//Center of the player's width
+		(playerLaser[playerNextLaserIndex]).setPositionY((player.getPositionY()+SPACESHIP_SIZE/4));//top of player
+		float rad = player.getRadians();
+		VECTOR2 laserVelocity((player.getVelocity()).x+playerLaserNS::SPEED_X*sin(player.getRadians()),-player.getVelocity().y+playerLaserNS::SPEED_Y*cos(player.getRadians()));
+		(playerLaser[playerNextLaserIndex]).setVelocity(laserVelocity);
 		shootKeyDownLastFrame = true;//Shoot key was down this frame.
+		playerNextLaserIndex=(playerNextLaserIndex+1)%MAX_PLAYER_LASERS;
 	}
 	else if(!(input->isKeyDown(PLAYER_SHOOT)) && shootKeyDownLastFrame)
 	{
@@ -253,23 +256,6 @@ void CollisionTypes::collisions()
 			}
 		}
 	}
-	/*collisionVector = D3DXVECTOR2(0,0);
-	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
-	{
-		if(!(playerLaser[i]).getVisible())//Do not check for collisions with a laser that is not visable
-			continue;
-		collision = false;
-		for(int j = 0; j < NUM_ENEMIES_INITIAL; j++)
-		{
-		if ((playerLaser[i]).collidesWith(enemy[j], collisionVector) && (enemy[j]).getVisible())
-			{
-				collision = true;
-				(playerLaser[i]).setVisible(false);
-				(enemy[j]).setInvisible();
-			}
-		}
-	}*/
-
 }
 
 //=============================================================================
