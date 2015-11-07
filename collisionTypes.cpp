@@ -34,16 +34,22 @@ void CollisionTypes::initialize(HWND hwnd)
     if (!playerTM.initialize(graphics,PLAYER_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player texture"));
 
-   if (!enemyTM.initialize(graphics,ENEMY_IMAGE))
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing puck textures"));
-
+    if (!enemyTM.initialize(graphics,ENEMY_IMAGE))
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy textures"));
+    if (!enemyLaserTM.initialize(graphics,ENEMY_LASER))
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy laser textures"));
+    if (!playerLaserTM.initialize(graphics,PLAYER_LASER))
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player laser textures"));
 	if (!player.initialize(this, SPACESHIP_SIZE,SPACESHIP_SIZE, 2,&playerTM))
 		throw(GameError(gameErrorNS::WARNING, "player not initialized"));
-
+	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
+		if (!player.initialize(this, SPACESHIP_SIZE,SPACESHIP_SIZE, 2,&playerTM))
+		throw(GameError(gameErrorNS::WARNING, "player not initialized"));
 	if (!backgroundTM.initialize(graphics, BACKGROUND_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "My texture initialization failed"));
 	if (!background.initialize(graphics, 2048,1024,0, &backgroundTM))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error init my background"));
+	
 	player.setFrames(2,3);
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{

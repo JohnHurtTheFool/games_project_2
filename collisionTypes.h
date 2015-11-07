@@ -17,7 +17,8 @@ class CollisionTypes;
 #include "puck.h"
 #include "enemy.h"
 #include "patternStep.h"
-
+#include "PlayerLaser.h"
+#include "EnemyLaser.h"
 
 #define maxPatternSteps 6
 
@@ -28,14 +29,16 @@ class CollisionTypes : public Game
 {
 private:
     // game items
-    TextureManager playerTM, puckTM, enemyTM, backgroundTM;   // game texture
+    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM;   // game texture
 	Image background;
     VECTOR2 collisionVector;    // collision vector
 	Player player;
 	Puck puck;
 	int score;
 	bool collision;
-	Enemy enemy[NUM_ENEMIES_INITIAL];	
+	Enemy enemy[NUM_ENEMIES_INITIAL];
+	PlayerLaser playerLaser [MAX_PLAYER_LASERS];
+	EnemyLaser enemyLaser [MAX_ENEMY_LASERS];
 	PatternStep allPatterns[NUM_ENEMIES_INITIAL][maxPatternSteps];
 	int patternStepIndex[NUM_ENEMIES_INITIAL];
 
