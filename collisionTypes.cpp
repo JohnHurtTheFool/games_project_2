@@ -253,7 +253,7 @@ void CollisionTypes::collisions()
 			}
 		}
 	}
-	collisionVector = D3DXVECTOR2(0,0);
+	/*collisionVector = D3DXVECTOR2(0,0);
 	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
 	{
 		if(!(playerLaser[i]).getVisible())//Do not check for collisions with a laser that is not visable
@@ -268,7 +268,7 @@ void CollisionTypes::collisions()
 				(enemy[j]).setInvisible();
 			}
 		}
-	}
+	}*/
 
 }
 
