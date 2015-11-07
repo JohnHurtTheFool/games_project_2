@@ -10,8 +10,7 @@ namespace playerLaserNS
 	const float SPEED_Y = 10;
  
 }
-class PlayerLaser :
-	public Entity
+class PlayerLaser : public Entity
 {
 private:  
     bool collision;                 
@@ -34,6 +33,18 @@ public:
     // Set collision type (NONE, CIRCLE, BOX, ROTATED_BOX)
     virtual void setCollisionType(entityNS::COLLISION_TYPE ctype)
     {collisionType = ctype;}
+
+	void PlayerLaser::setInvisible()
+	{
+		Image::setVisible(false);
+		active = false;
+	}
+
+	void PlayerLaser::setVisible()
+	{
+		Image::setVisible(true);
+		active = true;
+	}
 
     // Set RECT structure used for BOX and ROTATED_BOX collision detection.
     void setEdge(RECT e) {edge = e;}

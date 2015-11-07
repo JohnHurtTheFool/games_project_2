@@ -31,6 +31,18 @@ public:
     void setCollision(bool c)
     {collision = c;}
 
+	void EnemyLaser::setInvisible()
+	{
+		Image::setVisible(false);
+		active = false;
+	}
+
+	void EnemyLaser::setVisible()
+	{
+		Image::setVisible(true);
+		active = true;
+	}
+
     // Set collision type (NONE, CIRCLE, BOX, ROTATED_BOX)
     virtual void setCollisionType(entityNS::COLLISION_TYPE ctype)
     {collisionType = ctype;}

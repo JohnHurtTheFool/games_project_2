@@ -97,6 +97,8 @@ const int LASER_WIDTH = 2;
 const int NUM_ENEMIES_INITIAL = 5;
 const int MAX_PLAYER_LASERS = 600;
 const int MAX_ENEMY_LASERS = 150;
+const double laserDamage = 5.00;
+const double kamikazeDamage = 15.00;
 // graphic images
 const char PUCK_IMAGE[] = "..\\games_project_2\\pictures\\homework.jpg";  // game textures
 const char PADDLE_IMAGE[] =     "..\\games_project_2\\pictures\\student.jpg";      // menu texture

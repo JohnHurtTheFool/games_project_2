@@ -25,7 +25,8 @@ class Player : public Entity
 private:
   
     bool collision;                 
-    bool target;   
+    bool target;
+	double health;
 
 public:
     // constructor
@@ -35,6 +36,10 @@ public:
     virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
                             TextureManager *textureM);
     void update(float frameTime);
+
+	double getHealth(){ return health;}
+
+	void setHealth(float h){health = h;}
 
     // Set collision Boolean
     void setCollision(bool c)

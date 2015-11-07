@@ -115,7 +115,6 @@ void CollisionTypes::initialize(HWND hwnd)
 		allPatterns[j][5].setAction(TRACK);
 		allPatterns[j][5].setTimeForStep(4);
 	}
-
 	playerNextLaserIndex = 0;
 	enemyNextLaserIndex = 0;
 	bool shootKeyDownLastFrame = false;
@@ -137,7 +136,7 @@ void CollisionTypes::update()
 			player.down();
 	if(input->isKeyDown(PLAYER_SHOOT) && !shootKeyDownLastFrame)
 	{
-		(playerLaser[playerNextLaserIndex]).setVisible(true);
+		(playerLaser[playerNextLaserIndex]).setVisible();
 		(playerLaser[playerNextLaserIndex]).setPositionX((player.getPositionX()+SPACESHIP_SIZE/4)-LASER_WIDTH/2);//Center of the player's width
 		(playerLaser[playerNextLaserIndex]).setPositionY(player.getPositionY());//top of player
 		playerNextLaserIndex=(playerNextLaserIndex+1)%MAX_PLAYER_LASERS;
@@ -151,7 +150,7 @@ void CollisionTypes::update()
 	{
 		if(!(rand()%1000))
 		{
-			(enemyLaser[enemyNextLaserIndex]).setVisible(true);
+			(enemyLaser[enemyNextLaserIndex]).setVisible();
 			(enemyLaser[enemyNextLaserIndex]).setPositionX((enemy[i].getPositionX()+SPACESHIP_SIZE/4)-LASER_WIDTH/2);//Center of the enemy's width
 			(enemyLaser[enemyNextLaserIndex]).setPositionY(enemy[i].getPositionY());//top of enemy
 			enemyNextLaserIndex=(enemyNextLaserIndex+1)%MAX_ENEMY_LASERS;
@@ -169,6 +168,15 @@ void CollisionTypes::update()
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		enemy[i].update(frameTime);
+	}
+	
+	if(player.getHealth() <= 60.00 && player.getHealth() > 30.00)
+	{
+		player.setFrames(10,11);
+	}
+	else if(player.getHealth() <= 30.00)
+	{
+		player.setFrames(18,19);
 	}
 	
 }
@@ -205,10 +213,26 @@ void CollisionTypes::collisions()
 	collision = false;
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
-		if (player.collidesWith(enemy[i], collisionVector))
+		//player with enemy collision
+		if (player.collidesWith(enemy[i], collisionVector) && enemy[i].getVisible())
 		{
 			collision = true;
-			puck.changeDirectionY();
+			player.setHealth(player.getHealth() - kamikazeDamage);
+			enemy[i].setInvisible();
+			//puck.changeDirectionY();
+			audio->playCue(BEEP1);
+		}
+		//laser with enemy collision
+	}
+	//laser with player collision
+	for(int i = 0;i<MAX_ENEMY_LASERS;i++)
+	{
+		if (player.collidesWith(enemyLaser[enemyNextLaserIndex], collisionVector) && enemyLaser[enemyNextLaserIndex].getVisible())
+		{
+			collision = true;
+			player.setHealth(player.getHealth() - laserDamage);
+			enemyLaser[enemyNextLaserIndex].setInvisible();
+			//puck.changeDirectionY();
 			audio->playCue(BEEP1);
 		}
 	}
