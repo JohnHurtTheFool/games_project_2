@@ -148,7 +148,7 @@ void CollisionTypes::update()
 	}
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
-		if(!(rand()%1000))
+		if(!(rand()%1000)&&enemy[i].getVisible())
 		{
 			(enemyLaser[enemyNextLaserIndex]).setVisible();
 			(enemyLaser[enemyNextLaserIndex]).setPositionX((enemy[i].getPositionX()+SPACESHIP_SIZE/4)-LASER_WIDTH/2);//Center of the enemy's width
@@ -253,6 +253,23 @@ void CollisionTypes::collisions()
 			}
 		}
 	}
+	collisionVector = D3DXVECTOR2(0,0);
+	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
+	{
+		if(!(playerLaser[i]).getVisible())//Do not check for collisions with a laser that is not visable
+			continue;
+		collision = false;
+		for(int j = 0; j < NUM_ENEMIES_INITIAL; j++)
+		{
+		if ((playerLaser[i]).collidesWith(enemy[j], collisionVector) && (enemy[j]).getVisible())
+			{
+				collision = true;
+				(playerLaser[i]).setVisible(false);
+				(enemy[j]).setInvisible();
+			}
+		}
+	}
+
 }
 
 //=============================================================================
