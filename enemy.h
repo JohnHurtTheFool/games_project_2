@@ -35,10 +35,22 @@ private:
 	//void deltaTrack();
 	//void evade();
 	VECTOR2 dir;
-
+	int maxHits;
+	int hits;
 public:
     // constructor
     Enemy();
+
+	void setMaxHits(int max){maxHits = max;}
+
+	void wasHit()
+	{
+		hits -= 1;
+		if(hits>=maxHits)
+		{
+			setInvisible();
+		}
+	}
 
     // inherited member functions
     virtual bool initialize(Game *gamePtr, int width, int height, int ncols,

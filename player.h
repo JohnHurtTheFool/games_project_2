@@ -41,6 +41,18 @@ public:
 
 	void setHealth(float h){health = h;}
 
+	void Player::setInvisible()
+	{
+		Image::setVisible(false);
+		active = false;
+	}
+
+	void Player::setVisible()
+	{
+		Image::setVisible(true);
+		active = true;
+	}
+
     // Set collision Boolean
     void setCollision(bool c)
     {collision = c;}

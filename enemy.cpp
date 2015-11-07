@@ -24,6 +24,8 @@ Enemy::Enemy() : Entity()
 	spriteData.scale = 1;
 	active = true;
 	speed = 50;
+	hits = 0;
+	maxHits = 2;
 }
 
 bool Enemy::initialize(Game *gamePtr, int width, int height, int ncols,

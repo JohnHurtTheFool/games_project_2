@@ -178,6 +178,10 @@ void CollisionTypes::update()
 	{
 		player.setFrames(18,19);
 	}
+	else if(player.getHealth() <= 0.00)
+	{
+		player.setInvisible();
+	}
 	
 }
 
@@ -214,26 +218,39 @@ void CollisionTypes::collisions()
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		//player with enemy collision
-		if (player.collidesWith(enemy[i], collisionVector) && enemy[i].getVisible())
+		if (player.collidesWith(enemy[i], collisionVector) && enemy[i].getVisible() && player.getVisible())
 		{
-			collision = true;
+			//collision = true;
 			player.setHealth(player.getHealth() - kamikazeDamage);
 			enemy[i].setInvisible();
 			//puck.changeDirectionY();
 			audio->playCue(BEEP1);
 		}
-		//laser with enemy collision
 	}
 	//laser with player collision
 	for(int i = 0;i<MAX_ENEMY_LASERS;i++)
 	{
 		if (player.collidesWith(enemyLaser[enemyNextLaserIndex], collisionVector) && enemyLaser[enemyNextLaserIndex].getVisible())
 		{
-			collision = true;
+			//collision = true;
 			player.setHealth(player.getHealth() - laserDamage);
-			enemyLaser[enemyNextLaserIndex].setInvisible();
+			enemyLaser[i].setInvisible();
 			//puck.changeDirectionY();
 			audio->playCue(BEEP1);
+			enemyLaser[i].setInvisible();
+		}
+	}
+	//player laser with enemy collision
+	for(int j = 0; j < NUM_ENEMIES_INITIAL; j++)
+	{
+		for(int x = 0;x<MAX_PLAYER_LASERS;x++)
+		{
+			if(enemy[j].collidesWith(playerLaser[x], collisionVector) && playerLaser[x].getVisible() && enemy[j].getVisible())
+			{
+				playerLaser[x].setInvisible();
+				enemy[j].wasHit();
+				//update score
+			}
 		}
 	}
 }
