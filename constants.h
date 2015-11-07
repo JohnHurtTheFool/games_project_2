@@ -75,7 +75,7 @@ inline void safeOnResetDevice(T& ptr)
 
 // window
 const char CLASS_NAME[] = "AI";
-const char GAME_TITLE[] = "AI";
+const char GAME_TITLE[] = "SPACESHIP CONTROL";
 const bool FULLSCREEN = false;              // windowed or fullscreen
 const UINT GAME_WIDTH =  640;               // width of game in pixels
 const UINT GAME_HEIGHT = 480;               // height of game in pixels
