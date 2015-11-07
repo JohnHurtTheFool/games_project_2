@@ -25,7 +25,7 @@ class Player : public Entity
 private:
   
     bool collision;                 
-    bool target;                    
+    bool target;   
 
 public:
     // constructor

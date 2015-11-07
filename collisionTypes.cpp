@@ -31,6 +31,7 @@ void CollisionTypes::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
 
+	//texture inits
     if (!playerTM.initialize(graphics,PLAYER_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player texture"));
 
@@ -40,11 +41,18 @@ void CollisionTypes::initialize(HWND hwnd)
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy laser textures"));
     if (!playerLaserTM.initialize(graphics,PLAYER_LASER))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player laser textures"));
+
+	//entity inits
 	if (!player.initialize(this, SPACESHIP_SIZE,SPACESHIP_SIZE, 2,&playerTM))
 		throw(GameError(gameErrorNS::WARNING, "player not initialized"));
 	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
-		if (!player.initialize(this, SPACESHIP_SIZE,SPACESHIP_SIZE, 2,&playerTM))
-		throw(GameError(gameErrorNS::WARNING, "player not initialized"));
+		if (!playerLaser[i].initialize(this, LASER_WIDTH,LASER_HEIGHT, 2,&playerLaserTM))
+			throw(GameError(gameErrorNS::WARNING, "player's laser not initialized"));
+	for(int i = 0; i < MAX_ENEMY_LASERS; i++)
+		if (!enemyLaser[i].initialize(this, LASER_WIDTH,LASER_HEIGHT, 2,&enemyLaserTM))
+			throw(GameError(gameErrorNS::WARNING, "enemy's laser not initialized"));
+
+	//background
 	if (!backgroundTM.initialize(graphics, BACKGROUND_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "My texture initialization failed"));
 	if (!background.initialize(graphics, 2048,1024,0, &backgroundTM))
@@ -55,6 +63,7 @@ void CollisionTypes::initialize(HWND hwnd)
 	{
 		(enemy[i]).setFrames(2,3);
 	}
+
 	player.setPosition(VECTOR2(GAME_WIDTH/2, GAME_HEIGHT-150));
     player.setCollisionType(entityNS::BOX);
     player.setEdge(COLLISION_BOX_player);
@@ -106,6 +115,10 @@ void CollisionTypes::initialize(HWND hwnd)
 		allPatterns[j][5].setAction(TRACK);
 		allPatterns[j][5].setTimeForStep(4);
 	}
+
+	playerNextLaserIndex = 0;
+	enemyNextLaserIndex = 0;
+	bool shootKeyDownLastFrame = false;
 	return;
 }
 
@@ -122,7 +135,37 @@ void CollisionTypes::update()
             player.up();
     if(input->isKeyDown(player_DOWN))
 			player.down();
+	if(input->isKeyDown(PLAYER_SHOOT) && !shootKeyDownLastFrame)
+	{
+		(playerLaser[playerNextLaserIndex]).setVisible(true);
+		(playerLaser[playerNextLaserIndex]).setPositionX((player.getPositionX()+SPACESHIP_SIZE/4)-LASER_WIDTH/2);//Center of the player's width
+		(playerLaser[playerNextLaserIndex]).setPositionY(player.getPositionY());//top of player
+		playerNextLaserIndex=(playerNextLaserIndex+1)%MAX_PLAYER_LASERS;
+		shootKeyDownLastFrame = true;//Shoot key was down this frame.
+	}
+	else if(!(input->isKeyDown(PLAYER_SHOOT)) && shootKeyDownLastFrame)
+	{
+		shootKeyDownLastFrame = false;//Player released shoot key.
+	}
+	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
+	{
+		if(!(rand()%1000))
+		{
+			(enemyLaser[enemyNextLaserIndex]).setVisible(true);
+			(enemyLaser[enemyNextLaserIndex]).setPositionX((enemy[i].getPositionX()+SPACESHIP_SIZE/4)-LASER_WIDTH/2);//Center of the enemy's width
+			(enemyLaser[enemyNextLaserIndex]).setPositionY(enemy[i].getPositionY());//top of enemy
+			enemyNextLaserIndex=(enemyNextLaserIndex+1)%MAX_ENEMY_LASERS;
+		}
+	}
 	player.update(frameTime);
+	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
+	{
+		playerLaser[i].update(frameTime);
+	}
+	for(int i = 0; i < MAX_ENEMY_LASERS; i++)
+	{
+		enemyLaser[i].update(frameTime);
+	}
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		enemy[i].update(frameTime);
@@ -178,7 +221,14 @@ void CollisionTypes::render()
 {
     graphics->spriteBegin();                // begin drawing sprites
 	background.draw();
-	
+	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
+	{
+		playerLaser[i].draw();
+	}
+	for(int i = 0; i < MAX_ENEMY_LASERS; i++)
+	{
+		enemyLaser[i].draw();
+	}
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		enemy[i].draw();

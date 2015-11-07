@@ -41,8 +41,9 @@ private:
 	EnemyLaser enemyLaser [MAX_ENEMY_LASERS];
 	PatternStep allPatterns[NUM_ENEMIES_INITIAL][maxPatternSteps];
 	int patternStepIndex[NUM_ENEMIES_INITIAL];
-
-
+	int playerNextLaserIndex;//The index of the next laser to shoot.
+	int enemyNextLaserIndex;//The index of the next laser to shoot.
+	bool shootKeyDownLastFrame;
 public:
     // Constructor
     CollisionTypes();

@@ -92,8 +92,10 @@ const RECT  COLLISION_BOX_player = {-45,-10,45,10};
 const RECT COLLISION_BOX_PUCK = {-32, -32, 32, 32};
 const float   COLLISION_RADIUS = 29;
 const int SPACESHIP_SIZE = 64;
-const int NUM_ENEMIES_INITIAL = 15;
-const int MAX_PLAYER_LASERS = 50;
+const int LASER_HEIGHT = 4;
+const int LASER_WIDTH = 2;
+const int NUM_ENEMIES_INITIAL = 5;
+const int MAX_PLAYER_LASERS = 600;
 const int MAX_ENEMY_LASERS = 150;
 // graphic images
 const char PUCK_IMAGE[] = "..\\games_project_2\\pictures\\homework.jpg";  // game textures
@@ -113,6 +115,7 @@ const UCHAR player_RIGHT   = VK_RIGHT;    // right arrow
 const UCHAR ENTER_KEY    = VK_RETURN; 
 const UCHAR player_UP = VK_UP;
 const UCHAR player_DOWN = VK_DOWN;
+const UCHAR PLAYER_SHOOT = VK_SPACE;
 
 //
 
