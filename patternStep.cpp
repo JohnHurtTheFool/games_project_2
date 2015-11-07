@@ -29,15 +29,19 @@ void PatternStep::update(float frameTime)//WE WILL CHANGE THE VELOCITY.NOT HAVE 
 		break;
 	case UP:
 		entity->setVelocity(D3DXVECTOR2(0, -1));
+		entity->setRadians(0);
 		break;
 	case DOWN:
 		entity->setVelocity(D3DXVECTOR2(0, 1));
+		entity->setRadians(PI);
 		break;
 	case RIGHT:
 		entity->setVelocity(D3DXVECTOR2(1,0));
+		entity->setRadians(PI/2);
 		break;
 	case LEFT:
 		entity->setVelocity(D3DXVECTOR2(-1,0));
+		entity->setRadians(3*PI/2);
 		break;
 	case TRACK:
 		entity->vectorTrack();

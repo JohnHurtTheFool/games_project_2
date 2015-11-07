@@ -112,6 +112,12 @@ void Enemy::vectorTrack()//We're going to want to change this so that it takes a
 		return;
 	VECTOR2* foo = D3DXVec2Normalize(&vel, &vel);
 	setVelocity(-vel);
+	setRadians((atan((targetEntity.getCenterY()-getCenterY())/(targetEntity.getCenterX()-getCenterX())))-PI/2);
+	if(targetEntity.getCenterX()>getCenterX())
+		setRadians(getRadians()+PI);
+		//setRadians(getRadians()+PI/2);
+	//setDegrees(targetEntity.getDegrees());
+
 }
 
 void Enemy::ai(float time, Entity &t)

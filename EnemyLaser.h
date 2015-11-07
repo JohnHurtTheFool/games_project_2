@@ -6,12 +6,11 @@ namespace enemyLaserNS
 {
     const int WIDTH = 2;                   // image width
     const int HEIGHT = 4;                  // image height
-    const float SPEED_X = 0;                
+    const float SPEED_X = 200;                
 	const float SPEED_Y = 200;
  
 }
-class EnemyLaser :
-	public Entity
+class EnemyLaser : public Entity
 {
 private:  
     bool collision;                 
@@ -31,6 +30,10 @@ public:
     void setCollision(bool c)
     {collision = c;}
 
+    // Set collision type (NONE, CIRCLE, BOX, ROTATED_BOX)
+    virtual void setCollisionType(entityNS::COLLISION_TYPE ctype)
+    {collisionType = ctype;}
+
 	void EnemyLaser::setInvisible()
 	{
 		Image::setVisible(false);
@@ -42,10 +45,6 @@ public:
 		Image::setVisible(true);
 		active = true;
 	}
-
-    // Set collision type (NONE, CIRCLE, BOX, ROTATED_BOX)
-    virtual void setCollisionType(entityNS::COLLISION_TYPE ctype)
-    {collisionType = ctype;}
 
     // Set RECT structure used for BOX and ROTATED_BOX collision detection.
     void setEdge(RECT e) {edge = e;}

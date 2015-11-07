@@ -153,9 +153,17 @@ void CollisionTypes::update()
 	{
 		if(!(rand()%1000)&&enemy[i].getVisible())
 		{
-			(enemyLaser[enemyNextLaserIndex]).setVisible();
+			/*(enemyLaser[enemyNextLaserIndex]).setVisible();
 			(enemyLaser[enemyNextLaserIndex]).setPositionX((enemy[i].getPositionX()+SPACESHIP_SIZE/4)-LASER_WIDTH/2);//Center of the enemy's width
 			(enemyLaser[enemyNextLaserIndex]).setPositionY(enemy[i].getPositionY());//top of enemy
+			enemyNextLaserIndex=(enemyNextLaserIndex+1)%MAX_ENEMY_LASERS;*/
+			(enemyLaser[enemyNextLaserIndex]).setVisible();
+			(enemyLaser[enemyNextLaserIndex]).setPositionX((enemy[i].getPositionX()+SPACESHIP_SIZE/4));//Center of the enemy's width
+			(enemyLaser[enemyNextLaserIndex]).setPositionY((enemy[i].getPositionY()+SPACESHIP_SIZE/4));//top of enemy
+			float rad = enemy[i].getRadians();
+			VECTOR2 laserVelocityEnemy((enemy[i].getVelocity()).x+enemyLaserNS::SPEED_X*sin(enemy[i].getRadians()),-enemy[i].getVelocity().y+enemyLaserNS::SPEED_Y*cos(enemy[i].getRadians()));
+			(enemyLaser[enemyNextLaserIndex]).setVelocity(laserVelocityEnemy);
+
 			enemyNextLaserIndex=(enemyNextLaserIndex+1)%MAX_ENEMY_LASERS;
 		}
 	}
