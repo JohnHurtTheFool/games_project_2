@@ -7,7 +7,7 @@ namespace playerLaserNS
     const int WIDTH = 2;                   // image width
     const int HEIGHT = 4;                  // image height
     const float SPEED_X = 0;                
-	const float SPEED_Y = 10;
+	const float SPEED_Y = 100;
  
 }
 class PlayerLaser : public Entity

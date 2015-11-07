@@ -45,7 +45,7 @@ public:
 
 	void wasHit()
 	{
-		hits -= 1;
+		hits += 1;
 		if(hits>=maxHits)
 		{
 			setInvisible();
