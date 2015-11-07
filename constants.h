@@ -94,7 +94,7 @@ const float   COLLISION_RADIUS = 29;
 const int SPACESHIP_SIZE = 64;
 const int LASER_HEIGHT = 4;
 const int LASER_WIDTH = 2;
-const int NUM_ENEMIES_INITIAL = 5;
+const int NUM_ENEMIES_INITIAL = 10;
 const int MAX_PLAYER_LASERS = 600;
 const int MAX_ENEMY_LASERS = 150;
 const double laserDamage = 5.00;
@@ -104,7 +104,7 @@ const char PUCK_IMAGE[] = "..\\games_project_2\\pictures\\homework.jpg";  // gam
 const char PADDLE_IMAGE[] =     "..\\games_project_2\\pictures\\student.jpg";      // menu texture
 const char BACKGROUND_IMAGE[] =     "..\\games_project_2\\pictures\\Background.png";      // menu texture
 const char PLAYER_IMAGE[] =     "..\\games_project_2\\pictures\\player spritesheet.png";      // menu texture
-const char ENEMY_IMAGE[] =     "..\\games_project_2\\pictures\\enemy spritesheet.png";      // menu texture
+const char ENEMY_IMAGE[] =     "..\\games_project_2\\pictures\\enemy spritesheet two.png";      // menu texture
 const char ENEMY_LASER[] =     "..\\games_project_2\\pictures\\red laser.png";      // menu texture
 const char PLAYER_LASER[] =     "..\\games_project_2\\pictures\\blue laser.png";      // menu texture
 // key mappings

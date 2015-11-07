@@ -177,7 +177,7 @@ void CollisionTypes::update()
 	{
 		player.setFrames(10,11);
 	}
-	else if(player.getHealth() <= 30.00)
+	else if(player.getHealth() <= 30.00 && player.getHealth() >= 0.00)
 	{
 		player.setFrames(18,19);
 	}
@@ -185,7 +185,26 @@ void CollisionTypes::update()
 	{
 		player.setInvisible();
 	}
-	
+
+	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
+	{
+		if((enemy[i]).getHits() <= (enemy[i]).getMaxHits() && (enemy[i]).getHits() <= 0.3f *(enemy[i]).getMaxHits())
+		{
+			
+		}
+		else if((enemy[i]).getHits() > 0.3f *(enemy[i]).getMaxHits() && (enemy[i]).getHits() <= 0.6f *(enemy[i]).getMaxHits())
+		{
+			(enemy[i]).setFrames(10,11);
+		}
+		else if((enemy[i]).getHits() > 0.6f *(enemy[i]).getMaxHits() && (enemy[i]).getHits() <=(enemy[i]).getMaxHits())
+		{
+			(enemy[i]).setFrames(18,19);
+		}
+		else if((enemy[i]).getHits() > (enemy[i]).getMaxHits())
+		{
+			(enemy[i]).setInvisible();
+		}
+	}
 }
 
 //=============================================================================

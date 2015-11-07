@@ -42,7 +42,7 @@ public:
     Enemy();
 
 	void setMaxHits(int max){maxHits = max;}
-
+	int getMaxHits(){return maxHits;}
 	void wasHit()
 	{
 		hits += 1;
@@ -90,6 +90,7 @@ public:
 	void vectorTrack();
 	void deltaTrack();
 	void evade();
+	int getHits() {return hits;}
 };
 #endif
 
