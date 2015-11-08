@@ -8,8 +8,6 @@ Shield::Shield() : Entity()
 {
     spriteData.width = shieldNS::WIDTH;           // size of Ship1
     spriteData.height = shieldNS::HEIGHT;
-    spriteData.x = shieldNS::X;                   // location on screen
-    spriteData.y = shieldNS::Y;
     spriteData.rect.bottom = shieldNS::HEIGHT/2;    // rectangle to select parts of an image
     spriteData.rect.right = shieldNS::WIDTH;
     velocity.x = 1;                             // velocity X
@@ -23,6 +21,19 @@ Shield::Shield() : Entity()
 	edge.top = shieldNS::HEIGHT/2;
 	edge.right = -shieldNS::WIDTH/2;
 	edge.left = shieldNS::WIDTH/2;
+	setScale(shieldNS::SHIELD_SCALE);
+}
+
+void Shield::draw()
+{
+    Image::draw();              //draw lineman
+}
+
+void Shield::setPos(double x, double y)
+{
+	setPosition(VECTOR2(x,y));
+	spriteData.x=x;
+	spriteData.y=y;
 }
 
 //=============================================================================
@@ -47,7 +58,7 @@ void Shield::update(float frameTime)
 	//incPosition(D3DXVECTOR2(velocity*frameTime));
 	//velocity = D3DXVECTOR2(0,0);
 
-   if (getPositionX() + Image::getWidth()*Image::getScale() > GAME_WIDTH)
+  /*if (getPositionX() + Image::getWidth()*Image::getScale() > GAME_WIDTH)
 	{
 		setPosition(D3DXVECTOR2(0,getPositionY()));
 	}
@@ -62,7 +73,10 @@ void Shield::update(float frameTime)
 	if (getPositionY() < 0)
 	{
 		setPosition(D3DXVECTOR2(getPositionX(),GAME_HEIGHT-Image::getHeight()*Image::getScale()));
-	}
+	}*/
 	spriteData.x = getPositionX();
 	spriteData.y = getPositionY();
+	/*char msgbu[2048];
+	sprintf(msgbu, "Posx: %f  posy: %f\n", getPositionX(),getPositionY());
+	OutputDebugStringA(msgb*/
 }

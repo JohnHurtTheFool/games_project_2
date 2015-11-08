@@ -26,7 +26,7 @@ Player::Player() : Entity()
 	edge.right = -playerNS::WIDTH/2;
 	edge.left = playerNS::WIDTH/2;
 	health = 100.00;
-	shield.setPosition(VECTOR2(spriteData.x-100,spriteData.y));
+	shield.setPos(spriteData.x-(playerNS::WIDTH/2*playerNS::SCALE)+12,spriteData.y-(playerNS::HEIGHT/2 *playerNS::SCALE)-5);
 	shield.setVisible();
 	shield.setScale(0.5);
 }
@@ -50,12 +50,12 @@ void Player::update(float frameTime)
 {
 	
 	Entity::update(frameTime);
-	shield.update(frameTime);
+	//shield.update(frameTime);
 
 	incPosition(D3DXVECTOR2(velocity*frameTime));
 	//velocity = D3DXVECTOR2(0,0);
 
-   if (getPositionX() + Image::getWidth()*Image::getScale() > GAME_WIDTH)
+  if (getPositionX() + Image::getWidth()*Image::getScale() > GAME_WIDTH)
 	{
 		setPosition(D3DXVECTOR2(0,getPositionY()));
 	}
@@ -73,5 +73,10 @@ void Player::update(float frameTime)
 	}
 	spriteData.x = getPositionX();
 	spriteData.y = getPositionY();
-	shield.setPosition(VECTOR2(spriteData.x,spriteData.y));
+	shield.setPos(spriteData.x-(playerNS::WIDTH/2*playerNS::SCALE)+12,spriteData.y-(playerNS::HEIGHT/2 *playerNS::SCALE)-5);
+	
+	shield.setVisible();
+	/*char msgbu[2048];
+	sprintf(msgbu, "Posx: %f  posy: %f\n", shield.getPositionX(),shield.getPositionY());
+	OutputDebugStringA(msgbu);*/
 }

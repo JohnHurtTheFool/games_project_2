@@ -8,14 +8,14 @@ class shield;
 #include "entity.h"
 #include "constants.h"
 #include <cmath>
+
 namespace shieldNS
 {
-    const int WIDTH = 64;                   // image width
-    const int HEIGHT = 64;                  // image height
-    const int X = GAME_WIDTH/2 - WIDTH/2;   // location on screen
+    const int WIDTH = 100;                   // image width
+    const int HEIGHT = 100;                  // image height
+	const int X = GAME_WIDTH/2 - WIDTH/2;   // location on screen
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
-    const float SPEED = 120;
-	const float ACCELERATION = 0.5f;
+	const float SHIELD_SCALE=.6;
    
 }
 
@@ -28,6 +28,8 @@ private:
 public:
     // constructor
     Shield();
+
+	virtual void draw();
 
     // inherited member functions
     virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
@@ -53,6 +55,8 @@ public:
 
     // Set RECT structure used for BOX and ROTATED_BOX collision detection.
     void setEdge(RECT e) {edge = e;}
+
+	void setPos(double x, double y);
 
     // Get collision type
     entityNS::COLLISION_TYPE getCollisionType() {return collisionType;}

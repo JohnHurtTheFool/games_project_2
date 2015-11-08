@@ -49,7 +49,7 @@ void CollisionTypes::initialize(HWND hwnd)
 	if (!player.initialize(this, SPACESHIP_SIZE,SPACESHIP_SIZE, 2,&playerTM))
 		throw(GameError(gameErrorNS::WARNING, "player not initialized"));
 
-	if (!player.getShield().initialize(this, 0,0, 0,&shieldTM))
+	if (!(*player.getShield()).initialize(this, shieldNS::WIDTH,shieldNS::HEIGHT, 0,&shieldTM))
 		throw(GameError(gameErrorNS::WARNING, "shield not initialized"));
 
 	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
@@ -75,7 +75,7 @@ void CollisionTypes::initialize(HWND hwnd)
     player.setCollisionType(entityNS::BOX);
     player.setEdge(COLLISION_BOX_player);
     player.setCollisionRadius(COLLISION_RADIUS);
-	player.setScale(.5);
+	player.setScale(playerNS::SCALE);
 	
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
@@ -133,6 +133,7 @@ void CollisionTypes::initialize(HWND hwnd)
 //=============================================================================
 void CollisionTypes::update()
 {
+	player.update(frameTime);
 	if(input->isKeyDown(player_LEFT))
             player.left();
     if(input->isKeyDown(player_RIGHT))
@@ -166,7 +167,7 @@ void CollisionTypes::update()
 			enemyNextLaserIndex=(enemyNextLaserIndex+1)%MAX_ENEMY_LASERS;
 		}
 	}
-	player.update(frameTime);
+	
 	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
 	{
 		playerLaser[i].update(frameTime);
@@ -305,7 +306,7 @@ void CollisionTypes::render()
 		enemy[i].draw();
 	}
 	player.draw();
-	player.getShield().draw();
+	(*player.getShield()).draw();
     graphics->spriteEnd();                  // end drawing sprites
 }
 

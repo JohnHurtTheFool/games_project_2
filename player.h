@@ -17,7 +17,7 @@ namespace playerNS
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
     const float SPEED = 120;
 	const float ACCELERATION = 0.5f;
-   
+	const float SCALE = 0.5f;
 }
 
 // inherits from Entity class
@@ -43,7 +43,7 @@ public:
 
 	void setHealth(float h){health = h;}
 
-	Shield getShield(){return shield;}
+	Shield* getShield(){return &shield;}
 
 	void Player::setInvisible()
 	{
