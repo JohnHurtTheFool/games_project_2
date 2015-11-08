@@ -16,11 +16,8 @@ Shield::Shield() : Entity()
     endFrame     = 0;              // last frame of ship animation
     currentFrame = startFrame;
     //radius = playerNS::WIDTH/2.0;                 // collision radius
-    collisionType =entityNS::BOX;
-	edge.bottom = -shieldNS::HEIGHT/2;
-	edge.top = shieldNS::HEIGHT/2;
-	edge.right = -shieldNS::WIDTH/2;
-	edge.left = shieldNS::WIDTH/2;
+	collisionType =entityNS::CIRCLE;
+	radius = (shieldNS::WIDTH)/2.0;
 	setScale(shieldNS::SHIELD_SCALE);
 }
 

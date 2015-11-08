@@ -250,31 +250,59 @@ void CollisionTypes::collisions()
 {
     collisionVector = D3DXVECTOR2(0,0);
 	collision = false;
-	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
+	if(!player.getShield()->getActive())//shield is active
 	{
-		//player with enemy collision
-		if (player.collidesWith(enemy[i], collisionVector) && enemy[i].getVisible() && player.getVisible())
+		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 		{
-			//collision = true;
-			player.setHealth(player.getHealth() - kamikazeDamage);
-			enemy[i].setInvisible();
-			//puck.changeDirectionY();
-			audio->playCue(BEEP1);
+			//player with enemy collision
+			if (player.collidesWith(enemy[i], collisionVector) && enemy[i].getVisible() && player.getVisible())
+			{
+				//collision = true;
+				player.setHealth(player.getHealth() - kamikazeDamage);
+				enemy[i].setInvisible();
+				//puck.changeDirectionY();
+				audio->playCue(BEEP1);
+			}
+		}
+		//laser with player collision
+		for(int i = 0;i<MAX_ENEMY_LASERS;i++)
+		{
+			if (player.collidesWith(enemyLaser[i], collisionVector) && enemyLaser[i].getVisible())
+			{
+				//collision = true;
+				player.setHealth(player.getHealth() - laserDamage);
+				enemyLaser[i].setInvisible();
+				//puck.changeDirectionY();
+				audio->playCue(BEEP1);
+				enemyLaser[i].setInvisible();
+			}
 		}
 	}
-	//laser with player collision
-	for(int i = 0;i<MAX_ENEMY_LASERS;i++)
+	else
 	{
-		if (player.collidesWith(enemyLaser[i], collisionVector) && enemyLaser[i].getVisible())
+		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 		{
-			//collision = true;
-			player.setHealth(player.getHealth() - laserDamage);
-			enemyLaser[i].setInvisible();
-			//puck.changeDirectionY();
-			audio->playCue(BEEP1);
-			enemyLaser[i].setInvisible();
+			//player with enemy collision
+			if (player.getShield()->collidesWith(enemy[i], collisionVector) && enemy[i].getVisible() && player.getVisible())
+			{	
+				enemy[i].setInvisible();
+				//puck.changeDirectionY();
+				audio->playCue(BEEP1);
+			}
+		}
+		//laser with player collision
+		for(int i = 0;i<MAX_ENEMY_LASERS;i++)
+		{
+			if (player.getShield()->collidesWith(enemyLaser[i], collisionVector) && enemyLaser[i].getVisible())
+			{
+				enemyLaser[i].setInvisible();
+				//puck.changeDirectionY();
+				audio->playCue(BEEP1);
+				enemyLaser[i].setInvisible();
+			}
 		}
 	}
+	
 	//player laser with enemy collision
 	for(int j = 0; j < NUM_ENEMIES_INITIAL; j++)
 	{
