@@ -16,6 +16,7 @@ class CollisionTypes;
 #include "player.h"
 #include "puck.h"
 #include "enemy.h"
+#include "shield.h"
 #include "patternStep.h"
 #include "PlayerLaser.h"
 #include "EnemyLaser.h"
@@ -29,7 +30,7 @@ class CollisionTypes : public Game
 {
 private:
     // game items
-    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM;   // game texture
+    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM;   // game texture
 	Image background;
     VECTOR2 collisionVector;    // collision vector
 	Player player;

@@ -34,6 +34,9 @@ void CollisionTypes::initialize(HWND hwnd)
 	//texture inits
     if (!playerTM.initialize(graphics,PLAYER_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player texture"));
+	if (!shieldTM.initialize(graphics,SHIELD_IMAGE))
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing shield texture"));
+
 
     if (!enemyTM.initialize(graphics,ENEMY_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy textures"));
@@ -45,6 +48,10 @@ void CollisionTypes::initialize(HWND hwnd)
 	//entity inits
 	if (!player.initialize(this, SPACESHIP_SIZE,SPACESHIP_SIZE, 2,&playerTM))
 		throw(GameError(gameErrorNS::WARNING, "player not initialized"));
+
+	if (!player.getShield().initialize(this, 0,0, 0,&shieldTM))
+		throw(GameError(gameErrorNS::WARNING, "shield not initialized"));
+
 	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
 		if (!playerLaser[i].initialize(this, LASER_WIDTH,LASER_HEIGHT, 2,&playerLaserTM))
 			throw(GameError(gameErrorNS::WARNING, "player's laser not initialized"));
@@ -284,6 +291,7 @@ void CollisionTypes::render()
 {
     graphics->spriteBegin();                // begin drawing sprites
 	background.draw();
+	
 	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
 	{
 		playerLaser[i].draw();
@@ -297,6 +305,7 @@ void CollisionTypes::render()
 		enemy[i].draw();
 	}
 	player.draw();
+	player.getShield().draw();
     graphics->spriteEnd();                  // end drawing sprites
 }
 

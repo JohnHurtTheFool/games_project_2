@@ -6,6 +6,7 @@
 class player;
 
 #include "entity.h"
+#include "shield.h"
 #include "constants.h"
 #include <cmath>
 namespace playerNS
@@ -15,7 +16,7 @@ namespace playerNS
     const int X = GAME_WIDTH/2 - WIDTH/2;   // location on screen
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
     const float SPEED = 120;
-	const float ACCELERATION = 0.1f;
+	const float ACCELERATION = 0.5f;
    
 }
 
@@ -27,6 +28,7 @@ private:
     bool collision;                 
     bool target;
 	double health;
+	Shield shield;
 
 public:
     // constructor
@@ -40,6 +42,8 @@ public:
 	double getHealth(){ return health;}
 
 	void setHealth(float h){health = h;}
+
+	Shield getShield(){return shield;}
 
 	void Player::setInvisible()
 	{

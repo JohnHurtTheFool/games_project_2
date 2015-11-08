@@ -107,6 +107,7 @@ const char PLAYER_IMAGE[] =     "..\\games_project_2\\pictures\\player spriteshe
 const char ENEMY_IMAGE[] =     "..\\games_project_2\\pictures\\enemy spritesheet two.png";      // menu texture
 const char ENEMY_LASER[] =     "..\\games_project_2\\pictures\\red laser.png";      // menu texture
 const char PLAYER_LASER[] =     "..\\games_project_2\\pictures\\blue laser.png";      // menu texture
+const char SHIELD_IMAGE[] =     "..\\games_project_2\\pictures\\shield.png";      // menu texture
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
 // it would be possible to save and restore key mappings from a data file.

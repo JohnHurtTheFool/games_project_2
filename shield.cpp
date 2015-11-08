@@ -1,58 +1,50 @@
 
-#include "player.h"
+#include "shield.h"
 
 //=============================================================================
 // default constructor
 //=============================================================================
-Player::Player() : Entity()
+Shield::Shield() : Entity()
 {
-    spriteData.width = playerNS::WIDTH;           // size of Ship1
-    spriteData.height = playerNS::HEIGHT;
-    spriteData.x = playerNS::X;                   // location on screen
-    spriteData.y = playerNS::Y;
-    spriteData.rect.bottom = playerNS::HEIGHT/2;    // rectangle to select parts of an image
-    spriteData.rect.right = playerNS::WIDTH;
+    spriteData.width = shieldNS::WIDTH;           // size of Ship1
+    spriteData.height = shieldNS::HEIGHT;
+    spriteData.x = shieldNS::X;                   // location on screen
+    spriteData.y = shieldNS::Y;
+    spriteData.rect.bottom = shieldNS::HEIGHT/2;    // rectangle to select parts of an image
+    spriteData.rect.right = shieldNS::WIDTH;
     velocity.x = 1;                             // velocity X
     velocity.y = 0;                             // velocity Y
     startFrame = 0;              // first frame of ship animation
     endFrame     = 0;              // last frame of ship animation
     currentFrame = startFrame;
     //radius = playerNS::WIDTH/2.0;                 // collision radius
-    collision = false;
     collisionType =entityNS::BOX;
-    target = false;
-	edge.bottom = -playerNS::HEIGHT/2;
-	edge.top = playerNS::HEIGHT/2;
-	edge.right = -playerNS::WIDTH/2;
-	edge.left = playerNS::WIDTH/2;
-	health = 100.00;
-	shield.setPosition(VECTOR2(spriteData.x-100,spriteData.y));
-	shield.setVisible();
-	shield.setScale(0.5);
+	edge.bottom = -shieldNS::HEIGHT/2;
+	edge.top = shieldNS::HEIGHT/2;
+	edge.right = -shieldNS::WIDTH/2;
+	edge.left = shieldNS::WIDTH/2;
 }
 
 //=============================================================================
 // Initialize the Ship.
 // Post: returns true if successful, false if failed
 //=============================================================================
-bool Player::initialize(Game *gamePtr, int width, int height, int ncols,
+bool Shield::initialize(Game *gamePtr, int width, int height, int ncols,
     TextureManager *textureM)
 {
     return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
-
 //=============================================================================
 // update
 // typically called once per frame
 // frameTime is used to regulate the speed of movement and animation
 //=============================================================================
-void Player::update(float frameTime)
+void Shield::update(float frameTime)
 {
 	
 	Entity::update(frameTime);
-	shield.update(frameTime);
 
-	incPosition(D3DXVECTOR2(velocity*frameTime));
+	//incPosition(D3DXVECTOR2(velocity*frameTime));
 	//velocity = D3DXVECTOR2(0,0);
 
    if (getPositionX() + Image::getWidth()*Image::getScale() > GAME_WIDTH)
@@ -73,5 +65,4 @@ void Player::update(float frameTime)
 	}
 	spriteData.x = getPositionX();
 	spriteData.y = getPositionY();
-	shield.setPosition(VECTOR2(spriteData.x,spriteData.y));
 }
