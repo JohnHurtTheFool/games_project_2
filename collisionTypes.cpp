@@ -260,7 +260,7 @@ void CollisionTypes::collisions()
 	//laser with player collision
 	for(int i = 0;i<MAX_ENEMY_LASERS;i++)
 	{
-		if (player.collidesWith(enemyLaser[enemyNextLaserIndex], collisionVector) && enemyLaser[enemyNextLaserIndex].getVisible())
+		if (player.collidesWith(enemyLaser[i], collisionVector) && enemyLaser[i].getVisible())
 		{
 			//collision = true;
 			player.setHealth(player.getHealth() - laserDamage);

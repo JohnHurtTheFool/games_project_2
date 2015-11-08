@@ -77,8 +77,8 @@ inline void safeOnResetDevice(T& ptr)
 const char CLASS_NAME[] = "AI";
 const char GAME_TITLE[] = "SPACESHIP CONTROL";
 const bool FULLSCREEN = false;              // windowed or fullscreen
-const UINT GAME_WIDTH =  640;               // width of game in pixels
-const UINT GAME_HEIGHT = 480;               // height of game in pixels
+const UINT GAME_WIDTH =  1250;               // width of game in pixels
+const UINT GAME_HEIGHT = 800;               // height of game in pixels
 const float BACKGROUND_SCALE = 0.8;
 
 // game
@@ -94,7 +94,7 @@ const float   COLLISION_RADIUS = 29;
 const int SPACESHIP_SIZE = 64;
 const int LASER_HEIGHT = 4;
 const int LASER_WIDTH = 2;
-const int NUM_ENEMIES_INITIAL = 10;
+const int NUM_ENEMIES_INITIAL = 20;
 const int MAX_PLAYER_LASERS = 600;
 const int MAX_ENEMY_LASERS = 150;
 const double laserDamage = 5.00;
