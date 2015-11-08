@@ -50,9 +50,9 @@ void EnemyLaser::setMissedPosition()
 void EnemyLaser::update(float frameTime)
 {
     Entity::update(frameTime);
-	float foo =enemyLaserNS::SPEED_X * directionX * frameTime;
+	float foo = velocity.x * directionX * frameTime;
 	Entity::incPositionX(foo);
-	foo = enemyLaserNS::SPEED_Y * directionY * frameTime;
+	foo = velocity.y * directionY * frameTime;
 	Entity::incPositionY(foo);
 
 	if (Entity::getPositionX()+spriteData.width > GAME_WIDTH)  
@@ -78,3 +78,4 @@ void EnemyLaser::update(float frameTime)
 	spriteData.x = Entity::getPositionX();
 	spriteData.y = Entity::getPositionY();
 }
+

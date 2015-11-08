@@ -150,6 +150,7 @@ void CollisionTypes::update()
 		float rad = player.getRadians();
 		VECTOR2 laserVelocity((player.getVelocity()).x+playerLaserNS::SPEED_X*sin(player.getRadians()),-player.getVelocity().y+playerLaserNS::SPEED_Y*cos(player.getRadians()));
 		(playerLaser[playerNextLaserIndex]).setVelocity(laserVelocity);
+		(playerLaser[playerNextLaserIndex]).setRadians(player.getRadians());
 		shootKeyDownLastFrame = true;//Shoot key was down this frame.
 		playerNextLaserIndex=(playerNextLaserIndex+1)%MAX_PLAYER_LASERS;
 	}
@@ -162,8 +163,12 @@ void CollisionTypes::update()
 		if(!(rand()%1000)&&enemy[i].getVisible())
 		{
 			(enemyLaser[enemyNextLaserIndex]).setVisible();
-			(enemyLaser[enemyNextLaserIndex]).setPositionX((enemy[i].getPositionX()+SPACESHIP_SIZE/4)-LASER_WIDTH/2);//Center of the enemy's width
-			(enemyLaser[enemyNextLaserIndex]).setPositionY(enemy[i].getPositionY());//top of enemy
+			(enemyLaser[enemyNextLaserIndex]).setPositionX((enemy[i].getPositionX()+SPACESHIP_SIZE/4));//Center of the enemy's width
+			(enemyLaser[enemyNextLaserIndex]).setPositionY((enemy[i].getPositionY()+SPACESHIP_SIZE/4));//top of enemy
+			float rad = enemy[i].getRadians();
+			VECTOR2 laserVelocityEnemy((enemy[i].getVelocity()).x+enemyLaserNS::SPEED_X*sin(enemy[i].getRadians()),-enemy[i].getVelocity().y+enemyLaserNS::SPEED_Y*cos(enemy[i].getRadians()));
+			(enemyLaser[enemyNextLaserIndex]).setVelocity(laserVelocityEnemy);
+			(enemyLaser[enemyNextLaserIndex]).setRadians(enemy[i].getRadians());
 			enemyNextLaserIndex=(enemyNextLaserIndex+1)%MAX_ENEMY_LASERS;
 		}
 	}
@@ -260,7 +265,7 @@ void CollisionTypes::collisions()
 	//laser with player collision
 	for(int i = 0;i<MAX_ENEMY_LASERS;i++)
 	{
-		if (player.collidesWith(enemyLaser[enemyNextLaserIndex], collisionVector) && enemyLaser[enemyNextLaserIndex].getVisible())
+		if (player.collidesWith(enemyLaser[i], collisionVector) && enemyLaser[i].getVisible())
 		{
 			//collision = true;
 			player.setHealth(player.getHealth() - laserDamage);

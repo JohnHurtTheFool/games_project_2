@@ -16,8 +16,13 @@ namespace playerNS
     const int X = GAME_WIDTH/2 - WIDTH/2;   // location on screen
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
     const float SPEED = 120;
+<<<<<<< HEAD
 	const float ACCELERATION = 0.5f;
 	const float SCALE = 0.5f;
+=======
+	const float ACCELERATION = 0.15f;
+   
+>>>>>>> origin/master
 }
 
 // inherits from Entity class
