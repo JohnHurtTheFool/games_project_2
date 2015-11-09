@@ -152,13 +152,15 @@ void CollisionTypes::update()
 	/*char msgbu[2048];
 	sprintf(msgbu, "Posx: %f  posy: %f\n", player.getShield()->getPositionX(),player.getShield()->getPositionY());
 	OutputDebugStringA(msgbu);*/
+	VECTOR2 playerVel = player.getVelocity();
+	double magSquared = playerVel.x * playerVel.x + playerVel.y * playerVel.y;
 	if(input->isKeyDown(player_LEFT))
             player.left();
     if(input->isKeyDown(player_RIGHT))
 			player.right();
-	if(input->isKeyDown(player_UP))
+	if(input->isKeyDown(player_UP) && (magSquared < playerNS::MAX_VELOCITY_SQUARED || playerVel.y > 0))
             player.up();
-    if(input->isKeyDown(player_DOWN))
+    if(input->isKeyDown(player_DOWN) && (magSquared < playerNS::MAX_VELOCITY_SQUARED || playerVel.y < 0))
 			player.down();
 	if(input->isKeyDown(PLAYER_SHOOT) && !shootKeyDownLastFrame)
 	{
