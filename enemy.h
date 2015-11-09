@@ -91,8 +91,6 @@ public:
 	void deltaTrack();
 	void evade();
 	int getHits() {return hits;}
-	void frye();
-	void frye_sense();
 };
 #endif
 
