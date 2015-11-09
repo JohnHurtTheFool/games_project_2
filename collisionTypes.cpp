@@ -36,6 +36,8 @@ void CollisionTypes::initialize(HWND hwnd)
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player texture"));
 	if (!shieldTM.initialize(graphics,SHIELD_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing shield texture"));
+	if (!bonusTM.initialize(graphics,BONUS_IMAGE))
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bonus texture"));
 
 
     if (!enemyTM.initialize(graphics,ENEMY_IMAGE))
@@ -65,17 +67,27 @@ void CollisionTypes::initialize(HWND hwnd)
 	if (!background.initialize(graphics, 2048,1024,0, &backgroundTM))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error init my background"));
 
+	float height;
+	float width;
+
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		if (!enemy[i].initialize(this, SPACESHIP_SIZE, SPACESHIP_SIZE, 2,&enemyTM))
 			throw(GameError(gameErrorNS::WARNING, "Enemy not initialized"));
-		enemy[i].setPosition(VECTOR2(rand()%GAME_HEIGHT, rand()%GAME_WIDTH));
+		if (!bonus[i].initialize(this, bonusNS::WIDTH, bonusNS::HEIGHT, 0,&bonusTM))
+			throw(GameError(gameErrorNS::WARNING, "Enemy not initialized"));
+		height = rand()%GAME_HEIGHT;
+		width = rand()%GAME_WIDTH;
+		enemy[i].setPosition(VECTOR2(height, width));
+		bonus[i].setPos(width, height);
+		bonus[i].setInvisible();
 		enemy[i].setCollision(entityNS::BOX);
 		enemy[i].setEdge(COLLISION_BOX_PUCK);
 		enemy[i].setX(enemy[i].getPositionX());
 		enemy[i].setY(enemy[i].getPositionY());
 		enemy[i].setScale(.5);
 	}
+
 	
 	player.setFrames(2,3);
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
@@ -136,6 +148,7 @@ void CollisionTypes::initialize(HWND hwnd)
 void CollisionTypes::update()
 {
 	player.update(frameTime);
+	
 	/*char msgbu[2048];
 	sprintf(msgbu, "Posx: %f  posy: %f\n", player.getShield()->getPositionX(),player.getShield()->getPositionY());
 	OutputDebugStringA(msgbu);*/
@@ -189,6 +202,8 @@ void CollisionTypes::update()
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		enemy[i].update(frameTime);
+		bonus[i].update(frameTime);
+		bonus[i].setPos(enemy[i].getPositionX(),enemy[i].getPositionY());
 	}
 	
 	if(player.getHealth() <= 60.00 && player.getHealth() > 30.00)
@@ -292,13 +307,13 @@ void CollisionTypes::collisions()
 				enemy[i].setInvisible();
 				//puck.changeDirectionY();
 				audio->playCue(BEEP1);
-				char msgbu[500];
+				/*char msgbu[500];
 				sprintf(msgbu, "enemy: %f - %f  player:%f - %f shield:%f - %f\n", enemy[i].getPositionX(), enemy[i].getPositionY(),player.getPositionX(), player.getPositionY(), player.getShield()->getPositionX(), player.getShield()->getPositionY());
-				OutputDebugStringA(msgbu);
+				OutputDebugStringA(msgbu);*/
 			}
-			char msgbu[500];
+			/*char msgbu[500];
 			sprintf(msgbu, "enemy: %f - %f  player:%f - %f shield:%f - %f\n", enemy[i].getPositionX(), enemy[i].getPositionY(),player.getPositionX(), player.getPositionY(), player.getShield()->getPositionX(), player.getShield()->getPositionY());
-		OutputDebugStringA(msgbu);
+		OutputDebugStringA(msgbu);*/
 		}
 		//laser with player collision
 		for(int i = 0;i<MAX_ENEMY_LASERS;i++)
@@ -322,6 +337,13 @@ void CollisionTypes::collisions()
 			{
 				playerLaser[x].setInvisible();
 				enemy[j].wasHit();
+				if(!enemy[j].getActive() && !bonus[j].getVisible())
+				{
+					if(rand()%2==0)
+					{
+						bonus[j].setVisible();
+					}
+				}
 				//update score
 			}
 		}
@@ -347,6 +369,7 @@ void CollisionTypes::render()
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		enemy[i].draw();
+		bonus[i].draw();
 	}
 	player.draw();
 	(*player.getShield()).draw();

@@ -94,7 +94,7 @@ const float   COLLISION_RADIUS = 29;
 const int SPACESHIP_SIZE = 64;
 const int LASER_HEIGHT = 4;
 const int LASER_WIDTH = 2;
-const int NUM_ENEMIES_INITIAL = 3;
+const int NUM_ENEMIES_INITIAL = 15;
 const int MAX_PLAYER_LASERS = 600;
 const int MAX_ENEMY_LASERS = 150;
 const double laserDamage = 5.00;
@@ -108,6 +108,7 @@ const char ENEMY_IMAGE[] =     "..\\games_project_2\\pictures\\enemy spritesheet
 const char ENEMY_LASER[] =     "..\\games_project_2\\pictures\\red laser.png";      // menu texture
 const char PLAYER_LASER[] =     "..\\games_project_2\\pictures\\blue laser.png";      // menu texture
 const char SHIELD_IMAGE[] =     "..\\games_project_2\\pictures\\shield.png";      // menu texture
+const char BONUS_IMAGE[] =     "..\\games_project_2\\pictures\\bonus.png";      // menu texture
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
 // it would be possible to save and restore key mappings from a data file.
