@@ -21,13 +21,13 @@ Player::Player() : Entity()
     collision = false;
     collisionType =entityNS::BOX;
     target = false;
-	edge.bottom = -playerNS::HEIGHT/2;
-	edge.top = playerNS::HEIGHT/2;
-	edge.right = -playerNS::WIDTH/2;
-	edge.left = playerNS::WIDTH/2;
+	edge.bottom = playerNS::HEIGHT/2;
+	edge.top = -playerNS::HEIGHT/2;
+	edge.right = playerNS::WIDTH/2;
+	edge.left = -playerNS::WIDTH/2;
 	health = 100.00;
 	shield.setPos(spriteData.x-(playerNS::WIDTH/2*playerNS::SCALE)+12,spriteData.y-(playerNS::HEIGHT/2 *playerNS::SCALE)-5);
-	shield.setVisible();
+	shield.setInvisible();
 }
 
 //=============================================================================
@@ -73,7 +73,6 @@ void Player::update(float frameTime)
 	spriteData.x = getPositionX();
 	spriteData.y = getPositionY();
 	shield.setPos(spriteData.x-(playerNS::WIDTH/2*playerNS::SCALE)+12,spriteData.y-(playerNS::HEIGHT/2 *playerNS::SCALE)-5);
-	
 	shield.setVisible();
 	/*char msgbu[2048];
 	sprintf(msgbu, "Posx: %f  posy: %f\n", shield.getPositionX(),shield.getPositionY());

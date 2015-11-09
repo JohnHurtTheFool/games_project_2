@@ -21,7 +21,10 @@ EnemyLaser::EnemyLaser() : Entity()
     collisionType =entityNS::BOX;// entityNS::CIRCLE;
     target = false;
 
-	edge.bottom = -enemyLaserNS::HEIGHT/2;
+	edge.bottom = enemyLaserNS::HEIGHT/2;
+	edge.top = -enemyLaserNS::HEIGHT/2;
+	edge.right = enemyLaserNS::WIDTH/2;
+	edge.left = -enemyLaserNS::WIDTH/2;
 	spriteData.scale = 1;
 
 }

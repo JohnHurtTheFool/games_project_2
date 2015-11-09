@@ -10,8 +10,6 @@ Shield::Shield() : Entity()
     spriteData.height = shieldNS::HEIGHT;
     spriteData.rect.bottom = shieldNS::HEIGHT/2;    // rectangle to select parts of an image
     spriteData.rect.right = shieldNS::WIDTH;
-    velocity.x = 1;                             // velocity X
-    velocity.y = 0;                             // velocity Y
     startFrame = 0;              // first frame of ship animation
     endFrame     = 0;              // last frame of ship animation
     currentFrame = startFrame;
@@ -19,10 +17,11 @@ Shield::Shield() : Entity()
 	collisionType =entityNS::BOX;
 	//radius = (shieldNS::WIDTH)/2.0;
 	setScale(shieldNS::SHIELD_SCALE);
-	edge.bottom = -shieldNS::HEIGHT/2;
-	edge.top = shieldNS::HEIGHT/2;
-	edge.right = -shieldNS::WIDTH/2;
-	edge.left = shieldNS::WIDTH/2;
+	edge.bottom = shieldNS::HEIGHT/2;
+	edge.top = -shieldNS::HEIGHT/2;
+	edge.right = shieldNS::WIDTH/2;
+	edge.left = -shieldNS::WIDTH/2;
+	radius = shieldNS::WIDTH/2;
 }
 
 void Shield::draw()
@@ -33,8 +32,8 @@ void Shield::draw()
 void Shield::setPos(double x, double y)
 {
 	setPosition(VECTOR2(x,y));
-	spriteData.x=x;
-	spriteData.y=y;
+	spriteData.x=getPositionX();
+	spriteData.y=getPositionY();
 }
 
 //=============================================================================
@@ -53,7 +52,8 @@ bool Shield::initialize(Game *gamePtr, int width, int height, int ncols,
 //=============================================================================
 void Shield::update(float frameTime)
 {
-	
+	spriteData.x = getPositionX();
+	spriteData.y = getPositionY();
 	Entity::update(frameTime);
 
 	//incPosition(D3DXVECTOR2(velocity*frameTime));
@@ -75,8 +75,7 @@ void Shield::update(float frameTime)
 	{
 		setPosition(D3DXVECTOR2(getPositionX(),GAME_HEIGHT-Image::getHeight()*Image::getScale()));
 	}*/
-	spriteData.x = getPositionX();
-	spriteData.y = getPositionY();
+	
 	/*char msgbu[2048];
 	sprintf(msgbu, "Posx: %f  posy: %f\n", getPositionX(),getPositionY());
 	OutputDebugStringA(msgb*/

@@ -136,6 +136,9 @@ void CollisionTypes::initialize(HWND hwnd)
 void CollisionTypes::update()
 {
 	player.update(frameTime);
+	/*char msgbu[2048];
+	sprintf(msgbu, "Posx: %f  posy: %f\n", player.getShield()->getPositionX(),player.getShield()->getPositionY());
+	OutputDebugStringA(msgbu);*/
 	if(input->isKeyDown(player_LEFT))
             player.left();
     if(input->isKeyDown(player_RIGHT))
@@ -284,7 +287,7 @@ void CollisionTypes::collisions()
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 		{
 			//player with enemy collision
-			if (player.getShield()->collidesWith(enemy[i], collisionVector) && enemy[i].getVisible() /*&& player.getVisible()*/)
+			if (player.getShield()->collidesWith(enemy[i], collisionVector) /*&& enemy[i].getVisible()*/ /*&& player.getVisible()*/)
 			{	
 				enemy[i].setInvisible();
 				//puck.changeDirectionY();
@@ -293,6 +296,9 @@ void CollisionTypes::collisions()
 				sprintf(msgbu, "enemy: %f - %f  player:%f - %f shield:%f - %f\n", enemy[i].getPositionX(), enemy[i].getPositionY(),player.getPositionX(), player.getPositionY(), player.getShield()->getPositionX(), player.getShield()->getPositionY());
 				OutputDebugStringA(msgbu);
 			}
+			char msgbu[500];
+			sprintf(msgbu, "enemy: %f - %f  player:%f - %f shield:%f - %f\n", enemy[i].getPositionX(), enemy[i].getPositionY(),player.getPositionX(), player.getPositionY(), player.getShield()->getPositionX(), player.getShield()->getPositionY());
+		OutputDebugStringA(msgbu);
 		}
 		//laser with player collision
 		for(int i = 0;i<MAX_ENEMY_LASERS;i++)
