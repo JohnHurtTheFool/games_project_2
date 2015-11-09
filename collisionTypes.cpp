@@ -12,7 +12,7 @@
 //=============================================================================
 CollisionTypes::CollisionTypes()
 {
-	//nothing here, move on
+	dxFontSmall = new TextDX();
 }
 
 //=============================================================================
@@ -66,6 +66,9 @@ void CollisionTypes::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "My texture initialization failed"));
 	if (!background.initialize(graphics, 2048,1024,0, &backgroundTM))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error init my background"));
+
+	if(dxFontSmall->initialize(graphics, 18, true, false, "Calibri")== false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
 
 	float height;
 	float width;
@@ -139,6 +142,8 @@ void CollisionTypes::initialize(HWND hwnd)
 	playerNextLaserIndex = 0;
 	enemyNextLaserIndex = 0;
 	bool shootKeyDownLastFrame = false;
+	scoreMsg = "";
+	score = 0;
 	return;
 }
 
@@ -240,6 +245,7 @@ void CollisionTypes::update()
 			(enemy[i]).setInvisible();
 		}
 	}
+	scoreMsg= "Score: "+std::to_string(score);
 }
 
 //=============================================================================
@@ -325,7 +331,7 @@ void CollisionTypes::collisions()
 			sprintf(msgbu, "enemy: %f - %f  player:%f - %f shield:%f - %f\n", enemy[i].getPositionX(), enemy[i].getPositionY(),player.getPositionX(), player.getPositionY(), player.getShield()->getPositionX(), player.getShield()->getPositionY());
 		OutputDebugStringA(msgbu);*/
 		}
-		//laser with player collision
+		//player with laser collision
 		for(int i = 0;i<MAX_ENEMY_LASERS;i++)
 		{
 			if (player.getShield()->collidesWith(enemyLaser[i], collisionVector) && enemyLaser[i].getVisible())
@@ -353,6 +359,7 @@ void CollisionTypes::collisions()
 					{
 						bonus[j].setVisible();
 					}
+					score++;
 				}
 				//update score
 			}
@@ -367,6 +374,7 @@ void CollisionTypes::render()
 {
     graphics->spriteBegin();                // begin drawing sprites
 	background.draw();
+	dxFontSmall->print(scoreMsg,GAME_WIDTH*.95,GAME_HEIGHT*.01);//draw score message
 	
 	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
 	{

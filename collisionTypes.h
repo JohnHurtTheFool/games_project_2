@@ -13,6 +13,7 @@ class CollisionTypes;
 #include "textureManager.h"
 #include "image.h"
 #include <cmath>
+#include <string>
 #include "player.h"
 #include "puck.h"
 #include "enemy.h"
@@ -20,6 +21,7 @@ class CollisionTypes;
 #include "bonus.h"
 #include "patternStep.h"
 #include "PlayerLaser.h"
+#include "testDx.h"
 #include "EnemyLaser.h"
 
 #define maxPatternSteps 6
@@ -47,6 +49,8 @@ private:
 	int playerNextLaserIndex;//The index of the next laser to shoot.
 	int enemyNextLaserIndex;//The index of the next laser to shoot.
 	bool shootKeyDownLastFrame;
+	TextDX *dxFontSmall;
+	std::string scoreMsg;
 public:
     // Constructor
     CollisionTypes();
