@@ -94,11 +94,7 @@ const float   COLLISION_RADIUS = 29;
 const int SPACESHIP_SIZE = 64;
 const int LASER_HEIGHT = 4;
 const int LASER_WIDTH = 2;
-<<<<<<< HEAD
 const int NUM_ENEMIES_INITIAL = 15;
-=======
-const int NUM_ENEMIES_INITIAL = 1;
->>>>>>> origin/master
 const int MAX_PLAYER_LASERS = 600;
 const int MAX_ENEMY_LASERS = 150;
 const double laserDamage = 5.00;
