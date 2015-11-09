@@ -31,6 +31,10 @@ void PatternStep::update(float frameTime)//WE WILL CHANGE THE VELOCITY.NOT HAVE 
 		entity->setVelocity(D3DXVECTOR2(0, -1));
 		entity->setRadians(0);
 		break;
+	case FRYE_UP:
+		entity->setVelocity(entity->getVelocity()+D3DXVECTOR2(0, -.01));
+		entity->setRadians(0);
+		break;
 	case DOWN:
 		entity->setVelocity(D3DXVECTOR2(0, 1));
 		entity->setRadians(PI);
@@ -45,6 +49,12 @@ void PatternStep::update(float frameTime)//WE WILL CHANGE THE VELOCITY.NOT HAVE 
 		break;
 	case TRACK:
 		entity->vectorTrack();
+		break;
+	/*case FRYE_MOVEMENT:
+		entity->frye();
+		break;*/
+	case FRYE_SENSE:
+		entity->frye_sense();
 		break;
 	case EVADE:
 		//entity->reverseVectorTrack();

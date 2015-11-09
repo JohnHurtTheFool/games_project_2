@@ -136,7 +136,7 @@ const char BEEP4[] = "beep4";
 const char HIT[]   = "hit";
 
 // Pattern Step Action
-enum PATTERN_STEP_ACTION {NONE, UP, DOWN, LEFT, RIGHT, TRACK, EVADE};
+enum PATTERN_STEP_ACTION {NONE, UP, DOWN, LEFT, RIGHT, TRACK, EVADE, FRYE_UP,FRYE_SENSE};
 
 
 #endif

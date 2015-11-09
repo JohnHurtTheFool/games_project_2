@@ -71,7 +71,7 @@ void Enemy::update(float frameTime)
 		setPosition(D3DXVECTOR2(getPositionX(),GAME_HEIGHT-Image::getHeight()*Image::getScale()));
 	}
 
-	velocity = D3DXVECTOR2(0,0);
+	//velocity = D3DXVECTOR2(0,0);
 	incPosition(foo);
 	Image::setX(getPositionX());
 	Image::setY(getPositionY());
@@ -115,11 +115,33 @@ void Enemy::vectorTrack()//We're going to want to change this so that it takes a
 	setRadians((atan((targetEntity.getCenterY()-getCenterY())/(targetEntity.getCenterX()-getCenterX())))-PI/2);
 	if(targetEntity.getCenterX()>getCenterX())
 		setRadians(getRadians()+PI);
-		//setRadians(getRadians()+PI/2);
-	//setDegrees(targetEntity.getDegrees());
+}
+void Enemy::frye()
+{
+	/*VECTOR2 center(GAME_WIDTH/2,GAME_HEIGHT/2);
+	VECTOR2 vel = getCenterPoint()-center;
+	setDegrees(getDegrees()+1);
+	if(vel.x == 0 && vel.y==0)
+		return;
+	VECTOR2* foo = D3DXVec2Normalize(&vel, &vel);
+	setVelocity(-vel);
+	setRadians((atan((center.y-getCenterY())/(center.x-getCenterX())))-PI/2);
+	if(center.x>getCenterX())
+		setRadians(getRadians()+PI);*/
 
 }
-
+void Enemy::frye_sense()
+{
+		VECTOR2 vel = -getCenterPoint()+targetEntity.getCenterPoint();
+		if(vel.x == 0 && vel.y==0)
+			return;
+		VECTOR2* foo = D3DXVec2Normalize(&vel, &vel);
+		//setVelocity(-vel);
+		velocity = velocity + enemyNS::ACCELERATION * vel;
+		setRadians((atan((targetEntity.getCenterY()-getCenterY())/(targetEntity.getCenterX()-getCenterX())))-PI/2);
+		if(targetEntity.getCenterX()>getCenterX())
+			setRadians(getRadians()+PI);
+}
 void Enemy::ai(float time, Entity &t)
 { 
 	targetEntity = t;

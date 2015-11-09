@@ -17,7 +17,7 @@ namespace enemyNS
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
     const float SPEED_X = 0;                
 	const float SPEED_Y = -0;
- 
+	const float ACCELERATION = .005;
 }
 
 // inherits from Entity class
@@ -91,6 +91,8 @@ public:
 	void deltaTrack();
 	void evade();
 	int getHits() {return hits;}
+	void frye();
+	void frye_sense();
 };
 #endif
 
