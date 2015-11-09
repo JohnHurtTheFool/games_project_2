@@ -64,6 +64,18 @@ void CollisionTypes::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "My texture initialization failed"));
 	if (!background.initialize(graphics, 2048,1024,0, &backgroundTM))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error init my background"));
+
+	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
+	{
+		if (!enemy[i].initialize(this, SPACESHIP_SIZE, SPACESHIP_SIZE, 2,&enemyTM))
+			throw(GameError(gameErrorNS::WARNING, "Enemy not initialized"));
+		enemy[i].setPosition(VECTOR2(rand()%GAME_HEIGHT, rand()%GAME_WIDTH));
+		enemy[i].setCollision(entityNS::BOX);
+		enemy[i].setEdge(COLLISION_BOX_PUCK);
+		enemy[i].setX(enemy[i].getPositionX());
+		enemy[i].setY(enemy[i].getPositionY());
+		enemy[i].setScale(.5);
+	}
 	
 	player.setFrames(2,3);
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
@@ -77,17 +89,7 @@ void CollisionTypes::initialize(HWND hwnd)
     player.setCollisionRadius(COLLISION_RADIUS);
 	player.setScale(playerNS::SCALE);
 	
-	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
-	{
-		if (!enemy[i].initialize(this, SPACESHIP_SIZE, SPACESHIP_SIZE, 2,&enemyTM))
-			throw(GameError(gameErrorNS::WARNING, "Enemy not initialized"));
-		enemy[i].setPosition(VECTOR2(rand()%GAME_HEIGHT, rand()%GAME_WIDTH));
-		enemy[i].setCollision(entityNS::BOX);
-		enemy[i].setEdge(COLLISION_BOX_PUCK);
-		enemy[i].setX(enemy[i].getPositionX());
-		enemy[i].setY(enemy[i].getPositionY());
-		enemy[i].setScale(.5);
-	}
+	
 
 
 	background.setX(0);
@@ -250,7 +252,7 @@ void CollisionTypes::collisions()
 {
     collisionVector = D3DXVECTOR2(0,0);
 	collision = false;
-	if(!player.getShield()->getActive())//shield is active
+	if(!player.getShield()->getActive())//shield is not active
 	{
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 		{
@@ -261,7 +263,7 @@ void CollisionTypes::collisions()
 				player.setHealth(player.getHealth() - kamikazeDamage);
 				enemy[i].setInvisible();
 				//puck.changeDirectionY();
-				audio->playCue(BEEP1);
+				//audio->playCue(BEEP1);
 			}
 		}
 		//laser with player collision
@@ -273,21 +275,23 @@ void CollisionTypes::collisions()
 				player.setHealth(player.getHealth() - laserDamage);
 				enemyLaser[i].setInvisible();
 				//puck.changeDirectionY();
-				audio->playCue(BEEP1);
-				enemyLaser[i].setInvisible();
+				//audio->playCue(BEEP1);
 			}
 		}
 	}
-	else
+	else//shield is active
 	{
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 		{
 			//player with enemy collision
-			if (player.getShield()->collidesWith(enemy[i], collisionVector) && enemy[i].getVisible() && player.getVisible())
+			if (player.getShield()->collidesWith(enemy[i], collisionVector) && enemy[i].getVisible() /*&& player.getVisible()*/)
 			{	
 				enemy[i].setInvisible();
 				//puck.changeDirectionY();
 				audio->playCue(BEEP1);
+				char msgbu[500];
+				sprintf(msgbu, "enemy: %f - %f  player:%f - %f shield:%f - %f\n", enemy[i].getPositionX(), enemy[i].getPositionY(),player.getPositionX(), player.getPositionY(), player.getShield()->getPositionX(), player.getShield()->getPositionY());
+				OutputDebugStringA(msgbu);
 			}
 		}
 		//laser with player collision
@@ -297,7 +301,7 @@ void CollisionTypes::collisions()
 			{
 				enemyLaser[i].setInvisible();
 				//puck.changeDirectionY();
-				audio->playCue(BEEP1);
+				//audio->playCue(BEEP1);
 				enemyLaser[i].setInvisible();
 			}
 		}

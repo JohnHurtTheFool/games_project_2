@@ -28,7 +28,6 @@ Player::Player() : Entity()
 	health = 100.00;
 	shield.setPos(spriteData.x-(playerNS::WIDTH/2*playerNS::SCALE)+12,spriteData.y-(playerNS::HEIGHT/2 *playerNS::SCALE)-5);
 	shield.setVisible();
-	shield.setScale(0.5);
 }
 
 //=============================================================================
