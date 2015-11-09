@@ -339,7 +339,7 @@ void CollisionTypes::collisions()
 				enemyLaser[i].setInvisible();
 				//puck.changeDirectionY();
 				//audio->playCue(BEEP1);
-				enemyLaser[i].setInvisible();
+				player.getShield()->incHits();
 			}
 		}
 	}

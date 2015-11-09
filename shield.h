@@ -16,7 +16,8 @@ namespace shieldNS
 	const int X = GAME_WIDTH/2 - WIDTH/2;   // location on screen
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
 	const float SHIELD_SCALE=0.5;
-   const float maxShieldTime = 15.00f;
+   const float maxShieldTime = 1000.00f;
+   const int MAX_HITS = 2;
 }
 
 // inherits from Entity class
@@ -25,6 +26,7 @@ class Shield : public Entity
 private:
 	float currentTime;
 	bool counterActive;
+	int hits;//Hits from lasers.
 public:
     // constructor
     Shield();
@@ -49,8 +51,14 @@ public:
 		counterActive = true;
 		Image::setVisible(true);
 		active = true;
+		hits=0;
 	}
-
+	void Shield::incHits()
+	{
+    	hits++;
+		if(hits==shieldNS::MAX_HITS)
+			setInvisible();
+	}
 
     // Set collision type (NONE, CIRCLE, BOX, ROTATED_BOX)
     virtual void setCollisionType(entityNS::COLLISION_TYPE ctype)
