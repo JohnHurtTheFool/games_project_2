@@ -16,15 +16,15 @@ namespace bonusNS
 	const int X = GAME_WIDTH/2 - WIDTH/2;   // location on screen
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
 	const float BONUS_SCALE=0.5;
-   
+   const float maxBonusTime = 10.0f;
 }
 
 // inherits from Entity class
 class Bonus : public Entity
 {
 private:
-	
-	
+	float currentTime;
+	bool counterActive;
 public:
     // constructor
     Bonus();
@@ -38,12 +38,15 @@ public:
 
 	void Bonus::setInvisible()
 	{
+		counterActive = false;
+		currentTime = 0.0f;
 		Image::setVisible(false);
 		active = false;
 	}
 
 	void Bonus::setVisible()
 	{
+		counterActive = true;
 		Image::setVisible(true);
 		active = true;
 	}

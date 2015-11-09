@@ -16,15 +16,15 @@ namespace shieldNS
 	const int X = GAME_WIDTH/2 - WIDTH/2;   // location on screen
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
 	const float SHIELD_SCALE=0.5;
-   
+   const float maxShieldTime = 15.00f;
 }
 
 // inherits from Entity class
 class Shield : public Entity
 {
 private:
-	
-	
+	float currentTime;
+	bool counterActive;
 public:
     // constructor
     Shield();
@@ -38,12 +38,15 @@ public:
 
 	void Shield::setInvisible()
 	{
+		counterActive = false;
+		currentTime = 0.0f;
 		Image::setVisible(false);
 		active = false;
 	}
 
 	void Shield::setVisible()
 	{
+		counterActive = true;
 		Image::setVisible(true);
 		active = true;
 	}

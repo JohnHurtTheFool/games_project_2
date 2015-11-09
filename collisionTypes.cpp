@@ -285,6 +285,12 @@ void CollisionTypes::collisions()
 				//puck.changeDirectionY();
 				//audio->playCue(BEEP1);
 			}
+			if (player.collidesWith(bonus[i], collisionVector) && bonus[i].getVisible() && player.getVisible())
+			{
+				player.getShield()->setVisible();
+				bonus[i].setInvisible();
+				break;
+			}
 		}
 		//laser with player collision
 		for(int i = 0;i<MAX_ENEMY_LASERS;i++)
@@ -309,6 +315,8 @@ void CollisionTypes::collisions()
 				enemy[i].setInvisible();
 				//puck.changeDirectionY();
 				audio->playCue(BEEP1);
+				player.getShield()->setInvisible();
+				break;
 				/*char msgbu[500];
 				sprintf(msgbu, "enemy: %f - %f  player:%f - %f shield:%f - %f\n", enemy[i].getPositionX(), enemy[i].getPositionY(),player.getPositionX(), player.getPositionY(), player.getShield()->getPositionX(), player.getShield()->getPositionY());
 				OutputDebugStringA(msgbu);*/

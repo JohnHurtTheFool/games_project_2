@@ -22,6 +22,8 @@ Shield::Shield() : Entity()
 	edge.right = shieldNS::WIDTH/2;
 	edge.left = -shieldNS::WIDTH/2;
 	radius = shieldNS::WIDTH/2;
+	currentTime = 0.0f;
+	counterActive = false;
 }
 
 void Shield::draw()
@@ -52,8 +54,14 @@ bool Shield::initialize(Game *gamePtr, int width, int height, int ncols,
 //=============================================================================
 void Shield::update(float frameTime)
 {
-	spriteData.x = getPositionX();
-	spriteData.y = getPositionY();
+	if(counterActive)
+	{
+		currentTime += frameTime;
+	}
+	if(currentTime>=shieldNS::maxShieldTime)
+	{
+		setInvisible();
+	}
 	Entity::update(frameTime);
 
 	//incPosition(D3DXVECTOR2(velocity*frameTime));
