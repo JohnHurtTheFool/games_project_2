@@ -18,6 +18,7 @@ namespace playerNS
     const float SPEED = 120;
 	const float ACCELERATION = 0.5f;
 	const float SCALE = 0.5f;
+	const double MAX_VELOCITY_SQUARED = (GAME_HEIGHT*GAME_HEIGHT)/4;
 }
 
 // inherits from Entity class
@@ -87,13 +88,19 @@ public:
     }
 	void up()
     {
-		velocity.x += playerNS::ACCELERATION * sin(getRadians());
-		velocity.y -= playerNS::ACCELERATION * cos(getRadians());
+		if(( (velocity.x + playerNS::ACCELERATION * sin(getRadians())) * (velocity.x + playerNS::ACCELERATION * sin(getRadians())) + (velocity.y - playerNS::ACCELERATION * cos(getRadians())) * (velocity.y - playerNS::ACCELERATION * cos(getRadians())) ) < playerNS::MAX_VELOCITY_SQUARED)
+		{
+			velocity.x += playerNS::ACCELERATION * sin(getRadians());
+			velocity.y -= playerNS::ACCELERATION * cos(getRadians());
+		}
     }
 	void down()
     {
-		velocity.x -= playerNS::ACCELERATION * sin(getRadians());
-		velocity.y += playerNS::ACCELERATION * cos(getRadians());
+		if(( (velocity.x - playerNS::ACCELERATION * sin(getRadians())) * (velocity.x - playerNS::ACCELERATION * sin(getRadians())) + (velocity.y + playerNS::ACCELERATION * cos(getRadians())) * (velocity.y + playerNS::ACCELERATION * cos(getRadians())) ) < playerNS::MAX_VELOCITY_SQUARED)
+		{
+			velocity.x -= playerNS::ACCELERATION * sin(getRadians());
+			velocity.y += playerNS::ACCELERATION * cos(getRadians());
+		}
     }
 };
 #endif

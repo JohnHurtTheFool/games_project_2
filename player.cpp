@@ -73,7 +73,7 @@ void Player::update(float frameTime)
 	spriteData.x = getPositionX();
 	spriteData.y = getPositionY();
 	shield.setPos(spriteData.x-(playerNS::WIDTH/2*playerNS::SCALE)+12,spriteData.y-(playerNS::HEIGHT/2 *playerNS::SCALE)-5);
-	shield.setVisible();
+	shield.setInvisible();
 	/*char msgbu[2048];
 	sprintf(msgbu, "Posx: %f  posy: %f\n", shield.getPositionX(),shield.getPositionY());
 	OutputDebugStringA(msgbu);*/
