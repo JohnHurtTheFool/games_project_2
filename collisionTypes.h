@@ -51,6 +51,7 @@ private:
 	bool shootKeyDownLastFrame;
 	TextDX *dxFontSmall;
 	std::string scoreMsg;
+	int playerFrames;
 public:
     // Constructor
     CollisionTypes();

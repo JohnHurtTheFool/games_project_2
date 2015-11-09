@@ -92,7 +92,7 @@ void CollisionTypes::initialize(HWND hwnd)
 	}
 
 	
-	player.setFrames(2,3);
+	player.setFrames(0,1);
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		(enemy[i]).setFrames(2,3);
@@ -144,6 +144,7 @@ void CollisionTypes::initialize(HWND hwnd)
 	bool shootKeyDownLastFrame = false;
 	scoreMsg = "";
 	score = 0;
+	playerFrames=2;
 	return;
 }
 
@@ -167,6 +168,97 @@ void CollisionTypes::update()
             player.up();
     if(input->isKeyDown(player_DOWN) && (magSquared < playerNS::MAX_VELOCITY_SQUARED || playerVel.y < 0))
 			player.down();
+	if(input->isKeyDown(player_UP) && (magSquared < playerNS::MAX_VELOCITY_SQUARED || playerVel.y > 0))
+	{
+		if(magSquared < (playerNS::MAX_VELOCITY_SQUARED/3))
+		{
+			if(player.getHealth() >= 60.00 && playerFrames != 2)
+			{
+				player.setFrames(2,3);
+				playerFrames = 2;
+			}
+			else if(player.getHealth() <= 60.00 && player.getHealth() > 30.00 && playerFrames != 10)
+			{
+				player.setFrames(10,11);
+				playerFrames = 10;
+			}
+			else if(player.getHealth() <= 30.00 && player.getHealth() >= 0.00 && playerFrames != 18)
+			{
+				player.setFrames(18,19);
+				playerFrames = 18;
+			}
+			else if(player.getHealth() <= 0.00)
+			{
+				player.setInvisible();
+			}
+		}
+		else if(magSquared > (playerNS::MAX_VELOCITY_SQUARED/3) && magSquared < (2 * playerNS::MAX_VELOCITY_SQUARED/3))
+		{
+			if(player.getHealth() >= 60.00 && playerFrames != 4)
+			{
+				player.setFrames(4,5);
+				playerFrames = 4;
+			}
+			else if(player.getHealth() <= 60.00 && player.getHealth() > 30.00 && playerFrames != 12)
+			{
+				player.setFrames(12,13);
+				playerFrames = 12;
+			}
+			else if(player.getHealth() <= 30.00 && player.getHealth() >= 0.00 && playerFrames != 20)
+			{
+				player.setFrames(20,21);
+				playerFrames = 20;
+			}
+			else if(player.getHealth() <= 0.00)
+			{
+				player.setInvisible();
+			}
+		}
+		else if(magSquared > (2*playerNS::MAX_VELOCITY_SQUARED/3))
+		{
+			if(player.getHealth() >= 60.00 && playerFrames != 6)
+			{
+				player.setFrames(6,7);
+				playerFrames = 6;
+			}
+			else if(player.getHealth() <= 60.00 && player.getHealth() > 30.00 && playerFrames != 14)
+			{
+				player.setFrames(14,15);
+				playerFrames = 14;
+			}
+			else if(player.getHealth() <= 30.00 && player.getHealth() >= 0.00 && playerFrames != 22)
+			{
+				player.setFrames(22,23);
+				playerFrames = 22;
+			}
+			else if(player.getHealth() <= 0.00)
+			{
+				player.setInvisible();
+			}
+		}
+	}
+	else
+	{
+		if(player.getHealth() >= 60.00 && playerFrames != 0)
+		{
+			player.setFrames(0,1);
+			playerFrames = 0;
+		}
+		else if(player.getHealth() <= 60.00 && player.getHealth() > 30.00 && playerFrames != 8)
+		{
+			player.setFrames(8,9);
+			playerFrames = 8;
+		}
+		else if(player.getHealth() <= 30.00 && player.getHealth() >= 0.00 && playerFrames != 16)
+		{
+			player.setFrames(16,17);
+			playerFrames = 16;
+		}
+		else if(player.getHealth() <= 0.00)
+		{
+			player.setInvisible();
+		}
+	}
 	if(input->isKeyDown(PLAYER_SHOOT) && !shootKeyDownLastFrame)
 	{
 		(playerLaser[playerNextLaserIndex]).setVisible();
@@ -212,7 +304,7 @@ void CollisionTypes::update()
 		bonus[i].update(frameTime);
 		bonus[i].setPos(enemy[i].getPositionX(),enemy[i].getPositionY());
 	}
-	
+	/*
 	if(player.getHealth() <= 60.00 && player.getHealth() > 30.00)
 	{
 		player.setFrames(10,11);
@@ -225,7 +317,7 @@ void CollisionTypes::update()
 	{
 		player.setInvisible();
 	}
-
+	*/
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		if((enemy[i]).getHits() <= (enemy[i]).getMaxHits() && (enemy[i]).getHits() <= 0.3f *(enemy[i]).getMaxHits())
