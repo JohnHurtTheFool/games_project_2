@@ -162,7 +162,7 @@ void CollisionTypes::update()
             player.up();
     if(input->isKeyDown(player_DOWN) && (magSquared < playerNS::MAX_VELOCITY_SQUARED || playerVel.y < 0))
 			player.down();
-	if(input->isKeyDown(PLAYER_SHOOT) && !shootKeyDownLastFrame)
+	if(input->isKeyDown(PLAYER_SHOOT) && !shootKeyDownLastFrame && player.getVisible())
 	{
 		(playerLaser[playerNextLaserIndex]).setVisible();
 		(playerLaser[playerNextLaserIndex]).setPositionX((player.getPositionX()+SPACESHIP_SIZE/4));//Center of the player's width
@@ -317,9 +317,6 @@ void CollisionTypes::collisions()
 				audio->playCue(BEEP1);
 				player.getShield()->setInvisible();
 				break;
-				/*char msgbu[500];
-				sprintf(msgbu, "enemy: %f - %f  player:%f - %f shield:%f - %f\n", enemy[i].getPositionX(), enemy[i].getPositionY(),player.getPositionX(), player.getPositionY(), player.getShield()->getPositionX(), player.getShield()->getPositionY());
-				OutputDebugStringA(msgbu);*/
 			}
 			/*char msgbu[500];
 			sprintf(msgbu, "enemy: %f - %f  player:%f - %f shield:%f - %f\n", enemy[i].getPositionX(), enemy[i].getPositionY(),player.getPositionX(), player.getPositionY(), player.getShield()->getPositionX(), player.getShield()->getPositionY());
@@ -349,7 +346,7 @@ void CollisionTypes::collisions()
 				enemy[j].wasHit();
 				if(!enemy[j].getActive() && !bonus[j].getVisible())
 				{
-					if(rand()%2==0)
+					if(rand()%3==0)
 					{
 						bonus[j].setVisible();
 					}
