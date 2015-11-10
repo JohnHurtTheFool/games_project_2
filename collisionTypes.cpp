@@ -30,7 +30,10 @@ CollisionTypes::~CollisionTypes()
 void CollisionTypes::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
-
+	audio->playCue(BACKGROUND);
+	//audio->stopCue(BACKGROUND);*/
+	//audio->playCue(ASOUND);
+	
 	//texture inits
     if (!playerTM.initialize(graphics,PLAYER_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player texture"));
@@ -445,13 +448,14 @@ void CollisionTypes::collisions()
 			{
 				playerLaser[x].setInvisible();
 				enemy[j].wasHit();
+				score++;
 				if(!enemy[j].getActive() && !bonus[j].getVisible())
 				{
 					if(rand()%2==0)
 					{
 						bonus[j].setVisible();
 					}
-					score++;
+					score+=4;
 				}
 				//update score
 			}

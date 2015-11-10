@@ -125,17 +125,19 @@ const UCHAR PLAYER_SHOOT = VK_SPACE;
 
 // audio files required by audio.cpp
 // WAVE_BANK must be location of .xwb file.
-const char WAVE_BANK[]  = "..\\games_project_2\\audio\\Win\\WavesExample1.xwb";
+//const char WAVE_BANK[]  = "..\\games_project_2\\audio\\Win\\WavesExample1.xwb";
+const char WAVE_BANK[]  = "..\\games_project_2\\audio\\Win\\Wave Bank.xwb";
 // SOUND_BANK must be location of .xsb file.
-const char SOUND_BANK[] = "..\\games_project_2\\audio\\Win\\SoundsExample1.xsb";
-
+//const char SOUND_BANK[] = "..\\games_project_2\\audio\\Win\\SoundsExample1.xsb";
+const char SOUND_BANK[] = "..\\games_project_2\\audio\\Win\\Sound Bank.xsb";
 // audio cues
 const char BEEP1[] = "beep1";
 const char BEEP2[] = "beep2";
 const char BEEP3[] = "beep3";
 const char BEEP4[] = "beep4";
 const char HIT[]   = "hit";
-
+const char BACKGROUND[] = "backgroundc";
+const char ASOUND[] = "a";
 // Pattern Step Action
 enum PATTERN_STEP_ACTION {NONE, UP, DOWN, LEFT, RIGHT, TRACK, EVADE};
 
