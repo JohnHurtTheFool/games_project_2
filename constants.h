@@ -103,6 +103,7 @@ const double kamikazeDamage = 15.00;
 const char PUCK_IMAGE[] = "..\\games_project_2\\pictures\\homework.jpg";  // game textures
 const char PADDLE_IMAGE[] =     "..\\games_project_2\\pictures\\student.jpg";      // menu texture
 const char BACKGROUND_IMAGE[] =     "..\\games_project_2\\pictures\\Background.png";      // menu texture
+const char SPLASH_SCREEN[] =     "..\\games_project_2\\pictures\\Splash Screen.png";      // menu texture
 const char PLAYER_IMAGE[] =     "..\\games_project_2\\pictures\\player spritesheet.png";      // menu texture
 const char ENEMY_IMAGE[] =     "..\\games_project_2\\pictures\\enemy spritesheet two.png";      // menu texture
 const char ENEMY_LASER[] =     "..\\games_project_2\\pictures\\red laser.png";      // menu texture
