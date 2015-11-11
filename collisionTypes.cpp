@@ -148,6 +148,7 @@ void CollisionTypes::initialize(HWND hwnd)
 	scoreMsg = "";
 	score = 0;
 	playerFrames=2;
+	gameState = SPLASH;
 	return;
 }
 
