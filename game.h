@@ -68,7 +68,8 @@ public:
 
     // Render game items.
     virtual void renderGame();
-
+	// Update state
+	virtual void updateState() = 0;
     // Handle lost graphics device
     virtual void handleLostGraphicsDevice();
 

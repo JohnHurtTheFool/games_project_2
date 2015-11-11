@@ -34,8 +34,8 @@ class CollisionTypes : public Game
 private:
     // game items
 	GAME_STATES gameState;
-    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM, bonusTM;   // game texture
-	Image background;
+    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM, bonusTM, splashTM;   // game texture
+	Image background, splash, win, lose;
     VECTOR2 collisionVector;    // collision vector
 	Player player;
 	Puck puck;
@@ -53,6 +53,7 @@ private:
 	TextDX *dxFontSmall;
 	std::string scoreMsg;
 	int playerFrames;
+	float timeInState;
 public:
     // Constructor
     CollisionTypes();
@@ -66,6 +67,7 @@ public:
     void ai();          // "
     void collisions();  // "
     void render();      // "
+	void updateState();
     void releaseAll();
     void resetAll();
 };

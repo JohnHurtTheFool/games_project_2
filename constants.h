@@ -141,6 +141,6 @@ const char BACKGROUND[] = "backgroundc";
 const char ASOUND[] = "a";
 // Pattern Step Action
 enum PATTERN_STEP_ACTION {NONE, UP, DOWN, LEFT, RIGHT, TRACK, EVADE};
-enum GAME_STATES {SPLASH, GAME_PLAY};
+enum GAME_STATES {SPLASH, GAME_PLAY,LOSE_SCREEN,WIN_SCREEN};
 
 #endif
