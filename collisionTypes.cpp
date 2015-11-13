@@ -723,9 +723,9 @@ void CollisionTypes::levelReset()
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		(enemy[i]).setVisible();
-		int height = rand()%GAME_HEIGHT;
-		int width = rand()%GAME_WIDTH;
-		enemy[i].setPosition(VECTOR2(height, width));
+		int height =rand()%GAME_HEIGHT-enemy[i].getHeight();
+		int width =rand()%GAME_WIDTH-enemy[i].getWidth();
+		enemy[i].setPosition(VECTOR2(width,height));
 		bonus[i].setPos(width, height);
 		bonus[i].setInvisible();
 		enemy[i].setX(enemy[i].getPositionX());
