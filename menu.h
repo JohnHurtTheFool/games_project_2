@@ -44,6 +44,7 @@ public:
 	void initialize(Graphics *g, Input *i);
 	void update();
 	int getSelectedItem() {return selectedItem;}
+	void setSelectedItem(int indx) {selectedItem = indx;}
 	void displayMenu();
 };
 #endif

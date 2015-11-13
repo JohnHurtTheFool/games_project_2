@@ -29,6 +29,7 @@ CollisionTypes::~CollisionTypes()
 //=============================================================================
 void CollisionTypes::initialize(HWND hwnd)
 {
+	musicOn = true;
     Game::initialize(hwnd); // throws GameError
 	audio->playCue(BACKGROUND);
 	//audio->stopCue(BACKGROUND);*/
@@ -145,6 +146,8 @@ void CollisionTypes::initialize(HWND hwnd)
 		allPatterns[j][4].setTimeForStep(3);
 		allPatterns[j][5].setAction(TRACK);
 		allPatterns[j][5].setTimeForStep(3);
+		allPatterns[j][6].setAction(NONE);
+		allPatterns[j][6].setTimeForStep(1);
 	}
 	playerNextLaserIndex = 0;
 	enemyNextLaserIndex = 0;
@@ -165,8 +168,9 @@ void CollisionTypes::initialize(HWND hwnd)
 	levelOutput->setFontColor(graphicsNS::BLUE);
 	levelNumber=1;
 	LEVEL_UP_MSG = "LEVEL ";
+	optionsScreenMSG = "Music is currently";
 	currentEnemyMaxHits = 0;
-	test = 0;
+	toggleKeyPressedLastFrame = false;
 	return;
 }
 
@@ -179,15 +183,24 @@ void CollisionTypes::update()
 	double magSquared = playerVel.x * playerVel.x + playerVel.y * playerVel.y;
 	switch(gameState)
 	{
+	case OPTIONS:
+		if(input->isKeyDown(TOGGLE_MUSIC)&&!toggleKeyPressedLastFrame)
+		{
+			musicOn = !musicOn;
+			if(!musicOn)
+				audio->stopCue(BACKGROUND);
+			if(musicOn)
+				audio->playCue(BACKGROUND);
+			toggleKeyPressedLastFrame = true;
+		}
+		else if(!input->isKeyDown(TOGGLE_MUSIC))
+			toggleKeyPressedLastFrame = false;
+		break;
 	case MENU:
 		mainMenu->update();
 		break;
 	case GAME_PLAY:
 		player.update(frameTime);
-	
-		/*char msgbu[2048];
-		sprintf(msgbu, "Posx: %f  posy: %f\n", player.getShield()->getPositionX(),player.getShield()->getPositionY());
-		OutputDebugStringA(msgbu);*/
 		if(input->isKeyDown(player_LEFT))
 				player.left();
 		if(input->isKeyDown(player_RIGHT))
@@ -385,13 +398,14 @@ void CollisionTypes::updateState()
 			break;
 		}
 	}
-	if(gameState==SPLASH && timeInState >2)
+	if(gameState==SPLASH && timeInState >3)
 	{
 		gameState = MENU;
 		timeInState = 0;
 	}
 	else if(gameState==MENU && !mainMenu->getSelectedItem())
 	{
+		mainMenu->setSelectedItem(-1);
 		currentEnemyMaxHits = 0;
 		levelNumber=1;
 		player.setHealth(100);
@@ -399,6 +413,12 @@ void CollisionTypes::updateState()
 		gameState = NEW_LEVEL;
 		timeInState = 0;
 		score = 0;
+	}
+	else if(gameState==MENU && mainMenu->getSelectedItem()==2)
+	{
+		mainMenu->setSelectedItem(-1);
+		gameState = OPTIONS;
+		timeInState = 0;
 	}
 	else if(gameState==GAME_PLAY && (!player.getVisible()))
 	{
@@ -417,7 +437,11 @@ void CollisionTypes::updateState()
 		gameState = GAME_PLAY;
 		timeInState = 0;
 	}
-
+	else if(gameState == OPTIONS && input->isKeyDown(VK_SPACE))
+	{
+		gameState = MENU;
+		timeInState = 0;
+	}
 }
 //=============================================================================
 // Artificial Intelligence
@@ -432,8 +456,17 @@ void CollisionTypes::ai()
 	{
 		if (allPatterns[i][patternStepIndex[i]].isFinished())
 		{
-			allPatterns[i][patternStepIndex[i]].setActive();
-			patternStepIndex[i]=(rand())%maxPatternSteps;
+			if((enemy[i]).getVisible())
+			{
+				allPatterns[i][patternStepIndex[i]].setActive();
+				patternStepIndex[i]=(rand())%maxPatternSteps;
+			}
+			else
+			{
+				allPatterns[i][patternStepIndex[i]].setActive();
+				patternStepIndex[i]=6;
+			}
+				
 		}
 	}
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
@@ -494,13 +527,7 @@ void CollisionTypes::collisions()
 				audio->playCue(BEEP1);
 				player.getShield()->setInvisible();
 				break;
-				/*char msgbu[500];
-				sprintf(msgbu, "enemy: %f - %f  player:%f - %f shield:%f - %f\n", enemy[i].getPositionX(), enemy[i].getPositionY(),player.getPositionX(), player.getPositionY(), player.getShield()->getPositionX(), player.getShield()->getPositionY());
-				OutputDebugStringA(msgbu);*/
 			}
-			/*char msgbu[500];
-			sprintf(msgbu, "enemy: %f - %f  player:%f - %f shield:%f - %f\n", enemy[i].getPositionX(), enemy[i].getPositionY(),player.getPositionX(), player.getPositionY(), player.getShield()->getPositionX(), player.getShield()->getPositionY());
-		OutputDebugStringA(msgbu);*/
 		}
 		//player with laser collision
 		for(int i = 0;i<MAX_ENEMY_LASERS;i++)
@@ -546,6 +573,12 @@ void CollisionTypes::render()
 {
 	std::stringstream ss;
 	std::string levelUpOutput = LEVEL_UP_MSG + std::to_string(levelNumber);
+	std::string on;
+	if(musicOn)
+		on = " on. Press tab to toggle.\n    Press space to return to main menu.";
+	else
+		on = " off. Press tab to toggle.\n    Press space to return to main menu.";
+	std::string optionsOutput = optionsScreenMSG + on;
 	switch(gameState)
 	{
 	case NEW_LEVEL:
@@ -591,6 +624,12 @@ void CollisionTypes::render()
 		splash.draw();
 		graphics->spriteEnd();                  // end drawing sprites
 		break;
+	case OPTIONS:
+		ss << optionsOutput;
+		graphics->spriteBegin();// begin drawing sprites
+		background.draw();
+		levelOutput->print(ss.str(), GAME_WIDTH*.24,GAME_HEIGHT*.45);
+		graphics->spriteEnd();
 	}
 }
 
@@ -620,7 +659,8 @@ void CollisionTypes::resetAll()
 void CollisionTypes::levelReset()
 {
 	audio->stopCue(BACKGROUND);
-	audio->playCue(BACKGROUND);
+	if(musicOn)
+		audio->playCue(BACKGROUND);
 	currentEnemyMaxHits+=3;
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{

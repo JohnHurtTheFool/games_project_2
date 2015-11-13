@@ -25,7 +25,7 @@ class CollisionTypes;
 #include "EnemyLaser.h"
 #include "menu.h"
 
-#define maxPatternSteps 6
+#define maxPatternSteps 7
 
 //=============================================================================
 // This class is the core of the game
@@ -61,9 +61,11 @@ private:
 	std::string outString;
 	void levelReset();
 	int currentEnemyMaxHits;
-	int test;
 	int levelNumber;
 	std::string LEVEL_UP_MSG;
+	std::string optionsScreenMSG;
+	bool musicOn;
+	bool toggleKeyPressedLastFrame;
 public:
     // Constructor
     CollisionTypes();

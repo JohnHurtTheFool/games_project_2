@@ -121,7 +121,7 @@ const UCHAR ENTER_KEY    = VK_RETURN;
 const UCHAR player_UP = VK_UP;
 const UCHAR player_DOWN = VK_DOWN;
 const UCHAR PLAYER_SHOOT = VK_SPACE;
-
+const UCHAR TOGGLE_MUSIC = VK_TAB;
 //
 
 // audio files required by audio.cpp
@@ -141,6 +141,6 @@ const char BACKGROUND[] = "backgroundc";
 const char ASOUND[] = "a";
 // Pattern Step Action
 enum PATTERN_STEP_ACTION {NONE, UP, DOWN, LEFT, RIGHT, TRACK, EVADE};
-enum GAME_STATES {SPLASH, GAME_PLAY,LOSE_SCREEN,NEW_LEVEL,MENU};
-
+enum GAME_STATES {SPLASH, GAME_PLAY,LOSE_SCREEN,NEW_LEVEL,MENU,OPTIONS,CHEAT};
+const char INVINCIBILITY_CHEAT[] = "forcefield";
 #endif
