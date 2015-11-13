@@ -167,6 +167,7 @@ void CollisionTypes::initialize(HWND hwnd)
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing output font"));
 	levelOutput->setFontColor(graphicsNS::BLUE);
 	levelNumber=1;
+	forcefield = false;
 	LEVEL_UP_MSG = "LEVEL ";
 	optionsScreenMSG = "MUSIC IS CURRENTLY";
 	currentEnemyMaxHits = 0;
