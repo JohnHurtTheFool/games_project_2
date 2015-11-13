@@ -61,6 +61,7 @@ private:
 	std::string outString;
 	void levelReset();
 	int currentEnemyMaxHits;
+	int test;
 	int levelNumber;
 	std::string LEVEL_UP_MSG;
 public:

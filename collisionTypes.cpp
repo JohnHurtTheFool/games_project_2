@@ -165,6 +165,8 @@ void CollisionTypes::initialize(HWND hwnd)
 	levelOutput->setFontColor(graphicsNS::BLUE);
 	levelNumber=1;
 	LEVEL_UP_MSG = "LEVEL ";
+	currentEnemyMaxHits = 0;
+	test = 0;
 	return;
 }
 
@@ -346,19 +348,19 @@ void CollisionTypes::update()
 		*/
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 		{
-			if((enemy[i]).getHits() <= (enemy[i]).getMaxHits() && (enemy[i]).getHits() <= 0.3f *(enemy[i]).getMaxHits())
+			if((enemy[i]).getHits() <= currentEnemyMaxHits && (enemy[i]).getHits() <= 0.3f *currentEnemyMaxHits)
 			{
 				(enemy[i]).setFrames(2,3);
 			}
-			else if((enemy[i]).getHits() > 0.3f *(enemy[i]).getMaxHits() && (enemy[i]).getHits() <= 0.6f *(enemy[i]).getMaxHits())
+			else if((enemy[i]).getHits() > 0.3f *currentEnemyMaxHits && (enemy[i]).getHits() <= 0.6f *currentEnemyMaxHits)
 			{
 				(enemy[i]).setFrames(10,11);
 			}
-			else if((enemy[i]).getHits() > 0.6f *(enemy[i]).getMaxHits() && (enemy[i]).getHits() <=(enemy[i]).getMaxHits())
+			else if((enemy[i]).getHits() > 0.6f *currentEnemyMaxHits && (enemy[i]).getHits() <=currentEnemyMaxHits)
 			{
 				(enemy[i]).setFrames(18,19);
 			}
-			else if((enemy[i]).getHits() > (enemy[i]).getMaxHits())
+			else if((enemy[i]).getHits() > currentEnemyMaxHits)
 			{
 				(enemy[i]).setInvisible();
 			}
@@ -390,6 +392,7 @@ void CollisionTypes::updateState()
 	}
 	else if(gameState==MENU && !mainMenu->getSelectedItem())
 	{
+		currentEnemyMaxHits = 0;
 		levelNumber=1;
 		player.setHealth(100);
 		levelReset();
@@ -616,29 +619,36 @@ void CollisionTypes::resetAll()
 }
 void CollisionTypes::levelReset()
 {
-		player.setVisible();
-		player.getShield()->setInvisible();
-		player.setPosition(VECTOR2(rand()%GAME_WIDTH, rand()%GAME_HEIGHT));
-		VECTOR2 zeroVector(0,0);
-		player.setVelocity(zeroVector);
-		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
-		{
-			(enemy[i]).setVisible();
-			int height = rand()%GAME_HEIGHT;
-			int width = rand()%GAME_WIDTH;
-			enemy[i].setPosition(VECTOR2(height, width));
-			bonus[i].setPos(width, height);
-			bonus[i].setInvisible();
-			enemy[i].setX(enemy[i].getPositionX());
-			enemy[i].setY(enemy[i].getPositionY());
-			(enemy[i]).setHits(0);
-		}
-		for(int i = 0; i<MAX_PLAYER_LASERS;i++)
-		{
-			(playerLaser[i]).setInvisible();
-		}
-		for(int i = 0; i<MAX_ENEMY_LASERS;i++)
-		{
-			(enemyLaser[i]).setInvisible();
-		}
+	audio->stopCue(BACKGROUND);
+	audio->playCue(BACKGROUND);
+	currentEnemyMaxHits+=3;
+	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
+	{
+		(enemy[i]).setMaxHits(currentEnemyMaxHits);
+	}
+	player.setVisible();
+	player.getShield()->setInvisible();
+	player.setPosition(VECTOR2(rand()%GAME_WIDTH, rand()%GAME_HEIGHT));
+	VECTOR2 zeroVector(0,0);
+	player.setVelocity(zeroVector);
+	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
+	{
+		(enemy[i]).setVisible();
+		int height = rand()%GAME_HEIGHT;
+		int width = rand()%GAME_WIDTH;
+		enemy[i].setPosition(VECTOR2(height, width));
+		bonus[i].setPos(width, height);
+		bonus[i].setInvisible();
+		enemy[i].setX(enemy[i].getPositionX());
+		enemy[i].setY(enemy[i].getPositionY());
+		(enemy[i]).setHits(0);
+	}
+	for(int i = 0; i<MAX_PLAYER_LASERS;i++)
+	{
+		(playerLaser[i]).setInvisible();
+	}
+	for(int i = 0; i<MAX_ENEMY_LASERS;i++)
+	{
+		(enemyLaser[i]).setInvisible();
+	}
 }
