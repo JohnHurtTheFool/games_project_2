@@ -35,8 +35,8 @@ class CollisionTypes : public Game
 private:
     // game items
 	GAME_STATES gameState;
-    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM, bonusTM, splashTM;   // game texture
-	Image background, splash, win, lose;
+    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM, bonusTM, splashTM, loseTM;   // game texture
+	Image background, splash, lose;
     VECTOR2 collisionVector;    // collision vector
 	Player player;
 	Puck puck;

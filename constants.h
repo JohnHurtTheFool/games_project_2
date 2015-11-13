@@ -110,6 +110,7 @@ const char ENEMY_LASER[] =     "..\\games_project_2\\pictures\\red laser.png";  
 const char PLAYER_LASER[] =     "..\\games_project_2\\pictures\\blue laser.png";      // menu texture
 const char SHIELD_IMAGE[] =     "..\\games_project_2\\pictures\\shield.png";      // menu texture
 const char BONUS_IMAGE[] =     "..\\games_project_2\\pictures\\bonus.png";      // menu texture
+const char GAME_OVER[] =     "..\\games_project_2\\pictures\\game over.png";      // menu texture
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
 // it would be possible to save and restore key mappings from a data file.
@@ -138,6 +139,8 @@ const char BEEP3[] = "beep3";
 const char BEEP4[] = "beep4";
 const char HIT[]   = "hit";
 const char BACKGROUND[] = "backgroundc";
+const char CRASH[] = "crashc";
+const char LASER[] = "laserc";
 const char ASOUND[] = "a";
 // Pattern Step Action
 enum PATTERN_STEP_ACTION {NONE, UP, DOWN, LEFT, RIGHT, TRACK, EVADE};

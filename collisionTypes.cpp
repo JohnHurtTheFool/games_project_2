@@ -20,6 +20,9 @@ CollisionTypes::CollisionTypes()
 //=============================================================================
 CollisionTypes::~CollisionTypes()
 {
+	delete dxFontSmall;
+	delete output;
+	delete levelOutput;
     releaseAll();           // call onLostDevice() for every graphics item
 }
 
@@ -73,8 +76,11 @@ void CollisionTypes::initialize(HWND hwnd)
 	if (!backgroundTM.initialize(graphics, BACKGROUND_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "My texture initialization failed"));
 	if (!background.initialize(graphics, 2048,1024,0, &backgroundTM))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error init background"));
+	if (!loseTM.initialize(graphics, GAME_OVER))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "initialization failed"));
+	if (!lose.initialize(graphics, 2048,1024,0, &loseTM))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error init my background"));
-
 	if(dxFontSmall->initialize(graphics, 18, true, false, "Calibri")== false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
 
@@ -449,6 +455,11 @@ void CollisionTypes::updateState()
 	}
 	else if(gameState==GAME_PLAY && (!player.getVisible()))
 	{
+		gameState = LOSE_SCREEN;
+		timeInState = 0;
+	}
+	else if(gameState==LOSE_SCREEN && timeInState > 3)
+	{
 		gameState = MENU;
 		timeInState = 0;
 	}
@@ -529,11 +540,9 @@ void CollisionTypes::collisions()
 			//player with enemy collision
 			if (player.collidesWith(enemy[i], collisionVector) && enemy[i].getVisible() && player.getVisible())
 			{
-				//collision = true;
 				player.setHealth(player.getHealth() - kamikazeDamage);
 				enemy[i].setInvisible();
-				//puck.changeDirectionY();
-				//audio->playCue(BEEP1);
+				audio->playCue(CRASH);
 			}
 			if (player.collidesWith(bonus[i], collisionVector) && bonus[i].getVisible() && player.getVisible())
 			{
@@ -547,11 +556,9 @@ void CollisionTypes::collisions()
 		{
 			if (player.collidesWith(enemyLaser[i], collisionVector) && enemyLaser[i].getVisible())
 			{
-				//collision = true;
 				player.setHealth(player.getHealth() - laserDamage);
 				enemyLaser[i].setInvisible();
-				//puck.changeDirectionY();
-				//audio->playCue(BEEP1);
+				audio->playCue(LASER);
 			}
 		}
 	}
@@ -563,8 +570,7 @@ void CollisionTypes::collisions()
 			if (player.getShield()->collidesWith(enemy[i], collisionVector) /*&& enemy[i].getVisible()*/ /*&& player.getVisible()*/)
 			{	
 				enemy[i].setInvisible();
-				//puck.changeDirectionY();
-				audio->playCue(BEEP1);
+				audio->playCue(CRASH);
 				player.getShield()->setInvisible();
 				break;
 			}
@@ -575,8 +581,7 @@ void CollisionTypes::collisions()
 			if (player.getShield()->collidesWith(enemyLaser[i], collisionVector) && enemyLaser[i].getVisible())
 			{
 				enemyLaser[i].setInvisible();
-				//puck.changeDirectionY();
-				//audio->playCue(BEEP1);
+				audio->playCue(LASER);
 				player.getShield()->incHits();
 			}
 		}
@@ -621,6 +626,12 @@ void CollisionTypes::render()
 	std::string optionsOutput = optionsScreenMSG + on;
 	switch(gameState)
 	{
+	case LOSE_SCREEN:
+		graphics->spriteBegin();// begin drawing sprites
+		lose.draw();
+		dxFontSmall->print(scoreMsg,GAME_WIDTH*.95,GAME_HEIGHT*.01);
+		graphics->spriteEnd();
+		break;
 	case CHEAT:
 		ss << cheatMSG;
 		ss2 << cheatAttempt;
@@ -690,6 +701,18 @@ void CollisionTypes::releaseAll()
 {
 	playerTM.onLostDevice();
 	puckTM.onLostDevice();
+
+	playerTM.onLostDevice();
+    puckTM.onLostDevice();
+    enemyTM.onLostDevice();
+    backgroundTM.onLostDevice();
+    playerLaserTM.onLostDevice();
+    enemyLaserTM.onLostDevice();
+    shieldTM.onLostDevice();
+    bonusTM.onLostDevice();
+    splashTM.onLostDevice();
+    loseTM.onLostDevice();
+
     Game::releaseAll();
     return;
 }
@@ -702,6 +725,20 @@ void CollisionTypes::resetAll()
 {
 	playerTM.onResetDevice();
 	puckTM.onResetDevice();
+
+	playerTM.onLostDevice();
+	puckTM.onLostDevice();
+
+	playerTM.onResetDevice();
+    puckTM.onResetDevice();
+    enemyTM.onResetDevice();
+    backgroundTM.onResetDevice();
+    playerLaserTM.onResetDevice();
+    enemyLaserTM.onResetDevice();
+    shieldTM.onResetDevice();
+    bonusTM.onResetDevice();
+    splashTM.onResetDevice();
+    loseTM.onResetDevice();
     Game::resetAll();
     return;
 }
@@ -723,8 +760,8 @@ void CollisionTypes::levelReset()
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		(enemy[i]).setVisible();
-		int height =rand()%GAME_HEIGHT-enemy[i].getHeight();
-		int width =rand()%GAME_WIDTH-enemy[i].getWidth();
+		int height =rand()%(GAME_HEIGHT-enemy[i].getHeight());
+		int width =rand()%(GAME_WIDTH-enemy[i].getWidth());
 		enemy[i].setPosition(VECTOR2(width,height));
 		bonus[i].setPos(width, height);
 		bonus[i].setInvisible();
