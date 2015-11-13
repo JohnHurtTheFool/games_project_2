@@ -168,9 +168,12 @@ void CollisionTypes::initialize(HWND hwnd)
 	levelOutput->setFontColor(graphicsNS::BLUE);
 	levelNumber=1;
 	LEVEL_UP_MSG = "LEVEL ";
-	optionsScreenMSG = "Music is currently";
+	optionsScreenMSG = "MUSIC IS CURRENTLY";
 	currentEnemyMaxHits = 0;
 	toggleKeyPressedLastFrame = false;
+	anyCheatKeyPressedLastFrame = false;
+	cheatAttempt = "";
+	cheatMSG = "ENTER CHEAT CODE: \nPRESS RETURN TO SUBMIT\nPRESS SPACE FOR MENU";
 	return;
 }
 
@@ -181,8 +184,22 @@ void CollisionTypes::update()
 {
 	VECTOR2 playerVel = player.getVelocity();
 	double magSquared = playerVel.x * playerVel.x + playerVel.y * playerVel.y;
+	bool keyPressedThisFrame = false;
 	switch(gameState)
 	{
+	case CHEAT:
+		for(int i = 0x41; i < 0x5A; i++)
+			if(input->isKeyDown(i)&&!anyCheatKeyPressedLastFrame)
+			{
+				cheatAttempt += i;
+				keyPressedThisFrame = true;
+			}
+			else if(input->isKeyDown(i)&&anyCheatKeyPressedLastFrame)
+			{
+				keyPressedThisFrame = true;
+			}
+			anyCheatKeyPressedLastFrame = keyPressedThisFrame;
+		break;
 	case OPTIONS:
 		if(input->isKeyDown(TOGGLE_MUSIC)&&!toggleKeyPressedLastFrame)
 		{
@@ -201,6 +218,8 @@ void CollisionTypes::update()
 		break;
 	case GAME_PLAY:
 		player.update(frameTime);
+		if(forcefield)
+			player.getShield()->setVisible();
 		if(input->isKeyDown(player_LEFT))
 				player.left();
 		if(input->isKeyDown(player_RIGHT))
@@ -414,6 +433,13 @@ void CollisionTypes::updateState()
 		timeInState = 0;
 		score = 0;
 	}
+	else if(gameState==MENU && mainMenu->getSelectedItem()==1)
+	{
+		mainMenu->setSelectedItem(-1);
+		gameState = CHEAT;
+		cheatAttempt = "";
+		timeInState = 0;
+	}
 	else if(gameState==MENU && mainMenu->getSelectedItem()==2)
 	{
 		mainMenu->setSelectedItem(-1);
@@ -441,6 +467,19 @@ void CollisionTypes::updateState()
 	{
 		gameState = MENU;
 		timeInState = 0;
+	}
+	else if(gameState == CHEAT && input->isKeyDown(VK_SPACE))
+	{
+		gameState = MENU;
+		timeInState = 0;
+	}
+	else if(gameState == CHEAT && input->isKeyDown(VK_RETURN))
+	{
+		if(!strcmp(cheatAttempt.c_str(),INVINCIBILITY_CHEAT))
+		{
+			cheatAttempt = "";
+			forcefield = true;
+		}
 	}
 }
 //=============================================================================
@@ -571,7 +610,7 @@ void CollisionTypes::collisions()
 //=============================================================================
 void CollisionTypes::render()
 {
-	std::stringstream ss;
+	std::stringstream ss,ss2;
 	std::string levelUpOutput = LEVEL_UP_MSG + std::to_string(levelNumber);
 	std::string on;
 	if(musicOn)
@@ -581,6 +620,15 @@ void CollisionTypes::render()
 	std::string optionsOutput = optionsScreenMSG + on;
 	switch(gameState)
 	{
+	case CHEAT:
+		ss << cheatMSG;
+		ss2 << cheatAttempt;
+		graphics->spriteBegin();// begin drawing sprites
+		background.draw();
+		levelOutput->print(ss.str(), GAME_WIDTH*.3,GAME_HEIGHT*.1);
+		levelOutput->print(ss2.str(), GAME_WIDTH*.3,GAME_HEIGHT*.45);
+		graphics->spriteEnd();
+		break;
 	case NEW_LEVEL:
 		ss << levelUpOutput;
 		graphics->spriteBegin();// begin drawing sprites

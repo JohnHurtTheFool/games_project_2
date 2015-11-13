@@ -64,8 +64,12 @@ private:
 	int levelNumber;
 	std::string LEVEL_UP_MSG;
 	std::string optionsScreenMSG;
+	std::string cheatAttempt;
+	std::string cheatMSG;
 	bool musicOn;
 	bool toggleKeyPressedLastFrame;
+	bool anyCheatKeyPressedLastFrame;
+	bool forcefield;
 public:
     // Constructor
     CollisionTypes();
