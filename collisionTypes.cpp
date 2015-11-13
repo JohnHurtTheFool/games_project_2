@@ -155,10 +155,16 @@ void CollisionTypes::initialize(HWND hwnd)
 	gameState = SPLASH;
 	mainMenu = new Menu();
 	mainMenu->initialize(graphics, input);
-	outString = "Selected Item: ";
+	//outString = "Selected Item: ";
 	output = new TextDX();
 	if(output->initialize(graphics, 15, true, false, "Arial") == false)
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing output font"));
+	levelOutput = new TextDX();
+	if(levelOutput->initialize(graphics, 40, true, false, "Arial") == false)
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing output font"));
+	levelOutput->setFontColor(graphicsNS::BLUE);
+	levelNumber=1;
+	LEVEL_UP_MSG = "LEVEL ";
 	return;
 }
 
@@ -382,41 +388,30 @@ void CollisionTypes::updateState()
 		gameState = MENU;
 		timeInState = 0;
 	}
-	else if(gameState==MENU && !mainMenu->getSelectedItem()/*timeInState >10*/)
+	else if(gameState==MENU && !mainMenu->getSelectedItem())
 	{
+		levelNumber=1;
 		player.setHealth(100);
-		player.setVisible();
-		player.getShield()->setInvisible();
-		player.setPosition(VECTOR2(rand()%GAME_WIDTH, rand()%GAME_HEIGHT));
-		VECTOR2 zeroVector(0,0);
-		player.setVelocity(zeroVector);
-		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
-		{
-			(enemy[i]).setVisible();
-			int height = rand()%GAME_HEIGHT;
-			int width = rand()%GAME_WIDTH;
-			enemy[i].setPosition(VECTOR2(height, width));
-			bonus[i].setPos(width, height);
-			bonus[i].setInvisible();
-			enemy[i].setX(enemy[i].getPositionX());
-			enemy[i].setY(enemy[i].getPositionY());
-			(enemy[i]).setHits(0);
-		}
-		for(int i = 0; i<MAX_PLAYER_LASERS;i++)
-		{
-			(playerLaser[i]).setInvisible();
-		}
-		for(int i = 0; i<MAX_ENEMY_LASERS;i++)
-		{
-			(enemyLaser[i]).setInvisible();
-		}
-		gameState = GAME_PLAY;
+		levelReset();
+		gameState = NEW_LEVEL;
 		timeInState = 0;
 		score = 0;
 	}
-	else if(gameState==GAME_PLAY && (!player.getVisible() || !enemiesRemain))
+	else if(gameState==GAME_PLAY && (!player.getVisible()))
 	{
 		gameState = MENU;
+		timeInState = 0;
+	}
+	else if(gameState==GAME_PLAY && !enemiesRemain)
+	{
+		levelNumber++;
+		levelReset();
+		gameState = NEW_LEVEL;
+		timeInState = 0;
+	}
+	else if(gameState == NEW_LEVEL && timeInState > 4)
+	{
+		gameState = GAME_PLAY;
 		timeInState = 0;
 	}
 
@@ -547,11 +542,18 @@ void CollisionTypes::collisions()
 void CollisionTypes::render()
 {
 	std::stringstream ss;
+	std::string levelUpOutput = LEVEL_UP_MSG + std::to_string(levelNumber);
 	switch(gameState)
 	{
+	case NEW_LEVEL:
+		ss << levelUpOutput;
+		graphics->spriteBegin();// begin drawing sprites
+		background.draw();
+		levelOutput->print(ss.str(), GAME_WIDTH*.45,GAME_HEIGHT*.45);
+		graphics->spriteEnd();
+		break;
 	case MENU:
-		ss << outString;
-		ss << mainMenu->getSelectedItem();
+		
 
 		graphics->spriteBegin();// begin drawing sprites
 		background.draw();
@@ -611,4 +613,32 @@ void CollisionTypes::resetAll()
 	puckTM.onResetDevice();
     Game::resetAll();
     return;
+}
+void CollisionTypes::levelReset()
+{
+		player.setVisible();
+		player.getShield()->setInvisible();
+		player.setPosition(VECTOR2(rand()%GAME_WIDTH, rand()%GAME_HEIGHT));
+		VECTOR2 zeroVector(0,0);
+		player.setVelocity(zeroVector);
+		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
+		{
+			(enemy[i]).setVisible();
+			int height = rand()%GAME_HEIGHT;
+			int width = rand()%GAME_WIDTH;
+			enemy[i].setPosition(VECTOR2(height, width));
+			bonus[i].setPos(width, height);
+			bonus[i].setInvisible();
+			enemy[i].setX(enemy[i].getPositionX());
+			enemy[i].setY(enemy[i].getPositionY());
+			(enemy[i]).setHits(0);
+		}
+		for(int i = 0; i<MAX_PLAYER_LASERS;i++)
+		{
+			(playerLaser[i]).setInvisible();
+		}
+		for(int i = 0; i<MAX_ENEMY_LASERS;i++)
+		{
+			(enemyLaser[i]).setInvisible();
+		}
 }

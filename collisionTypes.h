@@ -57,7 +57,12 @@ private:
 	float timeInState;
 	Menu *mainMenu;
 	TextDX *output;
+	TextDX *levelOutput;
 	std::string outString;
+	void levelReset();
+	int currentEnemyMaxHits;
+	int levelNumber;
+	std::string LEVEL_UP_MSG;
 public:
     // Constructor
     CollisionTypes();
