@@ -105,7 +105,7 @@ void CollisionTypes::initialize(HWND hwnd)
 		(enemy[i]).setFrames(2,3);
 	}
 
-	player.setPosition(VECTOR2(GAME_WIDTH/2, GAME_HEIGHT-150));
+	player.setPosition(VECTOR2(rand()%GAME_WIDTH, rand()%GAME_HEIGHT));
     player.setCollisionType(entityNS::BOX);
     player.setEdge(COLLISION_BOX_player);
     player.setCollisionRadius(COLLISION_RADIUS);
@@ -153,6 +153,12 @@ void CollisionTypes::initialize(HWND hwnd)
 	score = 0;
 	playerFrames=2;
 	gameState = SPLASH;
+	mainMenu = new Menu();
+	mainMenu->initialize(graphics, input);
+	outString = "Selected Item: ";
+	output = new TextDX();
+	if(output->initialize(graphics, 15, true, false, "Arial") == false)
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing output font"));
 	return;
 }
 
@@ -165,6 +171,9 @@ void CollisionTypes::update()
 	double magSquared = playerVel.x * playerVel.x + playerVel.y * playerVel.y;
 	switch(gameState)
 	{
+	case MENU:
+		mainMenu->update();
+		break;
 	case GAME_PLAY:
 		player.update(frameTime);
 	
@@ -333,7 +342,7 @@ void CollisionTypes::update()
 		{
 			if((enemy[i]).getHits() <= (enemy[i]).getMaxHits() && (enemy[i]).getHits() <= 0.3f *(enemy[i]).getMaxHits())
 			{
-			
+				(enemy[i]).setFrames(2,3);
 			}
 			else if((enemy[i]).getHits() > 0.3f *(enemy[i]).getMaxHits() && (enemy[i]).getHits() <= 0.6f *(enemy[i]).getMaxHits())
 			{
@@ -359,11 +368,58 @@ void CollisionTypes::update()
 void CollisionTypes::updateState()
 {
 	timeInState+=frameTime;
+	bool enemiesRemain = false;
+	for(int i = 0; i < NUM_ENEMIES_INITIAL;i++)
+	{
+		if((enemy[i]).getVisible())
+		{
+			enemiesRemain = true;
+			break;
+		}
+	}
 	if(gameState==SPLASH && timeInState >2)
 	{
-		gameState = GAME_PLAY;
+		gameState = MENU;
 		timeInState = 0;
 	}
+	else if(gameState==MENU && !mainMenu->getSelectedItem()/*timeInState >10*/)
+	{
+		player.setHealth(100);
+		player.setVisible();
+		player.getShield()->setInvisible();
+		player.setPosition(VECTOR2(rand()%GAME_WIDTH, rand()%GAME_HEIGHT));
+		VECTOR2 zeroVector(0,0);
+		player.setVelocity(zeroVector);
+		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
+		{
+			(enemy[i]).setVisible();
+			int height = rand()%GAME_HEIGHT;
+			int width = rand()%GAME_WIDTH;
+			enemy[i].setPosition(VECTOR2(height, width));
+			bonus[i].setPos(width, height);
+			bonus[i].setInvisible();
+			enemy[i].setX(enemy[i].getPositionX());
+			enemy[i].setY(enemy[i].getPositionY());
+			(enemy[i]).setHits(0);
+		}
+		for(int i = 0; i<MAX_PLAYER_LASERS;i++)
+		{
+			(playerLaser[i]).setInvisible();
+		}
+		for(int i = 0; i<MAX_ENEMY_LASERS;i++)
+		{
+			(enemyLaser[i]).setInvisible();
+		}
+		gameState = GAME_PLAY;
+		timeInState = 0;
+		score = 0;
+	}
+	else if(gameState==GAME_PLAY && (!player.getVisible() || !enemiesRemain))
+	{
+		gameState = MENU;
+		timeInState = 0;
+	}
+
 }
 //=============================================================================
 // Artificial Intelligence
@@ -490,8 +546,19 @@ void CollisionTypes::collisions()
 //=============================================================================
 void CollisionTypes::render()
 {
+	std::stringstream ss;
 	switch(gameState)
 	{
+	case MENU:
+		ss << outString;
+		ss << mainMenu->getSelectedItem();
+
+		graphics->spriteBegin();// begin drawing sprites
+		background.draw();
+		mainMenu->displayMenu();
+		output->print(ss.str(), 0,0);
+		graphics->spriteEnd();   
+		break;
 	case GAME_PLAY:
 		graphics->spriteBegin();                // begin drawing sprites
 		background.draw();

@@ -40,7 +40,7 @@ private:
 public:
     // constructor
     Enemy();
-
+	void setHits(int h) {hits = h;}
 	void setMaxHits(int max){maxHits = max;}
 	int getMaxHits(){return maxHits;}
 	void wasHit()

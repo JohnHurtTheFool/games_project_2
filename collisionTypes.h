@@ -23,6 +23,7 @@ class CollisionTypes;
 #include "PlayerLaser.h"
 #include "testDx.h"
 #include "EnemyLaser.h"
+#include "menu.h"
 
 #define maxPatternSteps 6
 
@@ -54,6 +55,9 @@ private:
 	std::string scoreMsg;
 	int playerFrames;
 	float timeInState;
+	Menu *mainMenu;
+	TextDX *output;
+	std::string outString;
 public:
     // Constructor
     CollisionTypes();
