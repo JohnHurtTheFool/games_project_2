@@ -201,8 +201,15 @@ void CollisionTypes::update()
 				cheatAttempt += i;
 				keyPressedThisFrame = true;
 			}
-			else if(input->isKeyDown(i)&&anyCheatKeyPressedLastFrame)
+			else if((input->isKeyDown(i)||input->isKeyDown(VK_BACK))&&anyCheatKeyPressedLastFrame)
 			{
+				keyPressedThisFrame = true;
+			}
+			if(input->isKeyDown(VK_BACK)&&!anyCheatKeyPressedLastFrame)
+			{
+				if(cheatAttempt.length()>0)
+					cheatAttempt.pop_back();
+
 				keyPressedThisFrame = true;
 			}
 			anyCheatKeyPressedLastFrame = keyPressedThisFrame;
