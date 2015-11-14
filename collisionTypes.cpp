@@ -410,9 +410,6 @@ void CollisionTypes::update()
 			background.update(frameTime);
 			break;
 	}
-<<<<<<< HEAD
-	if(input->isKeyDown(PLAYER_SHOOT) && !shootKeyDownLastFrame && player.getActive())
-=======
 	
 }
 void CollisionTypes::updateState()
@@ -420,7 +417,6 @@ void CollisionTypes::updateState()
 	timeInState+=frameTime;
 	bool enemiesRemain = false;
 	for(int i = 0; i < NUM_ENEMIES_INITIAL;i++)
->>>>>>> origin/master
 	{
 		if((enemy[i]).getVisible())
 		{
