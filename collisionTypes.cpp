@@ -168,9 +168,6 @@ void CollisionTypes::update()
             player.up();
     if(input->isKeyDown(player_DOWN) && (magSquared < playerNS::MAX_VELOCITY_SQUARED || playerVel.y < 0))
 			player.down();
-<<<<<<< HEAD
-	if(input->isKeyDown(PLAYER_SHOOT) && !shootKeyDownLastFrame && player.getVisible())
-=======
 	if(input->isKeyDown(player_UP) && (magSquared < playerNS::MAX_VELOCITY_SQUARED || playerVel.y > 0))
 	{
 		if(magSquared < (playerNS::MAX_VELOCITY_SQUARED/3))
@@ -262,8 +259,7 @@ void CollisionTypes::update()
 			player.setInvisible();
 		}
 	}
-	if(input->isKeyDown(PLAYER_SHOOT) && !shootKeyDownLastFrame)
->>>>>>> origin/master
+	if(input->isKeyDown(PLAYER_SHOOT) && !shootKeyDownLastFrame && player.getActive())
 	{
 		(playerLaser[playerNextLaserIndex]).setVisible();
 		(playerLaser[playerNextLaserIndex]).setPositionX((player.getPositionX()+SPACESHIP_SIZE/4));//Center of the player's width
