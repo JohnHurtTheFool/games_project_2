@@ -103,12 +103,14 @@ const double kamikazeDamage = 15.00;
 const char PUCK_IMAGE[] = "..\\games_project_2\\pictures\\homework.jpg";  // game textures
 const char PADDLE_IMAGE[] =     "..\\games_project_2\\pictures\\student.jpg";      // menu texture
 const char BACKGROUND_IMAGE[] =     "..\\games_project_2\\pictures\\Background.png";      // menu texture
+const char SPLASH_SCREEN[] =     "..\\games_project_2\\pictures\\Splash Screen.png";      // menu texture
 const char PLAYER_IMAGE[] =     "..\\games_project_2\\pictures\\player spritesheet.png";      // menu texture
 const char ENEMY_IMAGE[] =     "..\\games_project_2\\pictures\\enemy spritesheet two.png";      // menu texture
 const char ENEMY_LASER[] =     "..\\games_project_2\\pictures\\red laser.png";      // menu texture
 const char PLAYER_LASER[] =     "..\\games_project_2\\pictures\\blue laser.png";      // menu texture
 const char SHIELD_IMAGE[] =     "..\\games_project_2\\pictures\\shield.png";      // menu texture
 const char BONUS_IMAGE[] =     "..\\games_project_2\\pictures\\bonus.png";      // menu texture
+const char GAME_OVER[] =     "..\\games_project_2\\pictures\\game over.png";      // menu texture
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
 // it would be possible to save and restore key mappings from a data file.
@@ -120,24 +122,28 @@ const UCHAR ENTER_KEY    = VK_RETURN;
 const UCHAR player_UP = VK_UP;
 const UCHAR player_DOWN = VK_DOWN;
 const UCHAR PLAYER_SHOOT = VK_SPACE;
-
+const UCHAR TOGGLE_MUSIC = VK_TAB;
 //
 
 // audio files required by audio.cpp
 // WAVE_BANK must be location of .xwb file.
-const char WAVE_BANK[]  = "..\\games_project_2\\audio\\Win\\WavesExample1.xwb";
+//const char WAVE_BANK[]  = "..\\games_project_2\\audio\\Win\\WavesExample1.xwb";
+const char WAVE_BANK[]  = "..\\games_project_2\\audio\\Win\\Wave Bank.xwb";
 // SOUND_BANK must be location of .xsb file.
-const char SOUND_BANK[] = "..\\games_project_2\\audio\\Win\\SoundsExample1.xsb";
-
+//const char SOUND_BANK[] = "..\\games_project_2\\audio\\Win\\SoundsExample1.xsb";
+const char SOUND_BANK[] = "..\\games_project_2\\audio\\Win\\Sound Bank.xsb";
 // audio cues
 const char BEEP1[] = "beep1";
 const char BEEP2[] = "beep2";
 const char BEEP3[] = "beep3";
 const char BEEP4[] = "beep4";
 const char HIT[]   = "hit";
-
+const char BACKGROUND[] = "backgroundc";
+const char CRASH[] = "crashc";
+const char LASER[] = "laserc";
+const char ASOUND[] = "a";
 // Pattern Step Action
 enum PATTERN_STEP_ACTION {NONE, UP, DOWN, LEFT, RIGHT, TRACK, EVADE};
-
-
+enum GAME_STATES {SPLASH, GAME_PLAY,LOSE_SCREEN,NEW_LEVEL,MENU,OPTIONS,CHEAT};
+const char INVINCIBILITY_CHEAT[] = "FORCEFIELD";
 #endif

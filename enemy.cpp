@@ -1,5 +1,4 @@
 #include "enemy.h"
-
 //=============================================================================
 // default constructor
 //=============================================================================
@@ -25,9 +24,20 @@ Enemy::Enemy() : Entity()
 	active = true;
 	speed = 50;
 	hits = 0;
-	maxHits = 3;
+	//maxHits = 3;
 }
-
+void Enemy::wasHit()
+{
+	hits += 1;
+	if(hits>=maxHits)
+	{
+		setInvisible();
+	}
+}
+void Enemy::setMaxHits(int max)
+{
+	maxHits = max;
+}
 bool Enemy::initialize(Game *gamePtr, int width, int height, int ncols,
     TextureManager *textureM)
 {

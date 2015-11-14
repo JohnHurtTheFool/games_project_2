@@ -23,8 +23,9 @@ class CollisionTypes;
 #include "PlayerLaser.h"
 #include "testDx.h"
 #include "EnemyLaser.h"
+#include "menu.h"
 
-#define maxPatternSteps 6
+#define maxPatternSteps 7
 
 //=============================================================================
 // This class is the core of the game
@@ -33,8 +34,9 @@ class CollisionTypes : public Game
 {
 private:
     // game items
-    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM, bonusTM;   // game texture
-	Image background;
+	GAME_STATES gameState;
+    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM, bonusTM, splashTM, loseTM;   // game texture
+	Image background, splash, lose;
     VECTOR2 collisionVector;    // collision vector
 	Player player;
 	Puck puck;
@@ -52,6 +54,22 @@ private:
 	TextDX *dxFontSmall;
 	std::string scoreMsg;
 	int playerFrames;
+	float timeInState;
+	Menu *mainMenu;
+	TextDX *output;
+	TextDX *levelOutput;
+	std::string outString;
+	void levelReset();
+	int currentEnemyMaxHits;
+	int levelNumber;
+	std::string LEVEL_UP_MSG;
+	std::string optionsScreenMSG;
+	std::string cheatAttempt;
+	std::string cheatMSG;
+	bool musicOn;
+	bool toggleKeyPressedLastFrame;
+	bool anyCheatKeyPressedLastFrame;
+	bool forcefield;
 public:
     // Constructor
     CollisionTypes();
@@ -65,6 +83,7 @@ public:
     void ai();          // "
     void collisions();  // "
     void render();      // "
+	void updateState();
     void releaseAll();
     void resetAll();
 };

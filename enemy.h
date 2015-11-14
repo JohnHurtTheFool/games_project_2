@@ -9,6 +9,7 @@ class Enemy;
 #include "constants.h"
 #include "graphics.h"
 
+
 namespace enemyNS
 {
     const int WIDTH = 64;                   // image width
@@ -40,17 +41,12 @@ private:
 public:
     // constructor
     Enemy();
-
-	void setMaxHits(int max){maxHits = max;}
-	int getMaxHits(){return maxHits;}
-	void wasHit()
-	{
-		hits += 1;
-		if(hits>=maxHits)
-		{
-			setInvisible();
-		}
-	}
+	void setMaxHits(int max);
+	void setHits(int h) {hits = h;}
+	//void setMaxHits(int max){maxHits = max;}
+	//int getMaxHits(){return maxHits;}
+	void wasHit();
+	
 
     // inherited member functions
     virtual bool initialize(Game *gamePtr, int width, int height, int ncols,

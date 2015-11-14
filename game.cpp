@@ -228,6 +228,7 @@ void Game::run(HWND hwnd)
         collisions();               // handle collisions
         input->vibrateControllers(frameTime); // handle controller vibration
     }
+	updateState();
     renderGame();                   // draw all game items
     input->readControllers();       // read state of controllers
 
