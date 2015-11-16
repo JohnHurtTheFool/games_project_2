@@ -212,10 +212,15 @@ void CollisionTypes::update()
 				cheatAttempt += i;
 				keyPressedThisFrame[x] = true;
 			}
+<<<<<<< HEAD
 			else if((input->isKeyDown(i)) && anyCheatKeyPressedLastFrame[x])
+=======
+			else if((input->isKeyDown(i)||input->isKeyDown(VK_BACK))&&anyCheatKeyPressedLastFrame)
+>>>>>>> origin/master
 			{
 				keyPressedThisFrame[x] = true;
 			}
+<<<<<<< HEAD
 			x++;
 		}
 		if(input->isKeyDown(VK_BACK)&&!backCheatKeyPressedLastFrame)
@@ -235,6 +240,16 @@ void CollisionTypes::update()
 		
 		backCheatKeyPressedLastFrame = backKeyPressedThisFrame;
 		
+=======
+			if(input->isKeyDown(VK_BACK)&&!anyCheatKeyPressedLastFrame)
+			{
+				if(cheatAttempt.length()>0)
+					cheatAttempt.pop_back();
+
+				keyPressedThisFrame = true;
+			}
+			anyCheatKeyPressedLastFrame = keyPressedThisFrame;
+>>>>>>> origin/master
 		break;
 	case OPTIONS:
 		if(input->isKeyDown(TOGGLE_MUSIC)&&!toggleKeyPressedLastFrame)
