@@ -118,7 +118,7 @@ void CollisionTypes::initialize(HWND hwnd)
     player.setCollisionRadius(COLLISION_RADIUS);
 	player.setScale(playerNS::SCALE);
 	
-	
+	invEnem = 10;
 
 
 	background.setX(0);
@@ -161,6 +161,7 @@ void CollisionTypes::initialize(HWND hwnd)
 	scoreMsg = "";
 	score = 0;
 	playerFrames=2;
+	bool backCheatKeyPressedLastFrame = false;
 	gameState = SPLASH;
 	mainMenu = new Menu();
 	mainMenu->initialize(graphics, input);
@@ -178,7 +179,10 @@ void CollisionTypes::initialize(HWND hwnd)
 	optionsScreenMSG = "MUSIC IS CURRENTLY";
 	currentEnemyMaxHits = 0;
 	toggleKeyPressedLastFrame = false;
-	anyCheatKeyPressedLastFrame = false;
+	for(int i = 0;i<24;i++)
+	{
+		anyCheatKeyPressedLastFrame[i] = false;
+	}
 	cheatAttempt = "";
 	cheatMSG = "ENTER CHEAT CODE: \nPRESS RETURN TO SUBMIT\nPRESS SPACE FOR MENU";
 	return;
@@ -191,21 +195,46 @@ void CollisionTypes::update()
 {
 	VECTOR2 playerVel = player.getVelocity();
 	double magSquared = playerVel.x * playerVel.x + playerVel.y * playerVel.y;
-	bool keyPressedThisFrame = false;
+	bool backKeyPressedThisFrame = false;
+	bool keyPressedThisFrame[24];
+	for(int i = 0;i<24;i++)
+	{
+		keyPressedThisFrame[i] = false;
+	}
+	int x = 0;
 	switch(gameState)
 	{
 	case CHEAT:
 		for(int i = 0x41; i < 0x5A; i++)
-			if(input->isKeyDown(i)&&!anyCheatKeyPressedLastFrame)
+		{
+			if(input->isKeyDown(i)&&!anyCheatKeyPressedLastFrame[x])
 			{
 				cheatAttempt += i;
-				keyPressedThisFrame = true;
+				keyPressedThisFrame[x] = true;
 			}
-			else if(input->isKeyDown(i)&&anyCheatKeyPressedLastFrame)
+			else if((input->isKeyDown(i)) && anyCheatKeyPressedLastFrame[x])
 			{
-				keyPressedThisFrame = true;
+				keyPressedThisFrame[x] = true;
 			}
-			anyCheatKeyPressedLastFrame = keyPressedThisFrame;
+			x++;
+		}
+		if(input->isKeyDown(VK_BACK)&&!backCheatKeyPressedLastFrame)
+		{
+			if(cheatAttempt.length()>0)cheatAttempt.pop_back();
+			backKeyPressedThisFrame = true;
+		}
+		else if(input->isKeyDown(VK_BACK)&&backCheatKeyPressedLastFrame)
+		{
+			backKeyPressedThisFrame = true;
+		}
+
+		for(int j = 0;j<24;j++)
+		{
+			anyCheatKeyPressedLastFrame[j] = keyPressedThisFrame[j];
+		}
+		
+		backCheatKeyPressedLastFrame = backKeyPressedThisFrame;
+		
 		break;
 	case OPTIONS:
 		if(input->isKeyDown(TOGGLE_MUSIC)&&!toggleKeyPressedLastFrame)
@@ -744,6 +773,7 @@ void CollisionTypes::resetAll()
 }
 void CollisionTypes::levelReset()
 {
+	player.setHealth(100.00);
 	audio->stopCue(BACKGROUND);
 	if(musicOn)
 		audio->playCue(BACKGROUND);

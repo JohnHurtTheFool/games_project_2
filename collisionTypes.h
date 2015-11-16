@@ -68,7 +68,8 @@ private:
 	std::string cheatMSG;
 	bool musicOn;
 	bool toggleKeyPressedLastFrame;
-	bool anyCheatKeyPressedLastFrame;
+	bool anyCheatKeyPressedLastFrame[24];
+	bool backCheatKeyPressedLastFrame;
 	bool forcefield;
 public:
     // Constructor
