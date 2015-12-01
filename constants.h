@@ -77,7 +77,7 @@ inline void safeOnResetDevice(T& ptr)
 const char CLASS_NAME[] = "AI";
 const char GAME_TITLE[] = "SPACESHIP CONTROL";
 const bool FULLSCREEN = false;              // windowed or fullscreen
-const UINT GAME_WIDTH =  1280;               // width of game in pixels
+const UINT GAME_WIDTH =  1270;               // width of game in pixels
 const UINT GAME_HEIGHT = 800;               // height of game in pixels
 const float BACKGROUND_SCALE = 0.8;
 
@@ -110,7 +110,9 @@ const char ENEMY_LASER[] =     "..\\games_project_2\\pictures\\red laser.png";  
 const char PLAYER_LASER[] =     "..\\games_project_2\\pictures\\blue laser.png";      // menu texture
 const char SHIELD_IMAGE[] =     "..\\games_project_2\\pictures\\shield.png";      // menu texture
 const char BONUS_IMAGE[] =     "..\\games_project_2\\pictures\\bonus.png";      // menu texture
+const char EMP_POWERUP_IMAGE[] =     "..\\games_project_2\\pictures\\emp powerup.png";      // menu texture
 const char GAME_OVER[] =     "..\\games_project_2\\pictures\\game over.png";      // menu texture
+const char INSTR_IMAGE[] =     "..\\games_project_2\\pictures\\instructions.png";      // menu texture
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
 // it would be possible to save and restore key mappings from a data file.
@@ -144,6 +146,6 @@ const char LASER[] = "laserc";
 const char ASOUND[] = "a";
 // Pattern Step Action
 enum PATTERN_STEP_ACTION {NONE, UP, DOWN, LEFT, RIGHT, TRACK, EVADE};
-enum GAME_STATES {SPLASH, GAME_PLAY,LOSE_SCREEN,NEW_LEVEL,MENU,OPTIONS,CHEAT};
+enum GAME_STATES {SPLASH, GAME_PLAY,LOSE_SCREEN,NEW_LEVEL,MENU,OPTIONS,CHEAT,INSTR};
 const char INVINCIBILITY_CHEAT[] = "FORCEFIELD";
 #endif

@@ -24,6 +24,7 @@ class CollisionTypes;
 #include "testDx.h"
 #include "EnemyLaser.h"
 #include "menu.h"
+#include "EMPpowerup.h"
 
 #define maxPatternSteps 7
 
@@ -35,12 +36,13 @@ class CollisionTypes : public Game
 private:
     // game items
 	GAME_STATES gameState;
-    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM, bonusTM, splashTM, loseTM;   // game texture
-	Image background, splash, lose;
+    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM, bonusTM, splashTM, loseTM, instrTM,empPowerupTM;   // game texture
+	Image background, splash, lose, instr;
     VECTOR2 collisionVector;    // collision vector
 	Player player;
 	Puck puck;
 	Bonus bonus[NUM_ENEMIES_INITIAL];
+	EMPpowerup empPowerup[NUM_ENEMIES_INITIAL];
 	int score;
 	bool collision;
 	Enemy enemy[NUM_ENEMIES_INITIAL];

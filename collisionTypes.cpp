@@ -7,6 +7,7 @@
 #include "collisionTypes.h"
 #include <random>
 #include "time.h"
+#include <windows.h>
 //=============================================================================
 // Constructor
 //=============================================================================
@@ -35,6 +36,8 @@ void CollisionTypes::initialize(HWND hwnd)
 	musicOn = true;
     Game::initialize(hwnd); // throws GameError
 	audio->playCue(BACKGROUND);
+	ShowCursor(false);
+	
 	//audio->stopCue(BACKGROUND);*/
 	//audio->playCue(ASOUND);
 	timeInState = 0;
@@ -45,7 +48,8 @@ void CollisionTypes::initialize(HWND hwnd)
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing shield texture"));
 	if (!bonusTM.initialize(graphics,BONUS_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bonus texture"));
-
+	if (!empPowerupTM.initialize(graphics,EMP_POWERUP_IMAGE))
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bonus texture"));
 
     if (!enemyTM.initialize(graphics,ENEMY_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy textures"));
@@ -77,11 +81,15 @@ void CollisionTypes::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "My texture initialization failed"));
 	if (!background.initialize(graphics, 2048,1024,0, &backgroundTM))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error init background"));
+	if (!instrTM.initialize(graphics, INSTR_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "My texture initialization failed"));
+	if (!instr.initialize(graphics, 2048,1024,0, &instrTM))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error init instr"));
 	if (!loseTM.initialize(graphics, GAME_OVER))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "initialization failed"));
 	if (!lose.initialize(graphics, 2048,1024,0, &loseTM))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error init my background"));
-	if(dxFontSmall->initialize(graphics, 18, true, false, "Calibri")== false)
+	if(dxFontSmall->initialize(graphics, 50, true, false, "Calibri")== false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
 
 	float height;
@@ -93,11 +101,15 @@ void CollisionTypes::initialize(HWND hwnd)
 			throw(GameError(gameErrorNS::WARNING, "Enemy not initialized"));
 		if (!bonus[i].initialize(this, bonusNS::WIDTH, bonusNS::HEIGHT, 0,&bonusTM))
 			throw(GameError(gameErrorNS::WARNING, "Enemy not initialized"));
+		if (!empPowerup[i].initialize(this, bonusNS::WIDTH, bonusNS::HEIGHT, 0,&empPowerupTM))
+			throw(GameError(gameErrorNS::WARNING, "Enemy not initialized"));
 		height = rand()%GAME_HEIGHT;
 		width = rand()%GAME_WIDTH;
 		enemy[i].setPosition(VECTOR2(height, width));
 		bonus[i].setPos(width, height);
 		bonus[i].setInvisible();
+		empPowerup[i].setPos(width, height);
+		empPowerup[i].setInvisible();
 		enemy[i].setCollision(entityNS::BOX);
 		enemy[i].setEdge(COLLISION_BOX_PUCK);
 		enemy[i].setX(enemy[i].getPositionX());
@@ -192,6 +204,8 @@ void CollisionTypes::initialize(HWND hwnd)
 //=============================================================================
 void CollisionTypes::update()
 {
+	if(input->isKeyDown(VK_ESCAPE))
+		this->exitGame();
 	VECTOR2 playerVel = player.getVelocity();
 	double magSquared = playerVel.x * playerVel.x + playerVel.y * playerVel.y;
 	bool backKeyPressedThisFrame = false;
@@ -397,6 +411,8 @@ void CollisionTypes::update()
 			enemy[i].update(frameTime);
 			bonus[i].update(frameTime);
 			bonus[i].setPos(enemy[i].getPositionX(),enemy[i].getPositionY());
+			empPowerup[i].update(frameTime);
+			empPowerup[i].setPos(enemy[i].getPositionX(),enemy[i].getPositionY());
 		}
 		/*
 		if(player.getHealth() <= 60.00 && player.getHealth() > 30.00)
@@ -485,7 +501,7 @@ void CollisionTypes::updateState()
 		gameState = LOSE_SCREEN;
 		timeInState = 0;
 	}
-	else if(gameState==LOSE_SCREEN && timeInState > 3)
+	else if(gameState==LOSE_SCREEN && timeInState > 4)
 	{
 		gameState = MENU;
 		timeInState = 0;
@@ -519,6 +535,17 @@ void CollisionTypes::updateState()
 			cheatAttempt = "";
 			forcefield = true;
 		}
+	}
+	else if(gameState==MENU && mainMenu->getSelectedItem()==3)
+	{
+		mainMenu->setSelectedItem(-1);
+		gameState = INSTR;
+		timeInState = 0;
+	}
+	else if(gameState == INSTR && input->isKeyDown(VK_SPACE))
+	{
+		gameState = MENU;
+		timeInState = 0;
 	}
 }
 //=============================================================================
@@ -577,6 +604,10 @@ void CollisionTypes::collisions()
 				bonus[i].setInvisible();
 				break;
 			}
+			if (player.collidesWith(empPowerup[i], collisionVector) && empPowerup[i].getVisible() && player.getVisible())
+			{
+				empPowerup[i].setInvisible();
+			}
 		}
 		//laser with player collision
 		for(int i = 0;i<MAX_ENEMY_LASERS;i++)
@@ -626,9 +657,14 @@ void CollisionTypes::collisions()
 				score++;
 				if(!enemy[j].getActive() && !bonus[j].getVisible())
 				{
-					if(rand()%3==0)
+					int r = rand()%6;
+					if(r==0)
 					{
 						bonus[j].setVisible();
+					}
+					else if(r==1)
+					{
+						empPowerup[j].setVisible();
 					}
 					score+=4;
 				}
@@ -656,7 +692,12 @@ void CollisionTypes::render()
 	case LOSE_SCREEN:
 		graphics->spriteBegin();// begin drawing sprites
 		lose.draw();
-		dxFontSmall->print(scoreMsg,GAME_WIDTH*.95,GAME_HEIGHT*.01);
+		dxFontSmall->print(scoreMsg,GAME_WIDTH*.85,GAME_HEIGHT*.01);
+		graphics->spriteEnd();
+		break;
+	case INSTR:
+		graphics->spriteBegin();// begin drawing sprites
+		instr.draw();
 		graphics->spriteEnd();
 		break;
 	case CHEAT:
@@ -687,7 +728,7 @@ void CollisionTypes::render()
 	case GAME_PLAY:
 		graphics->spriteBegin();                // begin drawing sprites
 		background.draw();
-		dxFontSmall->print(scoreMsg,GAME_WIDTH*.95,GAME_HEIGHT*.01);//draw score message
+		dxFontSmall->print(scoreMsg,GAME_WIDTH*.85,GAME_HEIGHT*.01);//draw score message
 	
 		for(int i = 0; i < MAX_PLAYER_LASERS; i++)
 		{
@@ -701,6 +742,7 @@ void CollisionTypes::render()
 		{
 			enemy[i].draw();
 			bonus[i].draw();
+			empPowerup[i].draw();
 		}
 		player.draw();
 		(*player.getShield()).draw();
@@ -793,6 +835,8 @@ void CollisionTypes::levelReset()
 		enemy[i].setPosition(VECTOR2(width,height));
 		bonus[i].setPos(width, height);
 		bonus[i].setInvisible();
+		empPowerup[i].setPos(width, height);
+		empPowerup[i].setInvisible();
 		enemy[i].setX(enemy[i].getPositionX());
 		enemy[i].setY(enemy[i].getPositionY());
 		(enemy[i]).setHits(0);
