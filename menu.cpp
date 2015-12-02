@@ -15,6 +15,7 @@ void Menu::initialize(Graphics *g, Input *i)
 	menuItem2 = "CHEAT CODES";
 	menuItem3 = "OPTIONS";
 	menuItem4 = "INSTRUCTIONS";
+	menuItem5 = "HIGH SCORES";
 	highlightColor = graphicsNS::BLUE;
 	normalColor = graphicsNS::RED;
 	menuAnchor = D3DXVECTOR2(GAME_WIDTH*.35,GAME_HEIGHT*.05);
@@ -56,8 +57,8 @@ void Menu::update()
 		linePtr++;
 		downDepressedLastFrame=true;
 	}
-	if (linePtr > 3) linePtr = 0;
-	if (linePtr < 0) linePtr = 3;
+	if (linePtr > 4) linePtr = 0;
+	if (linePtr < 0) linePtr = 4;
 
 	if (input->isKeyDown(VK_RETURN))
 		selectedItem = linePtr;
@@ -86,4 +87,9 @@ void Menu::displayMenu()
 		menuItemFontHighlight->print(menuItem4, menuAnchor.x, menuAnchor.y+foo);
 	else
 		menuItemFont->print(menuItem4, menuAnchor.x, menuAnchor.y+foo);
+	foo = 5*verticalOffset;
+	if (linePtr==4)
+		menuItemFontHighlight->print(menuItem5, menuAnchor.x, menuAnchor.y+foo);
+	else
+		menuItemFont->print(menuItem5, menuAnchor.x, menuAnchor.y+foo);
 }

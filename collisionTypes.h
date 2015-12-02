@@ -25,6 +25,7 @@ class CollisionTypes;
 #include "EnemyLaser.h"
 #include "menu.h"
 #include "EMPpowerup.h"
+#include "highscore.h"
 
 #define maxPatternSteps 7
 
@@ -36,8 +37,9 @@ class CollisionTypes : public Game
 private:
     // game items
 	GAME_STATES gameState;
-    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM, bonusTM, splashTM, loseTM, instrTM,empPowerupTM;   // game texture
-	Image background, splash, lose, instr;
+	highscore hs;
+    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM, bonusTM, splashTM, loseTM, instrTM,empPowerupTM,high_scoresTM;   // game texture
+	Image background, splash, lose, instr, high_scores;
     VECTOR2 collisionVector;    // collision vector
 	Player player;
 	Puck puck;
@@ -55,6 +57,7 @@ private:
 	bool shootKeyDownLastFrame;
 	TextDX *dxFontSmall;
 	std::string scoreMsg;
+	string highScoreText;
 	int playerFrames;
 	float timeInState;
 	Menu *mainMenu;
@@ -67,10 +70,13 @@ private:
 	std::string LEVEL_UP_MSG;
 	std::string optionsScreenMSG;
 	std::string cheatAttempt;
+	std::string nameAttempt;
 	std::string cheatMSG;
 	bool musicOn;
 	bool toggleKeyPressedLastFrame;
 	bool anyCheatKeyPressedLastFrame[24];
+	bool anyKeyPressedLastFrame[24];
+	bool backAnyKeyPressedLastFrame;
 	bool backCheatKeyPressedLastFrame;
 	bool forcefield;
 public:

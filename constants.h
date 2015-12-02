@@ -99,6 +99,7 @@ const int MAX_PLAYER_LASERS = 600;
 const int MAX_ENEMY_LASERS = 150;
 const double laserDamage = 5.00;
 const double kamikazeDamage = 15.00;
+const int MAX_HIGH_SCORE = 5;
 // graphic images
 const char PUCK_IMAGE[] = "..\\games_project_2\\pictures\\homework.jpg";  // game textures
 const char PADDLE_IMAGE[] =     "..\\games_project_2\\pictures\\student.jpg";      // menu texture
@@ -146,6 +147,6 @@ const char LASER[] = "laserc";
 const char ASOUND[] = "a";
 // Pattern Step Action
 enum PATTERN_STEP_ACTION {NONE, UP, DOWN, LEFT, RIGHT, TRACK, EVADE};
-enum GAME_STATES {SPLASH, GAME_PLAY,LOSE_SCREEN,NEW_LEVEL,MENU,OPTIONS,CHEAT,INSTR};
+enum GAME_STATES {SPLASH, GAME_PLAY,LOSE_SCREEN,NEW_LEVEL,MENU,OPTIONS,CHEAT,INSTR,HIGH_SCORES};
 const char INVINCIBILITY_CHEAT[] = "FORCEFIELD";
 #endif

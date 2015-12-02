@@ -8,6 +8,8 @@
 #include <random>
 #include "time.h"
 #include <windows.h>
+#include <fstream>
+#include <string>
 //=============================================================================
 // Constructor
 //=============================================================================
@@ -83,7 +85,11 @@ void CollisionTypes::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error init background"));
 	if (!instrTM.initialize(graphics, INSTR_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "My texture initialization failed"));
+	if (!high_scoresTM.initialize(graphics, BACKGROUND_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "My texture initialization failed"));
 	if (!instr.initialize(graphics, 2048,1024,0, &instrTM))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error init instr"));
+	if (!high_scores.initialize(graphics, 2048,1024,0, &high_scoresTM))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error init instr"));
 	if (!loseTM.initialize(graphics, GAME_OVER))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "initialization failed"));
@@ -117,7 +123,7 @@ void CollisionTypes::initialize(HWND hwnd)
 		enemy[i].setScale(.5);
 	}
 
-	
+	hs.changeFileName("../games_project_2/highscores.txt");
 	player.setFrames(0,1);
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
@@ -129,6 +135,8 @@ void CollisionTypes::initialize(HWND hwnd)
     player.setEdge(COLLISION_BOX_player);
     player.setCollisionRadius(COLLISION_RADIUS);
 	player.setScale(playerNS::SCALE);
+
+	highScoreText = "";
 
 
 
@@ -173,6 +181,7 @@ void CollisionTypes::initialize(HWND hwnd)
 	score = 0;
 	playerFrames=2;
 	bool backCheatKeyPressedLastFrame = false;
+	backAnyKeyPressedLastFrame = false;
 	gameState = SPLASH;
 	mainMenu = new Menu();
 	mainMenu->initialize(graphics, input);
@@ -193,6 +202,10 @@ void CollisionTypes::initialize(HWND hwnd)
 	for(int i = 0;i<24;i++)
 	{
 		anyCheatKeyPressedLastFrame[i] = false;
+	}
+	for(int i = 0;i<24;i++)
+	{
+		anyKeyPressedLastFrame[i] = false;
 	}
 	cheatAttempt = "";
 	cheatMSG = "ENTER CHEAT CODE: \nPRESS RETURN TO SUBMIT\nPRESS SPACE FOR MENU";
@@ -217,6 +230,37 @@ void CollisionTypes::update()
 	int x = 0;
 	switch(gameState)
 	{
+	case LOSE_SCREEN:
+		for(int i = 0x41; i < 0x5A; i++)
+		{
+			if(input->isKeyDown(i)&&!anyKeyPressedLastFrame[x])
+			{
+				nameAttempt += i;
+				keyPressedThisFrame[x] = true;
+			}
+			else if((input->isKeyDown(i)) && anyKeyPressedLastFrame[x])
+			{
+				keyPressedThisFrame[x] = true;
+			}
+			x++;
+		}
+		if(input->isKeyDown(VK_BACK)&&!backAnyKeyPressedLastFrame)
+		{
+			if(nameAttempt.length()>0)nameAttempt.pop_back();
+			backKeyPressedThisFrame = true;
+		}
+		else if(input->isKeyDown(VK_BACK)&&anyKeyPressedLastFrame)
+		{
+			backKeyPressedThisFrame = true;
+		}
+
+		for(int j = 0;j<24;j++)
+		{
+			anyKeyPressedLastFrame[j] = keyPressedThisFrame[j];
+		}
+		
+		backAnyKeyPressedLastFrame = backKeyPressedThisFrame;
+		break;
 	case CHEAT:
 		for(int i = 0x41; i < 0x5A; i++)
 		{
@@ -498,11 +542,14 @@ void CollisionTypes::updateState()
 	}
 	else if(gameState==GAME_PLAY && (!player.getVisible()))
 	{
+		nameAttempt = "";
 		gameState = LOSE_SCREEN;
 		timeInState = 0;
 	}
-	else if(gameState==LOSE_SCREEN && timeInState > 4)
+	else if(gameState==LOSE_SCREEN && input->isKeyDown(VK_SPACE))
 	{
+		if(nameAttempt=="")nameAttempt="anonymous";
+		hs.insertHighScore(nameAttempt,score);
 		gameState = MENU;
 		timeInState = 0;
 	}
@@ -543,6 +590,18 @@ void CollisionTypes::updateState()
 		timeInState = 0;
 	}
 	else if(gameState == INSTR && input->isKeyDown(VK_SPACE))
+	{
+		gameState = MENU;
+		timeInState = 0;
+	}
+	else if(gameState==MENU && mainMenu->getSelectedItem()==4)
+	{
+		mainMenu->setSelectedItem(-1);
+		gameState = HIGH_SCORES;
+		timeInState = 0;
+		highScoreText = hs.getHighScoreString();
+	}
+	else if(gameState == HIGH_SCORES && input->isKeyDown(VK_SPACE))
 	{
 		gameState = MENU;
 		timeInState = 0;
@@ -690,14 +749,23 @@ void CollisionTypes::render()
 	switch(gameState)
 	{
 	case LOSE_SCREEN:
+		ss2 << nameAttempt;
 		graphics->spriteBegin();// begin drawing sprites
 		lose.draw();
 		dxFontSmall->print(scoreMsg,GAME_WIDTH*.85,GAME_HEIGHT*.01);
+		levelOutput->print(ss2.str(), GAME_WIDTH*.53,GAME_HEIGHT*.75);
+		levelOutput->print("Enter Name (Space to Continue): ", GAME_WIDTH*.1,GAME_HEIGHT*.75);
 		graphics->spriteEnd();
 		break;
 	case INSTR:
 		graphics->spriteBegin();// begin drawing sprites
 		instr.draw();
+		graphics->spriteEnd();
+		break;
+	case HIGH_SCORES:
+		graphics->spriteBegin();// begin drawing sprites
+		high_scores.draw();
+		dxFontSmall->print(highScoreText,GAME_WIDTH*.4,GAME_HEIGHT*.2);
 		graphics->spriteEnd();
 		break;
 	case CHEAT:

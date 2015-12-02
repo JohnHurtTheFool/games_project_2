@@ -29,7 +29,7 @@ private:
    std::string menuHeading;
    std::string menuItem1;
    std::string menuItem2;
-   std::string menuItem3,menuItem4;
+   std::string menuItem3,menuItem4,menuItem5;
    D3DXVECTOR2 menuAnchor;
    int verticalOffset;
    int linePtr;
