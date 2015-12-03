@@ -107,6 +107,7 @@ const char BACKGROUND_IMAGE[] =     "..\\games_project_2\\pictures\\Background.p
 const char SPLASH_SCREEN[] =     "..\\games_project_2\\pictures\\Splash Screen.png";      // menu texture
 const char PLAYER_IMAGE[] =     "..\\games_project_2\\pictures\\player spritesheet.png";      // menu texture
 const char ENEMY_IMAGE[] =     "..\\games_project_2\\pictures\\enemy spritesheet two.png";      // menu texture
+const char BOSS_IMAGE[] =     "..\\games_project_2\\pictures\\bossspritesheet.png";      // menu texture
 const char ENEMY_LASER[] =     "..\\games_project_2\\pictures\\red laser.png";      // menu texture
 const char PLAYER_LASER[] =     "..\\games_project_2\\pictures\\blue laser.png";      // menu texture
 const char SHIELD_IMAGE[] =     "..\\games_project_2\\pictures\\shield.png";      // menu texture
