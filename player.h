@@ -9,6 +9,7 @@ class player;
 #include "shield.h"
 #include "constants.h"
 #include <cmath>
+#include "EMP.h"
 namespace playerNS
 {
     const int WIDTH = 90;                   // image width
@@ -30,7 +31,7 @@ private:
     bool target;
 	double health;
 	Shield shield;
-
+	EMP emp;
 public:
     // constructor
     Player();
@@ -45,7 +46,7 @@ public:
 	void setHealth(float h){health = h;}
 
 	Shield* getShield(){return &shield;}
-
+	EMP* getEMP(){return &emp;}
 	void Player::setInvisible()
 	{
 		Image::setVisible(false);

@@ -48,6 +48,8 @@ void CollisionTypes::initialize(HWND hwnd)
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player texture"));
 	if (!shieldTM.initialize(graphics,SHIELD_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing shield texture"));
+	if (!EMPTM.initialize(graphics,EMP_IMAGE))
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing emp texture"));
 	if (!bonusTM.initialize(graphics,BONUS_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bonus texture"));
 	if (!empPowerupTM.initialize(graphics,EMP_POWERUP_IMAGE))
@@ -68,6 +70,8 @@ void CollisionTypes::initialize(HWND hwnd)
 
 	if (!(*player.getShield()).initialize(this, shieldNS::WIDTH,shieldNS::HEIGHT, 0,&shieldTM))
 		throw(GameError(gameErrorNS::WARNING, "shield not initialized"));
+	if (!(*player.getEMP()).initialize(this, EMPNS::WIDTH,EMPNS::HEIGHT, 0,&EMPTM))
+		throw(GameError(gameErrorNS::WARNING, "emp not initialized"));
 
 	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
 		if (!playerLaser[i].initialize(this, LASER_WIDTH,LASER_HEIGHT, 2,&playerLaserTM))
@@ -646,7 +650,7 @@ void CollisionTypes::collisions()
 {
     collisionVector = D3DXVECTOR2(0,0);
 	collision = false;
-	if(!player.getShield()->getActive())//shield is not active
+	if(!player.getShield()->getActive()&&!player.getEMP()->getActive())//shield and emp are not active
 	{
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 		{
@@ -665,7 +669,9 @@ void CollisionTypes::collisions()
 			}
 			if (player.collidesWith(empPowerup[i], collisionVector) && empPowerup[i].getVisible() && player.getVisible())
 			{
+				player.getEMP()->setVisible();
 				empPowerup[i].setInvisible();
+				break;
 			}
 		}
 		//laser with player collision
@@ -679,16 +685,22 @@ void CollisionTypes::collisions()
 			}
 		}
 	}
-	else//shield is active
+	else//shield and/or emp is active
 	{
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 		{
-			//player with enemy collision
+			//shield with enemy collision
 			if (player.getShield()->collidesWith(enemy[i], collisionVector) /*&& enemy[i].getVisible()*/ /*&& player.getVisible()*/)
 			{	
 				enemy[i].setInvisible();
 				audio->playCue(CRASH);
 				player.getShield()->setInvisible();
+				break;
+			}
+			//forcefield with enemy collision
+			if (player.getEMP()->collidesWith(enemy[i], collisionVector) /*&& enemy[i].getVisible()*/ /*&& player.getVisible()*/)
+			{	
+				enemy[i].setInvisible();
 				break;
 			}
 		}
@@ -812,6 +824,7 @@ void CollisionTypes::render()
 			bonus[i].draw();
 			empPowerup[i].draw();
 		}
+		(*player.getEMP()).draw();
 		player.draw();
 		(*player.getShield()).draw();
 		graphics->spriteEnd();                  // end drawing sprites
@@ -892,6 +905,8 @@ void CollisionTypes::levelReset()
 	}
 	player.setVisible();
 	player.getShield()->setInvisible();
+	player.getEMP()->setInvisible();
+	player.getEMP()->resetScale();
 	player.setPosition(VECTOR2(rand()%GAME_WIDTH, rand()%GAME_HEIGHT));
 	VECTOR2 zeroVector(0,0);
 	player.setVelocity(zeroVector);

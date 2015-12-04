@@ -6,7 +6,7 @@
 
 
 
-//class PatternStep;
+class PatternStep;
 
 #include "constants.h"
 #include "entity.h"

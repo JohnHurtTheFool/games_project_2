@@ -1,26 +1,53 @@
 // file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
-#ifndef ENEMY_H                 // Prevent multiple definitions if this 
-#define ENEMY_H   
+#ifndef EMP_H                 // Prevent multiple definitions if this 
+#define EMP_H   
 #include "entity.h"
 #include "constants.h"
-#include "graphics.h"
+
 namespace EMPNS
 {
-    const int WIDTH = 100;                   // image width
-    const int HEIGHT = 100;                  // image height
+    const int WIDTH = 512;                   // image width
+    const int HEIGHT = 512;                  // image height
 	const int X = GAME_WIDTH/2 - WIDTH/2;   // location on screen
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
-	const float SHIELD_SCALE=0.5;
-   const float maxShieldTime = 15.00f;
-   const int MAX_HITS = 2;
+	const float maxEMPTime = .5f;
+	const float originalScale = .2f;
+	const float growthRatePerFrame = 1.1f;
 }
 class EMP :public Entity
 {
 private:
 	float currentTime;
+	bool counterActive;
 public:
+
 	EMP(void);
 	~EMP(void);
+	virtual void draw();
+	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
+                            TextureManager *textureM);
+    void update(float frameTime);
+	void resetScale(){setScale(EMPNS::originalScale);}
+	void EMP::setInvisible()
+	{
+		counterActive = false;
+		currentTime = 0.0f;
+		Image::setVisible(false);
+		active = false;
+	}
+
+	void EMP::setVisible()
+	{
+		counterActive = true;
+		Image::setVisible(true);
+		active = true;
+	}
+
+	virtual void setCollisionType(entityNS::COLLISION_TYPE ctype)
+    {collisionType = ctype;}
+	void setEdge(RECT e) {edge = e;}
+	void setPos(double x, double y);
+	entityNS::COLLISION_TYPE getCollisionType() {return collisionType;}
 };
 #endif

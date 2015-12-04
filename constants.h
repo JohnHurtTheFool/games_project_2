@@ -115,6 +115,7 @@ const char BONUS_IMAGE[] =     "..\\games_project_2\\pictures\\bonus.png";      
 const char EMP_POWERUP_IMAGE[] =     "..\\games_project_2\\pictures\\emp powerup.png";      // menu texture
 const char GAME_OVER[] =     "..\\games_project_2\\pictures\\game over.png";      // menu texture
 const char INSTR_IMAGE[] =     "..\\games_project_2\\pictures\\instructions.png";      // menu texture
+const char EMP_IMAGE[] =     "..\\games_project_2\\pictures\\emp.png";      // menu texture
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
 // it would be possible to save and restore key mappings from a data file.

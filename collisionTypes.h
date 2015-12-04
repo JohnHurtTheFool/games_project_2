@@ -38,7 +38,7 @@ private:
     // game items
 	GAME_STATES gameState;
 	highscore hs;
-    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM, bonusTM, splashTM, loseTM, instrTM,empPowerupTM,high_scoresTM;   // game texture
+    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM, bonusTM, splashTM, loseTM, instrTM,empPowerupTM,high_scoresTM,EMPTM;   // game texture
 	Image background, splash, lose, instr, high_scores;
     VECTOR2 collisionVector;    // collision vector
 	Player player;

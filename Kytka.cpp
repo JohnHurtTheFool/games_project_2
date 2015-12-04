@@ -83,8 +83,4 @@ void Shield::update(float frameTime)
 	{
 		setPosition(D3DXVECTOR2(getPositionX(),GAME_HEIGHT-Image::getHeight()*Image::getScale()));
 	}*/
-	
-	/*char msgbu[2048];
-	sprintf(msgbu, "Posx: %f  posy: %f\n", getPositionX(),getPositionY());
-	OutputDebugStringA(msgb*/
 }

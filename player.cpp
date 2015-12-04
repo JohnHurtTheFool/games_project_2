@@ -28,6 +28,8 @@ Player::Player() : Entity()
 	health = 100.00;
 	shield.setPos(spriteData.x-(playerNS::WIDTH/2*playerNS::SCALE)+12,spriteData.y-(playerNS::HEIGHT/2 *playerNS::SCALE)-5);
 	shield.setInvisible();
+	emp.setPos(spriteData.x-(playerNS::WIDTH/2*playerNS::SCALE)+12,spriteData.y-(playerNS::HEIGHT/2 *playerNS::SCALE)-5);
+	emp.setInvisible();
 }
 
 //=============================================================================
@@ -50,7 +52,7 @@ void Player::update(float frameTime)
 	
 	Entity::update(frameTime);
 	shield.update(frameTime);
-
+	emp.update(frameTime);
 	incPosition(D3DXVECTOR2(velocity*frameTime));
 	//velocity = D3DXVECTOR2(0,0);
 
@@ -73,6 +75,7 @@ void Player::update(float frameTime)
 	spriteData.x = getPositionX();
 	spriteData.y = getPositionY();
 	shield.setPos(spriteData.x-(playerNS::WIDTH/2*playerNS::SCALE)+12,spriteData.y-(playerNS::HEIGHT/2 *playerNS::SCALE)-5);
+	emp.setPos(spriteData.x-emp.getWidth()/(2*emp.getScale()),spriteData.y-emp.getHeight()/(2*emp.getScale()));
 	
 	/*char msgbu[2048];
 	sprintf(msgbu, "Posx: %f  posy: %f\n", shield.getPositionX(),shield.getPositionY());
