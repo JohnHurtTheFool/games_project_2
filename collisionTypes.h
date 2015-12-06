@@ -27,6 +27,7 @@ class CollisionTypes;
 #include "EMPpowerup.h"
 #include "highscore.h"
 #include "boss.h"
+#include "bossLaser.h"
 
 #define maxPatternSteps 7
 #define maxBossPatternSteps 8
@@ -42,7 +43,7 @@ private:
 	highscore hs;
     TextureManager playerTM, puckTM, enemyTM, backgroundTM,
 		playerLaserTM, enemyLaserTM, shieldTM, bonusTM, splashTM,
-		loseTM, instrTM,empPowerupTM,high_scoresTM,EMPTM,bossTM;   // game texture
+		loseTM, instrTM,empPowerupTM,high_scoresTM,EMPTM,bossTM,bossLaserTM;   // game texture
 	Image background, splash, lose, instr, high_scores;
 	bool enemiesRemain;
     VECTOR2 collisionVector;    // collision vector
@@ -56,12 +57,14 @@ private:
 	Boss boss;
 	PlayerLaser playerLaser [MAX_PLAYER_LASERS];
 	EnemyLaser enemyLaser [MAX_ENEMY_LASERS];
+	BossLaser bossLaser [MAX_ENEMY_LASERS];
 	PatternStep allPatterns[NUM_ENEMIES_INITIAL][maxPatternSteps];
 	PatternStep bossPatterns[maxBossPatternSteps];
 	int bossPatternStepIndex;
 	int patternStepIndex[NUM_ENEMIES_INITIAL];
 	int playerNextLaserIndex;//The index of the next laser to shoot.
 	int enemyNextLaserIndex;//The index of the next laser to shoot.
+	int bossNextLaserIndex;//The index of the next laser to shoot.
 	bool shootKeyDownLastFrame;
 	TextDX *dxFontSmall;
 	std::string scoreMsg;
