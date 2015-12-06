@@ -89,7 +89,7 @@ void CollisionTypes::initialize(HWND hwnd)
 	for(int i = 0; i < MAX_ENEMY_LASERS; i++)
 		if (!enemyLaser[i].initialize(this, LASER_WIDTH,LASER_HEIGHT, 2,&enemyLaserTM))
 			throw(GameError(gameErrorNS::WARNING, "enemy's laser not initialized"));
-	for(int i = 0; i < MAX_ENEMY_LASERS; i++)
+	for(int i = 0; i < MAX_BOSS_LASERS; i++)
 		if (!bossLaser[i].initialize(this, LASER_WIDTH,LASER_HEIGHT, 2,&bossLaserTM))
 			throw(GameError(gameErrorNS::WARNING, "enemy's laser not initialized"));
 
@@ -527,12 +527,12 @@ void CollisionTypes::update()
 			{
 				(bossLaser[bossNextLaserIndex]).setVisible();
 				(bossLaser[bossNextLaserIndex]).setPositionX((boss.getPositionX()+bossNS::WIDTH/4));//Center of the boss's width
-				(bossLaser[bossNextLaserIndex]).setPositionY((boss.getPositionY()+bossNS::HEIGHT/4));//top of enemy
+				(bossLaser[bossNextLaserIndex]).setPositionY((boss.getPositionY()+bossNS::HEIGHT/4));//top of boss
 				float rad = boss.getRadians();
-				VECTOR2 laserVelocityEnemy((boss.getVelocity()).x+enemyLaserNS::SPEED_X*sin(boss.getRadians()),-boss.getVelocity().y+enemyLaserNS::SPEED_Y*cos(boss.getRadians()));
-				(bossLaser[bossNextLaserIndex]).setVelocity(laserVelocityEnemy);
+				VECTOR2 laserVelocityBoss((boss.getVelocity()).x+bossLaserNS::SPEED_X*sin(boss.getRadians()),-boss.getVelocity().y+bossNS::SPEED_Y*cos(boss.getRadians()));
+				(bossLaser[bossNextLaserIndex]).setVelocity(laserVelocityBoss);
 				(bossLaser[bossNextLaserIndex]).setRadians(boss.getRadians());
-				bossNextLaserIndex=(bossNextLaserIndex+1)%MAX_ENEMY_LASERS;
+				bossNextLaserIndex=(bossNextLaserIndex+1)%MAX_BOSS_LASERS;
 			}
 		}
 	
@@ -544,7 +544,7 @@ void CollisionTypes::update()
 		{
 			enemyLaser[i].update(frameTime);
 		}
-		for(int i = 0; i < MAX_ENEMY_LASERS; i++)
+		for(int i = 0; i < MAX_BOSS_LASERS; i++)
 		{
 			bossLaser[i].update(frameTime);
 		}
@@ -787,13 +787,13 @@ void CollisionTypes::collisions()
 			{
 				player.setHealth(player.getHealth() - bossKamikazeDamage);
 			}
-			for(int i = 0;i<MAX_ENEMY_LASERS;i++)
+			for(int i = 0;i<MAX_BOSS_LASERS;i++)
 			{
 				if(bossLaser[i].getVisible())
 				{
 					if (player.collidesWith(bossLaser[i], collisionVector))
 					{
-						player.setHealth(player.getHealth() - laserDamage);
+						player.setHealth(player.getHealth() - BOSS_LASER_DAMAGE);
 						bossLaser[i].setInvisible();
 						audio->playCue(LASER);
 					}
@@ -855,6 +855,12 @@ void CollisionTypes::collisions()
 			if (player.getEMP()->collidesWith(enemy[i], collisionVector) /*&& enemy[i].getVisible()*/ /*&& player.getVisible()*/)
 			{	
 				enemy[i].setInvisible();
+				break;
+			}
+			if (player.getShield()->collidesWith(boss, collisionVector) && boss.getVisible() && player.getVisible())//player with boss collision
+			{
+				audio->playCue(CRASH);
+				player.getShield()->setInvisible();
 				break;
 			}
 		}
@@ -991,11 +997,11 @@ void CollisionTypes::render()
 		dxFontSmall->print(scoreMsg,GAME_WIDTH*.85,GAME_HEIGHT*.01);//draw score message
 		if(boss.getVisible())
 		{
-			boss.draw();
-			for(int i = 0; i < MAX_ENEMY_LASERS; i++)
+			for(int i = 0; i < MAX_BOSS_LASERS; i++)
 			{
 				bossLaser[i].draw();
 			}
+			boss.draw();
 		}
 		for(int i = 0; i < MAX_PLAYER_LASERS; i++)
 		{

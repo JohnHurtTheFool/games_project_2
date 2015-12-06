@@ -13,7 +13,7 @@ namespace bossLaserNS
     const int HEIGHT = 4;                  // image height
     const float SPEED_X = 200;                
 	const float SPEED_Y = 200;
-	const float SCALE = 2;
+	const float SCALE = 10;
  
 }
 class BossLaser : public Entity

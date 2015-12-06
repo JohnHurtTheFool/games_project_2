@@ -26,7 +26,7 @@ BossLaser::BossLaser() : Entity()
 	edge.top = -bossLaserNS::HEIGHT/2;
 	edge.right = bossLaserNS::WIDTH/2;
 	edge.left = -bossLaserNS::WIDTH/2;
-	spriteData.scale = 1;
+	spriteData.scale = bossLaserNS::SCALE;
 
 }
 
@@ -56,8 +56,8 @@ void BossLaser::update(float frameTime)
     Entity::update(frameTime);
 	float foo = velocity.x * directionX * frameTime;
 	Entity::incPositionX(foo);
-	foo = velocity.y * directionY * frameTime;
-	Entity::incPositionY(foo);
+	float bar = velocity.y * directionY * frameTime;
+	Entity::incPositionY(bar);
 
 	if (Entity::getPositionX()+spriteData.width > GAME_WIDTH)  
 	{

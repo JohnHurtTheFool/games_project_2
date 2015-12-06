@@ -97,10 +97,12 @@ const int LASER_WIDTH = 2;
 const int NUM_ENEMIES_INITIAL = 15;
 const int MAX_PLAYER_LASERS = 600;
 const int MAX_ENEMY_LASERS = 150;
+const int MAX_BOSS_LASERS = 150;
 const double laserDamage = 5.00;
 const double kamikazeDamage = 15.00;
 const double bossKamikazeDamage = 25.00;
-const int empDamage = 7.5;
+const double BOSS_LASER_DAMAGE = 10.0;
+const double empDamage = 7.5;
 const int MAX_HIGH_SCORE = 5;
 // graphic images
 const char PUCK_IMAGE[] = "..\\games_project_2\\pictures\\homework.jpg";  // game textures

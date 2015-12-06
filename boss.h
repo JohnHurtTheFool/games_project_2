@@ -16,7 +16,7 @@ namespace bossNS
     const int X = GAME_WIDTH/2 - WIDTH/2;   // location on screen
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
     const float SPEED_X = 0;                
-	const float SPEED_Y = -0;
+	const float SPEED_Y = 200;
 	const float ACCELERATION = .005;
 }
 
