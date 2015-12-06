@@ -26,8 +26,10 @@ class CollisionTypes;
 #include "menu.h"
 #include "EMPpowerup.h"
 #include "highscore.h"
+#include "boss.h"
 
 #define maxPatternSteps 7
+#define maxBossPatternSteps 8
 
 //=============================================================================
 // This class is the core of the game
@@ -38,8 +40,11 @@ private:
     // game items
 	GAME_STATES gameState;
 	highscore hs;
-    TextureManager playerTM, puckTM, enemyTM, backgroundTM, playerLaserTM, enemyLaserTM, shieldTM, bonusTM, splashTM, loseTM, instrTM,empPowerupTM,high_scoresTM,EMPTM;   // game texture
+    TextureManager playerTM, puckTM, enemyTM, backgroundTM,
+		playerLaserTM, enemyLaserTM, shieldTM, bonusTM, splashTM,
+		loseTM, instrTM,empPowerupTM,high_scoresTM,EMPTM,bossTM;   // game texture
 	Image background, splash, lose, instr, high_scores;
+	bool enemiesRemain;
     VECTOR2 collisionVector;    // collision vector
 	Player player;
 	Puck puck;
@@ -48,9 +53,12 @@ private:
 	int score;
 	bool collision;
 	Enemy enemy[NUM_ENEMIES_INITIAL];
+	Boss boss;
 	PlayerLaser playerLaser [MAX_PLAYER_LASERS];
 	EnemyLaser enemyLaser [MAX_ENEMY_LASERS];
 	PatternStep allPatterns[NUM_ENEMIES_INITIAL][maxPatternSteps];
+	PatternStep bossPatterns[maxBossPatternSteps];
+	int bossPatternStepIndex;
 	int patternStepIndex[NUM_ENEMIES_INITIAL];
 	int playerNextLaserIndex;//The index of the next laser to shoot.
 	int enemyNextLaserIndex;//The index of the next laser to shoot.
@@ -66,6 +74,7 @@ private:
 	std::string outString;
 	void levelReset();
 	int currentEnemyMaxHits;
+	int currentBossMaxHits;
 	int levelNumber;
 	std::string LEVEL_UP_MSG;
 	std::string optionsScreenMSG;

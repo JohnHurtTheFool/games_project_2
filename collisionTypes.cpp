@@ -64,9 +64,15 @@ void CollisionTypes::initialize(HWND hwnd)
 	 if (!splashTM.initialize(graphics,SPLASH_SCREEN))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player laser textures"));
 
-	//entity inits
-	if (!player.initialize(this, SPACESHIP_SIZE,SPACESHIP_SIZE, 2,&playerTM))
+	 if (!bossTM.initialize(graphics,BOSS_IMAGE))
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player laser textures"));
+
+	 if (!player.initialize(this, SPACESHIP_SIZE,SPACESHIP_SIZE, 2,&playerTM))
 		throw(GameError(gameErrorNS::WARNING, "player not initialized"));
+
+	//entity inits
+	 if (!boss.initialize(this, bossNS::WIDTH,bossNS::HEIGHT, 2,&bossTM))
+		throw(GameError(gameErrorNS::WARNING, "boss not initialized"));
 
 	if (!(*player.getShield()).initialize(this, shieldNS::WIDTH,shieldNS::HEIGHT, 0,&shieldTM))
 		throw(GameError(gameErrorNS::WARNING, "shield not initialized"));
@@ -136,6 +142,8 @@ void CollisionTypes::initialize(HWND hwnd)
 		(enemy[i]).setFrames(2,3);
 	}
 
+	boss.setFrames(2,3);
+
 	player.setPosition(VECTOR2(rand()%GAME_WIDTH, rand()%GAME_HEIGHT));
     player.setCollisionType(entityNS::BOX);
     player.setEdge(COLLISION_BOX_player);
@@ -180,6 +188,34 @@ void CollisionTypes::initialize(HWND hwnd)
 		allPatterns[j][6].setAction(NONE);
 		allPatterns[j][6].setTimeForStep(1);
 	}
+
+	bossPatternStepIndex = rand()%maxBossPatternSteps;
+
+
+	for (int i = 0; i< maxBossPatternSteps; i++)
+	{
+		bossPatterns[i].initializeBoss(&boss);
+		bossPatterns[i].setActive();
+	}
+
+
+	bossPatterns[0].setAction(TRACK);
+	bossPatterns[0].setTimeForStep(2);
+	bossPatterns[1].setAction(RIGHT);
+	bossPatterns[1].setTimeForStep(2);
+	bossPatterns[2].setAction(DOWN);
+	bossPatterns[2].setTimeForStep(2);
+	bossPatterns[3].setAction(LEFT);
+	bossPatterns[3].setTimeForStep(2);
+	bossPatterns[4].setAction(UP);
+	bossPatterns[4].setTimeForStep(2);
+	bossPatterns[5].setAction(TRACK);
+	bossPatterns[5].setTimeForStep(5);
+	bossPatterns[6].setAction(TRACK);
+	bossPatterns[6].setTimeForStep(3);
+	bossPatterns[7].setAction(TRACK);
+	bossPatterns[7].setTimeForStep(9);
+
 	playerNextLaserIndex = 0;
 	enemyNextLaserIndex = 0;
 	bool shootKeyDownLastFrame = false;
@@ -206,6 +242,7 @@ void CollisionTypes::initialize(HWND hwnd)
 	LEVEL_UP_MSG = "LEVEL ";
 	optionsScreenMSG = "MUSIC IS CURRENTLY";
 	currentEnemyMaxHits = 0;
+	currentBossMaxHits = 0;
 	toggleKeyPressedLastFrame = false;
 	for(int i = 0;i<24;i++)
 	{
@@ -318,6 +355,7 @@ void CollisionTypes::update()
 		break;
 	case GAME_PLAY:
 		player.update(frameTime);
+		enemiesRemain = false; //assume enemies dont remain until check for active enemies
 		if(forcefield)
 			player.getShield()->setVisible();
 		if(sp)
@@ -492,20 +530,7 @@ void CollisionTypes::update()
 			empPowerup[i].update(frameTime);
 			empPowerup[i].setPos(enemy[i].getPositionX(),enemy[i].getPositionY());
 		}
-		/*
-		if(player.getHealth() <= 60.00 && player.getHealth() > 30.00)
-		{
-			player.setFrames(10,11);
-		}
-		else if(player.getHealth() <= 30.00 && player.getHealth() >= 0.00)
-		{
-			player.setFrames(18,19);
-		}
-		else if(player.getHealth() <= 0.00)
-		{
-			player.setInvisible();
-		}
-		*/
+
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 		{
 			if((enemy[i]).getHits() <= currentEnemyMaxHits && (enemy[i]).getHits() <= 0.3f *currentEnemyMaxHits)
@@ -525,6 +550,38 @@ void CollisionTypes::update()
 				(enemy[i]).setInvisible();
 			}
 		}
+		for(int i = 0; i < NUM_ENEMIES_INITIAL;i++)
+		{
+			if((enemy[i]).getVisible())
+			{
+				enemiesRemain = true;
+				break;
+			}
+		}
+		if(!enemiesRemain)
+		{
+			boss.setVisible();
+		}
+		if(boss.getVisible())
+		{
+			boss.update(frameTime);
+			if(boss.getHealth() >= 60.00)
+			{
+				boss.setFrames(2,3);
+			}
+			else if(boss.getHealth() <= 60.00 && boss.getHealth() > 30.00)
+			{
+				boss.setFrames(10,11);
+			}
+			else if(boss.getHealth() <= 30.00 && boss.getHealth() >= 0.00)
+			{
+				boss.setFrames(18,19);
+			}
+			else if(boss.getHealth() <= 0.00)
+			{
+				boss.setInvisible();
+			}
+		}
 		scoreMsg= "Score: "+std::to_string(score);
 		break;
 		case SPLASH:
@@ -536,15 +593,7 @@ void CollisionTypes::update()
 void CollisionTypes::updateState()
 {
 	timeInState+=frameTime;
-	bool enemiesRemain = false;
-	for(int i = 0; i < NUM_ENEMIES_INITIAL;i++)
-	{
-		if((enemy[i]).getVisible())
-		{
-			enemiesRemain = true;
-			break;
-		}
-	}
+	
 	if(gameState==SPLASH && timeInState >3)
 	{
 		gameState = MENU;
@@ -587,7 +636,7 @@ void CollisionTypes::updateState()
 		gameState = MENU;
 		timeInState = 0;
 	}
-	else if(gameState==GAME_PLAY && !enemiesRemain)
+	else if(gameState==GAME_PLAY && !enemiesRemain && !boss.getVisible())
 	{
 		levelNumber++;
 		levelReset();
@@ -662,6 +711,7 @@ void CollisionTypes::ai()
 	{
 		enemy[i].ai(frameTime, player);
 	}
+	boss.ai(frameTime, player);
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		if (allPatterns[i][patternStepIndex[i]].isFinished())
@@ -683,6 +733,17 @@ void CollisionTypes::ai()
 	{
 		allPatterns[i][patternStepIndex[i]].update(frameTime);
 	}
+
+	if (bossPatterns[bossPatternStepIndex].isFinished())
+	{
+		if((boss).getVisible())
+		{
+			bossPatterns[bossPatternStepIndex].setActive();
+			bossPatternStepIndex=(rand())%maxBossPatternSteps;
+		}				
+	}
+
+	bossPatterns[bossPatternStepIndex].updateBoss(frameTime);
 }
 
 //=============================================================================
@@ -694,6 +755,13 @@ void CollisionTypes::collisions()
 	collision = false;
 	if(!player.getShield()->getActive()&&!player.getEMP()->getActive())//shield and emp are not active
 	{
+		if(!enemiesRemain && boss.getVisible())
+		{
+			if (player.collidesWith(boss, collisionVector) && boss.getVisible() && player.getVisible())//player with boss collision
+			{
+				player.setHealth(player.getHealth() - bossKamikazeDamage);
+			}
+		}
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 		{
 			//player with enemy collision
@@ -791,6 +859,20 @@ void CollisionTypes::collisions()
 			}
 		}
 	}
+	//player laser boss collision
+	if(boss.getActive())
+	{
+		for(int x = 0;x<MAX_PLAYER_LASERS;x++)
+		{
+			if(boss.collidesWith(playerLaser[x], collisionVector) && playerLaser[x].getVisible())
+			{
+				playerLaser[x].setInvisible();
+				boss.wasHit();
+				score++;
+				//update score
+			}
+		}
+	}
 }
 
 //=============================================================================
@@ -857,7 +939,7 @@ void CollisionTypes::render()
 		graphics->spriteBegin();                // begin drawing sprites
 		background.draw();
 		dxFontSmall->print(scoreMsg,GAME_WIDTH*.85,GAME_HEIGHT*.01);//draw score message
-	
+		if(boss.getVisible())boss.draw();
 		for(int i = 0; i < MAX_PLAYER_LASERS; i++)
 		{
 			playerLaser[i].draw();
@@ -945,6 +1027,10 @@ void CollisionTypes::resetAll()
 void CollisionTypes::levelReset()
 {
 	player.setHealth(100.00);
+	boss.setHealth(100.00);
+	boss.setInvisible();
+	currentBossMaxHits += 15;
+	boss.setMaxHits(currentBossMaxHits);
 	audio->stopCue(BACKGROUND);
 	if(musicOn)
 		audio->playCue(BACKGROUND);

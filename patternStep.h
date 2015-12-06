@@ -14,6 +14,7 @@ class PatternStep;
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "enemy.h"
+#include "boss.h"
 
 namespace patternStepNS
 {
@@ -26,6 +27,7 @@ private:
     bool active;                  
 	float timeInStep; //accumulates the time step has executed
 	Enemy *entity;
+	Boss *boss;
 	float timeForStep; //limit on the time for the step
 	PATTERN_STEP_ACTION action;
 
@@ -33,7 +35,10 @@ public:
     PatternStep();
     void initialize(Enemy *e);
     void update(float frameTime);
+	void updateBoss(float frameTime);
 	void setEntity(Enemy *e) {entity = e;}
+	void initializeBoss(Boss *b);
+	void setEntity(Boss *b) {boss = b;}
 	void setAction(PATTERN_STEP_ACTION a) {action = a;}
 	void setTimeForStep(float time) {timeForStep = time;}
 	bool isFinished() {return !active;}
