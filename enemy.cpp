@@ -24,6 +24,10 @@ Enemy::Enemy() : Entity()
 	active = true;
 	speed = 50;
 	hits = 0;
+	emp.setPos(getX()+enemyNS::WIDTH/2-(emp.getCurrWidth()/2),getY()+enemyNS::HEIGHT/2-(emp.getCurrHeight()/2));
+	//emp.resetScale();
+	emp.setInvisible();
+	empCounter=0;
 	//maxHits = 3;
 }
 void Enemy::wasHit()
@@ -85,6 +89,7 @@ void Enemy::update(float frameTime)
 	incPosition(foo);
 	Image::setX(getPositionX());
 	Image::setY(getPositionY());
+	emp.setPos(getX()+enemyNS::WIDTH/2-(emp.getCurrWidth()/2),getY()+enemyNS::HEIGHT/2-(emp.getCurrHeight()/2));
     Entity::update(frameTime);
 }
 

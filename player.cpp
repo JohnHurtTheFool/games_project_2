@@ -27,9 +27,11 @@ Player::Player() : Entity()
 	edge.left = -playerNS::WIDTH/2;
 	health = 100.00;
 	shield.setPos(spriteData.x-(playerNS::WIDTH/2*playerNS::SCALE)+12,spriteData.y-(playerNS::HEIGHT/2 *playerNS::SCALE)-5);
+	//shield.setPos(getX()+playerNS::WIDTH/2-(emp.getCurrWidth()/2),getY()+playerNS::HEIGHT/2-(emp.getCurrHeight()/2));
 	shield.setInvisible();
-	emp.setPos(spriteData.x-(playerNS::WIDTH/2*playerNS::SCALE)+12,spriteData.y-(playerNS::HEIGHT/2 *playerNS::SCALE)-5);
+	emp.setPos(getX()+playerNS::WIDTH/2-(emp.getCurrWidth()/2),getY()+playerNS::HEIGHT/2-(emp.getCurrHeight()/2));
 	emp.setInvisible();
+	hasEmp = false;
 }
 
 //=============================================================================
@@ -75,7 +77,8 @@ void Player::update(float frameTime)
 	spriteData.x = getPositionX();
 	spriteData.y = getPositionY();
 	shield.setPos(spriteData.x-(playerNS::WIDTH/2*playerNS::SCALE)+12,spriteData.y-(playerNS::HEIGHT/2 *playerNS::SCALE)-5);
-	emp.setPos(spriteData.x-emp.getWidth()/(2*emp.getScale()),spriteData.y-emp.getHeight()/(2*emp.getScale()));
+	int w = emp.getWidth()/(2/emp.getScale());
+	emp.setPos(spriteData.x-emp.getWidth()*emp.getScale()/2,spriteData.y-emp.getHeight()*emp.getScale()/2);
 	
 	/*char msgbu[2048];
 	sprintf(msgbu, "Posx: %f  posy: %f\n", shield.getPositionX(),shield.getPositionY());

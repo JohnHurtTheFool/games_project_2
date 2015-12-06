@@ -49,6 +49,6 @@ void EMP::draw()
 void EMP::setPos(double x, double y)
 {
 	setPosition(VECTOR2(x,y));
-	spriteData.x=getPositionX();
-	spriteData.y=getPositionY();
+	spriteData.x = getPositionX();
+	spriteData.y = getPositionY();
 }

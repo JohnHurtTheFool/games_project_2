@@ -72,7 +72,9 @@ void CollisionTypes::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::WARNING, "shield not initialized"));
 	if (!(*player.getEMP()).initialize(this, EMPNS::WIDTH,EMPNS::HEIGHT, 0,&EMPTM))
 		throw(GameError(gameErrorNS::WARNING, "emp not initialized"));
-
+	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
+		if (!(*enemy[i].getEMP()).initialize(this, EMPNS::WIDTH,EMPNS::HEIGHT, 0,&EMPTM))
+			throw(GameError(gameErrorNS::WARNING, "emp not initialized"));
 	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
 		if (!playerLaser[i].initialize(this, LASER_WIDTH,LASER_HEIGHT, 2,&playerLaserTM))
 			throw(GameError(gameErrorNS::WARNING, "player's laser not initialized"));
@@ -324,6 +326,30 @@ void CollisionTypes::update()
 				player.up();
 		if(input->isKeyDown(player_DOWN) && (magSquared < playerNS::MAX_VELOCITY_SQUARED || playerVel.y < 0))
 				player.down();
+		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
+			if(!(rand()%10000)&&enemy[i].getVisible()&&!enemy[i].getEMP()->getActive()) 
+			{
+ 				enemy[i].getEMP()->setActive(true);
+				enemy[i].getEMP()->setVisible();
+			}
+		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
+			if(enemy[i].getEMP()->getActive())
+			{
+ 				enemy[i].setEMPCounter(enemy[i].getEMPCounter()+frameTime);
+				enemy[i].getEMP()->setScale(enemy[i].getEMP()->getScale()*EMPNS::growthRatePerFrame);
+				if(enemy[i].getEMPCounter()>=EMPNS::maxEMPTime)
+				{
+					enemy[i].getEMP()->setActive(false);
+					enemy[i].getEMP()->setInvisible();
+					enemy[i].setEMPCounter(0);
+					enemy[i].getEMP()->resetScale();
+				}
+			}
+		if(input->isKeyDown(LAUNCH_EMP) && player.getHasEmp())
+		{
+			player.setHasEmp(false);
+			player.getEMP()->setVisible();
+		}
 		if(input->isKeyDown(player_UP) && (magSquared < playerNS::MAX_VELOCITY_SQUARED || playerVel.y > 0))
 		{
 			if(magSquared < (playerNS::MAX_VELOCITY_SQUARED/3))
@@ -669,9 +695,15 @@ void CollisionTypes::collisions()
 			}
 			if (player.collidesWith(empPowerup[i], collisionVector) && empPowerup[i].getVisible() && player.getVisible())
 			{
-				player.getEMP()->setVisible();
+				player.setHasEmp(true);
 				empPowerup[i].setInvisible();
 				break;
+			}
+			if (player.collidesWith(*(enemy[i]).getEMP(), collisionVector) && enemy[i].getEMP()->getActive() && player.getVisible())
+			{
+				player.setHealth(player.getHealth() - empDamage);
+				(enemy[i]).getEMP()->setActive(false);
+				//audio->playCue(CRASH);
 			}
 		}
 		//laser with player collision
@@ -823,6 +855,8 @@ void CollisionTypes::render()
 			enemy[i].draw();
 			bonus[i].draw();
 			empPowerup[i].draw();
+			if((enemy[i]).getEMP()->getActive())
+				((enemy[i]).getEMP()->draw());
 		}
 		(*player.getEMP()).draw();
 		player.draw();
@@ -902,10 +936,13 @@ void CollisionTypes::levelReset()
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		(enemy[i]).setMaxHits(currentEnemyMaxHits);
+		(enemy[i]).getEMP()->setActive(false);
+		(enemy[i]).setEMPCounter(0);
 	}
 	player.setVisible();
 	player.getShield()->setInvisible();
 	player.getEMP()->setInvisible();
+	player.setHasEmp(false);
 	player.getEMP()->resetScale();
 	player.setPosition(VECTOR2(rand()%GAME_WIDTH, rand()%GAME_HEIGHT));
 	VECTOR2 zeroVector(0,0);

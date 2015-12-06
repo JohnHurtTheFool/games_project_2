@@ -12,8 +12,8 @@ namespace EMPNS
 	const int X = GAME_WIDTH/2 - WIDTH/2;   // location on screen
     const int Y = GAME_HEIGHT/2 - HEIGHT/2;
 	const float maxEMPTime = .5f;
-	const float originalScale = .2f;
-	const float growthRatePerFrame = 1.1f;
+	const float originalScale = .1f;
+	const float growthRatePerFrame = 1.02f;
 }
 class EMP :public Entity
 {
@@ -27,6 +27,8 @@ public:
 	virtual void draw();
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
                             TextureManager *textureM);
+	float getCurrWidth(){return EMPNS::WIDTH*getScale();}
+	float getCurrHeight(){return EMPNS::HEIGHT*getScale();}
     void update(float frameTime);
 	void resetScale(){setScale(EMPNS::originalScale);}
 	void EMP::setInvisible()

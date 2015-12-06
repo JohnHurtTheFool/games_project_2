@@ -8,7 +8,7 @@ class Enemy;
 #include "entity.h"
 #include "constants.h"
 #include "graphics.h"
-
+#include "EMP.h"
 
 namespace enemyNS
 {
@@ -32,21 +32,22 @@ private:
 	VECTOR2 velocity;
 	float speed;
 	Entity targetEntity;
-	//void vectorTrack();
-	//void deltaTrack();
-	//void evade();
+	EMP emp;
 	VECTOR2 dir;
 	int maxHits;
 	int hits;
+	float empCounter;
 public:
     // constructor
     Enemy();
+	float getEMPCounter() {return empCounter;}
+	void setEMPCounter(float set) {empCounter = set;}
 	void setMaxHits(int max);
 	void setHits(int h) {hits = h;}
 	//void setMaxHits(int max){maxHits = max;}
 	//int getMaxHits(){return maxHits;}
 	void wasHit();
-	
+	EMP* getEMP(){return &emp;}
 
     // inherited member functions
     virtual bool initialize(Game *gamePtr, int width, int height, int ncols,

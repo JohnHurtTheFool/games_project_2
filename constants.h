@@ -99,6 +99,7 @@ const int MAX_PLAYER_LASERS = 600;
 const int MAX_ENEMY_LASERS = 150;
 const double laserDamage = 5.00;
 const double kamikazeDamage = 15.00;
+const int empDamage = 7.5;
 const int MAX_HIGH_SCORE = 5;
 // graphic images
 const char PUCK_IMAGE[] = "..\\games_project_2\\pictures\\homework.jpg";  // game textures
@@ -128,6 +129,7 @@ const UCHAR player_UP = VK_UP;
 const UCHAR player_DOWN = VK_DOWN;
 const UCHAR PLAYER_SHOOT = VK_SPACE;
 const UCHAR TOGGLE_MUSIC = VK_TAB;
+const UCHAR LAUNCH_EMP = 0x45;
 //
 
 // audio files required by audio.cpp

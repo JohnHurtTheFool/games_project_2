@@ -32,6 +32,7 @@ private:
 	double health;
 	Shield shield;
 	EMP emp;
+	bool hasEmp;
 public:
     // constructor
     Player();
@@ -47,6 +48,8 @@ public:
 
 	Shield* getShield(){return &shield;}
 	EMP* getEMP(){return &emp;}
+	bool getHasEmp() {return hasEmp;}
+	void setHasEmp(bool has) {hasEmp = has;}
 	void Player::setInvisible()
 	{
 		Image::setVisible(false);
