@@ -79,6 +79,8 @@ private:
 	bool backAnyKeyPressedLastFrame;
 	bool backCheatKeyPressedLastFrame;
 	bool forcefield;
+	bool maiman;
+	bool sp;
 public:
     // Constructor
     CollisionTypes();

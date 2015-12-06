@@ -77,7 +77,7 @@ inline void safeOnResetDevice(T& ptr)
 const char CLASS_NAME[] = "AI";
 const char GAME_TITLE[] = "SPACESHIP CONTROL";
 const bool FULLSCREEN = false;              // windowed or fullscreen
-const UINT GAME_WIDTH =  1270;               // width of game in pixels
+const UINT GAME_WIDTH =  1265;               // width of game in pixels
 const UINT GAME_HEIGHT = 800;               // height of game in pixels
 const float BACKGROUND_SCALE = 0.8;
 
@@ -153,4 +153,6 @@ const char ASOUND[] = "a";
 enum PATTERN_STEP_ACTION {NONE, UP, DOWN, LEFT, RIGHT, TRACK, EVADE};
 enum GAME_STATES {SPLASH, GAME_PLAY,LOSE_SCREEN,NEW_LEVEL,MENU,OPTIONS,CHEAT,INSTR,HIGH_SCORES};
 const char INVINCIBILITY_CHEAT[] = "FORCEFIELD";
+const char LASER_CHEAT[] = "MAIMAN";
+const char EMP_CHEAT[] = "STARFISHPRIME";
 #endif

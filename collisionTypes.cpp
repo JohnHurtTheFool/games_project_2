@@ -201,6 +201,8 @@ void CollisionTypes::initialize(HWND hwnd)
 	levelOutput->setFontColor(graphicsNS::BLUE);
 	levelNumber=1;
 	forcefield = false;
+	maiman = false;
+	sp = false;
 	LEVEL_UP_MSG = "LEVEL ";
 	optionsScreenMSG = "MUSIC IS CURRENTLY";
 	currentEnemyMaxHits = 0;
@@ -318,6 +320,8 @@ void CollisionTypes::update()
 		player.update(frameTime);
 		if(forcefield)
 			player.getShield()->setVisible();
+		if(sp)
+			player.setHasEmp(true);
 		if(input->isKeyDown(player_LEFT))
 				player.left();
 		if(input->isKeyDown(player_RIGHT))
@@ -611,6 +615,18 @@ void CollisionTypes::updateState()
 		{
 			cheatAttempt = "";
 			forcefield = true;
+		}
+		if(!strcmp(cheatAttempt.c_str(),LASER_CHEAT))
+		{
+			cheatAttempt = "";
+			maiman = true;
+			for(int i = 0; i < MAX_PLAYER_LASERS; i++)
+				playerLaser[i].setScale(10);
+		}
+		if(!strcmp(cheatAttempt.c_str(),EMP_CHEAT))
+		{
+			cheatAttempt = "";
+			sp = true;
 		}
 	}
 	else if(gameState==MENU && mainMenu->getSelectedItem()==3)
@@ -938,6 +954,8 @@ void CollisionTypes::levelReset()
 		(enemy[i]).setMaxHits(currentEnemyMaxHits);
 		(enemy[i]).getEMP()->setActive(false);
 		(enemy[i]).setEMPCounter(0);
+		enemy[i].getEMP()->setInvisible();
+		enemy[i].getEMP()->resetScale();
 	}
 	player.setVisible();
 	player.getShield()->setInvisible();
