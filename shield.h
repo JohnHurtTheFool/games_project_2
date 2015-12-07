@@ -41,7 +41,6 @@ public:
 	void Shield::setInvisible()
 	{
 		counterActive = false;
-		currentTime = 0.0f;
 		Image::setVisible(false);
 		active = false;
 	}
@@ -49,6 +48,7 @@ public:
 	void Shield::setVisible()
 	{
 		counterActive = true;
+		currentTime = 0.0f;
 		Image::setVisible(true);
 		active = true;
 		hits=0;

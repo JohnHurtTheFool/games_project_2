@@ -864,6 +864,18 @@ void CollisionTypes::collisions()
 				player.getShield()->setInvisible();
 				break;
 			}
+			if (player.getShield()->collidesWith(bonus[i], collisionVector) && bonus[i].getVisible() && player.getVisible())
+			{
+				player.getShield()->setVisible();
+				bonus[i].setInvisible();
+				break;
+			}
+			if (player.getShield()->collidesWith(empPowerup[i], collisionVector) && empPowerup[i].getVisible() && player.getVisible())
+			{
+				player.setHasEmp(true);
+				empPowerup[i].setInvisible();
+				break;
+			}
 		}
 		//player with laser collision
 		for(int i = 0;i<MAX_ENEMY_LASERS;i++)
