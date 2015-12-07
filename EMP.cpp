@@ -6,7 +6,7 @@ EMP::EMP(void)
     spriteData.rect.bottom = EMPNS::HEIGHT/2;    // rectangle to select parts of an image
     spriteData.rect.right = EMPNS::WIDTH;
     startFrame = 0;              // first frame of ship animation
-    endFrame     = 0;              // last frame of ship animation
+    endFrame   = 0;              // last frame of ship animation
     currentFrame = startFrame;
     //radius = playerNS::WIDTH/2.0;                 // collision radius
 	collisionType =entityNS::BOX;

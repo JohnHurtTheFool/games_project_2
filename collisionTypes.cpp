@@ -118,6 +118,8 @@ void CollisionTypes::initialize(HWND hwnd)
 	float height;
 	float width;
 
+	pm.initialize(graphics);
+
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		if (!enemy[i].initialize(this, SPACESHIP_SIZE, SPACESHIP_SIZE, 2,&enemyTM))
@@ -261,6 +263,13 @@ void CollisionTypes::initialize(HWND hwnd)
 	cheatAttempt = "";
 	cheatMSG = "ENTER CHEAT CODE: \nPRESS RETURN TO SUBMIT\nPRESS SPACE FOR MENU";
 	return;
+}
+
+void CollisionTypes::createParticleEffect(VECTOR2 pos, VECTOR2 vel, int numParticles){
+
+	pm.setPosition(pos);
+	pm.setVelocity(vel);
+	pm.setVisibleNParticles(numParticles);
 }
 
 //=============================================================================
@@ -608,6 +617,7 @@ void CollisionTypes::update()
 				boss.setInvisible();
 			}
 		}
+		pm.update(frameTime);
 		scoreMsg= "Score: "+std::to_string(score);
 		break;
 		case SPLASH:
@@ -780,6 +790,7 @@ void CollisionTypes::collisions()
 {
     collisionVector = D3DXVECTOR2(0,0);
 	collision = false;
+	VECTOR2 foo, bar;
 	if(!player.getShield()->getActive()&&!player.getEMP()->getActive())//shield and emp are not active
 	{
 		if(boss.getVisible())
@@ -808,6 +819,9 @@ void CollisionTypes::collisions()
 			{
 				player.setHealth(player.getHealth() - kamikazeDamage);
 				enemy[i].setInvisible();
+				foo = VECTOR2(enemy[i].getCenterX()-10, enemy[i].getCenterY());
+				bar = VECTOR2(-1,0);
+				createParticleEffect(foo, bar, 20);
 				audio->playCue(CRASH);
 			}
 			if (player.collidesWith(bonus[i], collisionVector) && bonus[i].getVisible() && player.getVisible())
@@ -842,6 +856,21 @@ void CollisionTypes::collisions()
 	}
 	else//shield and/or emp is active
 	{
+		if(boss.getVisible())
+		{
+			if(player.getEMP()->collidesWith(boss, collisionVector) /*&& enemy[i].getVisible()*/ /*&& player.getVisible()*/)
+			{	
+				boss.empHit();
+			}
+			if (player.getShield()->collidesWith(boss, collisionVector) && boss.getVisible() && player.getVisible())//player with boss collision
+			{
+				audio->playCue(CRASH);
+				player.getShield()->setInvisible();
+				/*VECTOR2 vel = player.getVelocity();
+				VECTOR2 newVel = VECTOR2(-vel.x,-vel.y);
+				player.setVelocity(newVel);*/
+			}
+		}
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 		{
 			//shield with enemy collision
@@ -850,18 +879,18 @@ void CollisionTypes::collisions()
 				enemy[i].setInvisible();
 				audio->playCue(CRASH);
 				player.getShield()->setInvisible();
+				foo = VECTOR2(enemy[i].getCenterX()-10, enemy[i].getCenterY());
+				bar = VECTOR2(-1,0);
+				createParticleEffect(foo, bar, 20);
 				break;
 			}
 			//forcefield with enemy collision
 			if (player.getEMP()->collidesWith(enemy[i], collisionVector) /*&& enemy[i].getVisible()*/ /*&& player.getVisible()*/)
 			{	
 				enemy[i].setInvisible();
-				break;
-			}
-			if (player.getShield()->collidesWith(boss, collisionVector) && boss.getVisible() && player.getVisible())//player with boss collision
-			{
-				audio->playCue(CRASH);
-				player.getShield()->setInvisible();
+				foo = VECTOR2(enemy[i].getCenterX()-10, enemy[i].getCenterY());
+				bar = VECTOR2(-1,0);
+				createParticleEffect(foo, bar, 20);
 				break;
 			}
 			if (player.getShield()->collidesWith(bonus[i], collisionVector) && bonus[i].getVisible() && player.getVisible())
@@ -909,7 +938,12 @@ void CollisionTypes::collisions()
 			if(enemy[j].collidesWith(playerLaser[x], collisionVector) && playerLaser[x].getVisible() && enemy[j].getVisible())
 			{
 				playerLaser[x].setInvisible();
-				enemy[j].wasHit();
+				if(enemy[j].wasHit())//returns true if enemy dies
+				{
+					foo = VECTOR2(enemy[j].getCenterX()-10, enemy[j].getCenterY());
+					 bar = VECTOR2(-1,0);
+					createParticleEffect(foo, bar, 20);
+				}
 				score++;
 				if(!enemy[j].getActive() && !bonus[j].getVisible())
 				{
@@ -1036,6 +1070,7 @@ void CollisionTypes::render()
 		(*player.getEMP()).draw();
 		player.draw();
 		(*player.getShield()).draw();
+		pm.draw();
 		graphics->spriteEnd();                  // end drawing sprites
 		break;
 	case SPLASH:

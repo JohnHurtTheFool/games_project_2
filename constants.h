@@ -104,6 +104,9 @@ const double bossKamikazeDamage = 25.00;
 const double BOSS_LASER_DAMAGE = 10.0;
 const double empDamage = 7.5;
 const int MAX_HIGH_SCORE = 5;
+const float MAX_PARTICLE_LIFETIME = 4.5f;
+const int MAX_NUMBER_PARTICLES = 500;
+const char DUST_IMAGE[]   = "..\\games_project_2\\pictures\\fire.png";
 // graphic images
 const char PUCK_IMAGE[] = "..\\games_project_2\\pictures\\homework.jpg";  // game textures
 const char PADDLE_IMAGE[] =     "..\\games_project_2\\pictures\\student.jpg";      // menu texture

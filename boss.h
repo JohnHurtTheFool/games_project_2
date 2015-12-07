@@ -43,6 +43,8 @@ public:
 	int getMaxHits(){return maxHits;}
 	void wasHit();
 
+	void empHit();
+
     // inherited member functions
     virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
                             TextureManager *textureM);

@@ -28,6 +28,7 @@ class CollisionTypes;
 #include "highscore.h"
 #include "boss.h"
 #include "bossLaser.h"
+#include "particleManager.h"
 
 #define maxPatternSteps 7
 #define maxBossPatternSteps 8
@@ -47,6 +48,7 @@ private:
 	Image background, splash, lose, instr, high_scores;
 	bool enemiesRemain;
     VECTOR2 collisionVector;    // collision vector
+	ParticleManager pm;
 	Player player;
 	Puck puck;
 	Bonus bonus[NUM_ENEMIES_INITIAL];
@@ -99,6 +101,8 @@ public:
 
     // Destructor
     virtual ~CollisionTypes();
+
+	void createParticleEffect(VECTOR2 pos, VECTOR2 vel, int numParticles);
 
     // Initialize the game
     void initialize(HWND hwnd);

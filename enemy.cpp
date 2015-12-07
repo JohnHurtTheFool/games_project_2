@@ -30,13 +30,15 @@ Enemy::Enemy() : Entity()
 	empCounter=0;
 	//maxHits = 3;
 }
-void Enemy::wasHit()
+bool Enemy::wasHit()
 {
 	hits += 1;
 	if(hits>=maxHits)
 	{
 		setInvisible();
+		return true;
 	}
+	return false;
 }
 void Enemy::setMaxHits(int max)
 {

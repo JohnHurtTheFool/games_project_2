@@ -132,6 +132,15 @@ void Boss::vectorTrack()//We're going to want to change this so that it takes an
 		setRadians(getRadians()+PI);
 }
 
+void Boss::empHit()
+{
+	hits += 5;
+	if(hits>=maxHits)
+	{
+		setInvisible();
+	}
+}
+
 
 void Boss::ai(float time, Entity &t)
 { 
