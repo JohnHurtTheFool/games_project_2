@@ -40,7 +40,7 @@ public:
 	void setMaxHits(int max);
 	void setHits(int h) {hits = h;}
 	//void setMaxHits(int max){maxHits = max;}
-	//int getMaxHits(){return maxHits;}
+	int getMaxHits(){return maxHits;}
 	void wasHit();
 
     // inherited member functions

@@ -664,6 +664,7 @@ void CollisionTypes::updateState()
 	}
 	else if(gameState==GAME_PLAY && !enemiesRemain && !boss.getVisible())
 	{
+		score+=25;
 		levelNumber++;
 		levelReset();
 		gameState = NEW_LEVEL;
@@ -1113,6 +1114,9 @@ void CollisionTypes::levelReset()
 	player.setHasEmp(false);
 	player.getEMP()->resetScale();
 	player.setPosition(VECTOR2(rand()%GAME_WIDTH, rand()%GAME_HEIGHT));
+	int bossY =rand()%(GAME_HEIGHT-boss.getHeight());
+	int bossX =rand()%(GAME_WIDTH-boss.getWidth());
+	boss.setPosition(VECTOR2(bossX,bossY));
 	VECTOR2 zeroVector(0,0);
 	player.setVelocity(zeroVector);
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
