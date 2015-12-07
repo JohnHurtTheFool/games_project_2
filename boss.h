@@ -8,6 +8,7 @@ class Boss;
 #include "entity.h"
 #include "constants.h"
 #include "graphics.h"
+#include "EMP.h"
 
 namespace bossNS
 {
@@ -31,9 +32,11 @@ private:
 	VECTOR2 velocity;
 	float speed;
 	Entity targetEntity;
+	EMP emp;
 	VECTOR2 dir;
 	int maxHits;
 	int hits;
+	float empCounter;
 public:
     // constructor
     Boss();
@@ -77,7 +80,9 @@ public:
 	VECTOR2 getVelocity() {return velocity;}
 
 	void ai(float time, Entity &t);
-
+	float getEMPCounter() {return empCounter;}
+	void setEMPCounter(float set) {empCounter = set;}
+	EMP* getEMP(){return &emp;}
 	void vectorTrack();
 	void deltaTrack();
 	void evade();
