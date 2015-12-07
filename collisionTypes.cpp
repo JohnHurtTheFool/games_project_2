@@ -83,6 +83,8 @@ void CollisionTypes::initialize(HWND hwnd)
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 		if (!(*enemy[i].getEMP()).initialize(this, EMPNS::WIDTH,EMPNS::HEIGHT, 0,&EMPTM))
 			throw(GameError(gameErrorNS::WARNING, "emp not initialized"));
+	if (!(*boss.getEMP()).initialize(this, EMPNS::WIDTH,EMPNS::HEIGHT, 0,&EMPTM))
+			throw(GameError(gameErrorNS::WARNING, "emp not initialized"));
 	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
 		if (!playerLaser[i].initialize(this, LASER_WIDTH,LASER_HEIGHT, 2,&playerLaserTM))
 			throw(GameError(gameErrorNS::WARNING, "player's laser not initialized"));
@@ -389,6 +391,11 @@ void CollisionTypes::update()
  				enemy[i].getEMP()->setActive(true);
 				enemy[i].getEMP()->setVisible();
 			}
+		if(!(rand()%30000)&&boss.getVisible()&&!boss.getEMP()->getActive()) 
+		{
+ 			boss.getEMP()->setActive(true);
+			boss.getEMP()->setVisible();
+		}
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 			if(enemy[i].getEMP()->getActive())
 			{
@@ -400,6 +407,18 @@ void CollisionTypes::update()
 					enemy[i].getEMP()->setInvisible();
 					enemy[i].setEMPCounter(0);
 					enemy[i].getEMP()->resetScale();
+				}
+			}
+		if(boss.getEMP()->getActive())
+			{
+ 				boss.setEMPCounter(boss.getEMPCounter()+frameTime);
+				boss.getEMP()->setScale(boss.getEMP()->getScale()*EMPNS::growthRatePerFrame);
+				if(boss.getEMPCounter()>=EMPNS::maxEMPTime)
+				{
+					boss.getEMP()->setActive(false);
+					boss.getEMP()->setInvisible();
+					boss.setEMPCounter(0);
+					boss.getEMP()->resetScale();
 				}
 			}
 		if(input->isKeyDown(LAUNCH_EMP) && player.getHasEmp())
@@ -790,7 +809,16 @@ void CollisionTypes::collisions()
 {
     collisionVector = D3DXVECTOR2(0,0);
 	collision = false;
+<<<<<<< HEAD
 	VECTOR2 foo, bar;
+=======
+	if (player.collidesWith(*(boss).getEMP(), collisionVector) && boss.getEMP()->getActive() && player.getVisible())
+	{
+		player.setHealth(player.getHealth() - empDamage);
+		(boss).getEMP()->setActive(false);
+		//audio->playCue(CRASH);
+	}
+>>>>>>> origin/master
 	if(!player.getShield()->getActive()&&!player.getEMP()->getActive())//shield and emp are not active
 	{
 		if(boss.getVisible())
@@ -1067,6 +1095,8 @@ void CollisionTypes::render()
 			if((enemy[i]).getEMP()->getActive())
 				((enemy[i]).getEMP()->draw());
 		}
+		if((boss).getEMP()->getActive())
+				((boss).getEMP()->draw());
 		(*player.getEMP()).draw();
 		player.draw();
 		(*player.getShield()).draw();
@@ -1155,6 +1185,7 @@ void CollisionTypes::levelReset()
 		enemy[i].getEMP()->setInvisible();
 		enemy[i].getEMP()->resetScale();
 	}
+	boss.getEMP()->setActive(false);
 	player.setVisible();
 	player.getShield()->setInvisible();
 	player.getEMP()->setInvisible();
