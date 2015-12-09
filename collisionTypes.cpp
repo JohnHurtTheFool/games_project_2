@@ -717,7 +717,7 @@ void CollisionTypes::updateState()
 		gameState = OPTIONS;
 		timeInState = 0;
 	}
-	else if(gameState==GAME_PLAY && (!player.getVisible()) && gameEndTime>=4.0f)
+	else if(gameState==GAME_PLAY && (!player.getVisible()) && gameEndTime>=2.0f)
 	{
 		nameAttempt = "";
 		gameState = LOSE_SCREEN;
@@ -730,7 +730,7 @@ void CollisionTypes::updateState()
 		gameState = MENU;
 		timeInState = 0;
 	}
-	else if(gameState==GAME_PLAY && !enemiesRemain && !boss.getVisible() && gameEndTime>=3.0f)
+	else if(gameState==GAME_PLAY && !enemiesRemain && !boss.getVisible() && gameEndTime>=2.0f)
 	{
 		score+=25;
 		levelNumber++;
