@@ -34,8 +34,8 @@ private:
 	Entity targetEntity;
 	EMP emp;
 	VECTOR2 dir;
-	int maxHits;
-	int hits;
+	float maxHits;
+	float hits;
 	float empCounter;
 public:
     // constructor
@@ -46,7 +46,7 @@ public:
 	int getMaxHits(){return maxHits;}
 	void wasHit();
 
-	float getHitPercentage(){return (float)(hits/maxHits)*100;};
+	float getHitPercentage(){return 100 - (float)(hits/maxHits)*100;};
 
 	void empHit();
 

@@ -645,21 +645,21 @@ void CollisionTypes::update()
 		if(boss.getVisible()&&player.getVisible())
 		{
 			boss.update(frameTime);
-			if(boss.getHitPercentage() >= 60.00)
+			if(boss.getHitPercentage() >= 60.00 && boss.getVisible())
 			{
 				boss.setFrames(2,3);
 			}
-			else if(boss.getHitPercentage() <= 60.00 && boss.getHealth() > 30.00)
+			else if(boss.getHitPercentage() <= 60.00 && boss.getHitPercentage() > 30.00&& boss.getVisible())
 			{
-				boss.setFrames(8,9);
+  				boss.setFrames(8,9);
 			}
-			else if(boss.getHitPercentage() <= 30.00 && boss.getHealth() >= 0.00)
+			else if(boss.getHitPercentage() <= 30.00 && boss.getHitPercentage() >= 0.00&& boss.getVisible())
 			{
 				boss.setFrames(18,19);
 			}
-			else if(boss.getHitPercentage() <= 0.00)
+			else if(boss.getHitPercentage() <= 0.00&& boss.getVisible())
 			{
-				boss.setInvisible();
+				//boss.setInvisible();
 				foo = VECTOR2(boss.getCenterX(), boss.getCenterY());
 				bar = VECTOR2(-1,0);
 				createParticleEffect(foo, bar, 20);
