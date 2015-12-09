@@ -36,12 +36,9 @@ private:
 	VECTOR2 dir;
 	int maxHits;
 	int hits;
-	float empCounter;
 public:
     // constructor
     Enemy();
-	float getEMPCounter() {return empCounter;}
-	void setEMPCounter(float set) {empCounter = set;}
 	void setMaxHits(int max);
 	void setHits(int h) {hits = h;}
 	//void setMaxHits(int max){maxHits = max;}

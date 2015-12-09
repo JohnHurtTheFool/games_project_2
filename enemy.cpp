@@ -27,7 +27,6 @@ Enemy::Enemy() : Entity()
 	emp.setPos(getX()+enemyNS::WIDTH/2-(emp.getCurrWidth()/2),getY()+enemyNS::HEIGHT/2-(emp.getCurrHeight()/2));
 	//emp.resetScale();
 	emp.setInvisible();
-	empCounter=0;
 	//maxHits = 3;
 }
 bool Enemy::wasHit()

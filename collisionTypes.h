@@ -82,6 +82,7 @@ private:
 	int currentBossMaxHits;
 	int levelNumber;
 	float gameEndTime;
+	bool empKeyDownLastFrame;
 	std::string LEVEL_UP_MSG;
 	std::string optionsScreenMSG;
 	std::string cheatAttempt;

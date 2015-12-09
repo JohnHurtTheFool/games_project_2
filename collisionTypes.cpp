@@ -235,6 +235,8 @@ void CollisionTypes::initialize(HWND hwnd)
 
 	gameEndTime = 0.0;
 
+	empKeyDownLastFrame = false;
+
 	playerNextLaserIndex = 0;
 	enemyNextLaserIndex = 0;
 	bossNextLaserIndex = 0;
@@ -395,7 +397,7 @@ void CollisionTypes::update()
 		if(forcefield)
 			player.getShield()->setVisible();
 		if(sp)
-			player.setHasEmp(true);
+			player.empAdd();
 		if(input->isKeyDown(player_LEFT))
 				player.left();
 		if(input->isKeyDown(player_RIGHT))
@@ -407,12 +409,10 @@ void CollisionTypes::update()
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 			if(!(rand()%10000)&&enemy[i].getVisible()&&!enemy[i].getEMP()->getActive()) 
 			{
- 				enemy[i].getEMP()->setActive(true);
 				enemy[i].getEMP()->setVisible();
 			}
 		if(!(rand()%1000)&&boss.getVisible()&&!boss.getEMP()->getActive()) 
 		{
- 			boss.getEMP()->setActive(true);
 			boss.getEMP()->setVisible();
 		}
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
@@ -422,29 +422,36 @@ void CollisionTypes::update()
 				enemy[i].getEMP()->setScale(enemy[i].getEMP()->getScale()*EMPNS::growthRatePerFrame);
 				if(enemy[i].getEMP()->getCurrentEMPTime()>=enemy[i].getEMP()->getMaxEMPTime())
 				{
-					enemy[i].getEMP()->setActive(false);
 					enemy[i].getEMP()->setInvisible();
 					enemy[i].getEMP()->setCurrentEMPTime(0);
 					enemy[i].getEMP()->resetScale();
 				}
 			}
 		if(boss.getEMP()->getActive())
-			{
-				boss.getEMP()->setCurrentEMPTime(boss.getEMP()->getCurrentEMPTime() + frameTime);
-				boss.getEMP()->setScale(boss.getEMP()->getScale()*EMPNS::growthRatePerFrame);
-				if(boss.getEMP()->getCurrentEMPTime()>=boss.getEMP()->getMaxEMPTime())
-				{
-					boss.getEMP()->setActive(false);
-					boss.getEMP()->setInvisible();
-					boss.getEMP()->setCurrentEMPTime(0);
-					boss.getEMP()->resetScale();
-				}
-			}
-		if(input->isKeyDown(LAUNCH_EMP) && player.getHasEmp())
 		{
-			player.setHasEmp(false);
-			player.getEMP()->setVisible();
+			boss.getEMP()->setCurrentEMPTime(boss.getEMP()->getCurrentEMPTime() + frameTime);
+			boss.getEMP()->setScale(boss.getEMP()->getScale()*EMPNS::growthRatePerFrame);
+			if(boss.getEMP()->getCurrentEMPTime()>=boss.getEMP()->getMaxEMPTime())
+			{
+				boss.getEMP()->setInvisible();
+				boss.getEMP()->setCurrentEMPTime(0);
+				boss.getEMP()->resetScale();
+			}
 		}
+		if(input->isKeyDown(LAUNCH_EMP) )
+		{
+			if(!empKeyDownLastFrame && player.getHasEmp())
+			{
+				empKeyDownLastFrame = true;
+				if(!sp)player.empTakeAway();
+				player.getEMP()->setVisible();
+			}
+		}
+		else if(!input->isKeyDown(LAUNCH_EMP) && empKeyDownLastFrame)
+		{
+			empKeyDownLastFrame = false;
+		}
+		
 		if(input->isKeyDown(player_UP) && (magSquared < playerNS::MAX_VELOCITY_SQUARED || playerVel.y > 0))
 		{
 			if(magSquared < (playerNS::MAX_VELOCITY_SQUARED/3))
@@ -853,7 +860,7 @@ void CollisionTypes::collisions()
 	if (player.collidesWith(*(boss).getEMP(), collisionVector) && boss.getEMP()->getActive() && player.getVisible())
 	{
 		player.setHealth(player.getHealth() - empDamage);
-		(boss).getEMP()->setActive(false);
+		(boss).getEMP()->setInvisible();
 		//audio->playCue(CRASH);
 	}
 	if(!player.getShield()->getActive()&&!player.getEMP()->getActive())//shield and emp are not active
@@ -898,7 +905,7 @@ void CollisionTypes::collisions()
 			}
 			if (player.collidesWith(empPowerup[i], collisionVector) && empPowerup[i].getVisible() && player.getVisible())
 			{
-				player.setHasEmp(true);
+				player.empAdd();
 				empPowerup[i].setInvisible();
 				break;
 			}
@@ -928,6 +935,7 @@ void CollisionTypes::collisions()
 			{	
 				boss.empHit();
 				score+=5;
+				player.getEMP()->setInvisible();
 			}
 			if (player.getShield()->collidesWith(boss, collisionVector) && boss.getVisible() && player.getVisible())//player with boss collision
 			{
@@ -968,7 +976,7 @@ void CollisionTypes::collisions()
 			}
 			if (player.getShield()->collidesWith(empPowerup[i], collisionVector) && empPowerup[i].getVisible() && player.getVisible())
 			{
-				player.setHasEmp(true);
+				player.empAdd();
 				empPowerup[i].setInvisible();
 				break;
 			}
@@ -1227,16 +1235,16 @@ void CollisionTypes::levelReset()
 	{
 		(enemy[i]).setMaxHits(currentEnemyMaxHits);
 		(enemy[i]).getEMP()->setActive(false);
-		(enemy[i]).setEMPCounter(0);
+		(enemy[i]).getEMP()->setCurrentEMPTime(0);
 		enemy[i].getEMP()->setInvisible();
 		enemy[i].getEMP()->resetScale();
 	}
-	boss.getEMP()->setActive(false);
-	boss.setEMPCounter(0);
+	boss.getEMP()->setInvisible();
+	boss.getEMP()->setCurrentEMPTime(0);
 	player.setVisible();
 	player.getShield()->setInvisible();
 	player.getEMP()->setInvisible();
-	player.setHasEmp(false);
+	player.setEMPCount(0);
 	player.getEMP()->resetScale();
 	player.setPosition(VECTOR2(rand()%GAME_WIDTH, rand()%GAME_HEIGHT));
 	int bossY =rand()%(GAME_HEIGHT-boss.getHeight());

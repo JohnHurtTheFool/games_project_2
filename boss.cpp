@@ -29,7 +29,7 @@ Boss::Boss() : Entity()
 	hits = 0;
 	setInvisible();
 	emp.resetScale();
-	emp.setMaxEMPTime(0.3f);
+	emp.setMaxEMPTime(0.4f);
 	//maxHits = 3;
 }
 void Boss::wasHit()
@@ -39,9 +39,6 @@ void Boss::wasHit()
 	{
 		setInvisible();
 	}
-	char msgbu[2048];
-	sprintf(msgbu, "Hits: %d\n", hits);
-	OutputDebugStringA(msgbu);
 }
 void Boss::setMaxHits(int max)
 {

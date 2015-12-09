@@ -32,10 +32,15 @@ private:
 	double health;
 	Shield shield;
 	EMP emp;
-	bool hasEmp;
+	int empcount;
 public:
     // constructor
     Player();
+
+	void empAdd(){empcount++;}
+	void empTakeAway(){empcount--;}
+	void setEMPCount(int count){empcount = count;}
+	bool getHasEmp() {return (empcount > 0);}
 
     // inherited member functions
     virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
@@ -48,8 +53,7 @@ public:
 
 	Shield* getShield(){return &shield;}
 	EMP* getEMP(){return &emp;}
-	bool getHasEmp() {return hasEmp;}
-	void setHasEmp(bool has) {hasEmp = has;}
+	
 	void Player::setInvisible()
 	{
 		Image::setVisible(false);

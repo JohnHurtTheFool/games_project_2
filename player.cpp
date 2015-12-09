@@ -31,7 +31,7 @@ Player::Player() : Entity()
 	shield.setInvisible();
 	emp.setPos(getX()+playerNS::WIDTH/2-(emp.getCurrWidth()/2),getY()+playerNS::HEIGHT/2-(emp.getCurrHeight()/2));
 	emp.setInvisible();
-	hasEmp = false;
+	empcount = 0;
 }
 
 //=============================================================================
@@ -57,6 +57,10 @@ void Player::update(float frameTime)
 	emp.update(frameTime);
 	incPosition(D3DXVECTOR2(velocity*frameTime));
 	//velocity = D3DXVECTOR2(0,0);
+
+	char msgbu[2048];
+	sprintf(msgbu, "emps: %d\n", empcount);
+	OutputDebugStringA(msgbu);
 
   if (getPositionX() + Image::getWidth()*Image::getScale() > GAME_WIDTH)
 	{
