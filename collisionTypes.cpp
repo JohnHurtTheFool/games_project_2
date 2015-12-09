@@ -402,7 +402,7 @@ void CollisionTypes::update()
  				enemy[i].getEMP()->setActive(true);
 				enemy[i].getEMP()->setVisible();
 			}
-		if(!(rand()%300)&&boss.getVisible()&&!boss.getEMP()->getActive()) 
+		if(!(rand()%1000)&&boss.getVisible()&&!boss.getEMP()->getActive()) 
 		{
  			boss.getEMP()->setActive(true);
 			boss.getEMP()->setVisible();
@@ -461,7 +461,7 @@ void CollisionTypes::update()
 					player.setInvisible();
 					foo = VECTOR2(player.getCenterX(), player.getCenterY());
 					bar = VECTOR2(-1,0);
-					createParticleEffect(foo, bar, 20);
+					createParticleEffect(foo, bar, 15);
 				}
 			}
 			else if(magSquared > (playerNS::MAX_VELOCITY_SQUARED/3) && magSquared < (2 * playerNS::MAX_VELOCITY_SQUARED/3))
@@ -626,7 +626,7 @@ void CollisionTypes::update()
 				break;
 			}
 		}
-		if(!enemiesRemain)
+		if(!enemiesRemain && gameEndTime == 0.0f)
 		{
 			boss.setVisible();
 		}
@@ -671,7 +671,7 @@ void CollisionTypes::updateState()
 
 	if(!player.getVisible() || (!boss.getVisible() && !enemiesRemain))
 	{
-		gameEndTime+=frameTime;
+ 		gameEndTime+=frameTime;
 	}
 	
 	if(gameState==SPLASH && timeInState >3)

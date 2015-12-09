@@ -19,7 +19,11 @@ EMP::EMP(void)
 	radius = EMPNS::WIDTH/2;
 	currentTime = 0.0f;
 	counterActive = false;
+	maxEMPTime = 0.5f;
 }
+
+
+
 EMP::~EMP(void)
 {
 }
@@ -30,7 +34,7 @@ void EMP::update(float frameTime)
 		setScale(getScale()*EMPNS::growthRatePerFrame);
 		currentTime += frameTime;
 	}
-	if(currentTime>=EMPNS::maxEMPTime)
+	if(currentTime>=maxEMPTime)
 	{
 		setInvisible();
 		resetScale();

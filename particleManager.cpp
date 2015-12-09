@@ -59,7 +59,7 @@ bool ParticleManager::initialize(Graphics *g)
 		particles[i].setActive(false);
 		particles[i].setVisible(false);
 		particles[i].setScale(0.04f);
-		particles[i].setRotationValue(0.04f);
+		particles[i].setRotationValue(0.12f);
 	}
 	return true;
 }

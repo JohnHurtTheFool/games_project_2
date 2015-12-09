@@ -20,8 +20,9 @@ class EMP :public Entity
 private:
 	float currentTime;
 	bool counterActive;
+	float maxEMPTime;
 public:
-
+	void setEMPTime(float time){maxEMPTime = time;};
 	EMP(void);
 	~EMP(void);
 	virtual void draw();
