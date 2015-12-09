@@ -29,6 +29,7 @@ Boss::Boss() : Entity()
 	hits = 0;
 	setInvisible();
 	emp.resetScale();
+	empCounter=0;
 	//maxHits = 3;
 }
 void Boss::wasHit()
@@ -87,10 +88,12 @@ void Boss::update(float frameTime)
 	}
 
 	//velocity = D3DXVECTOR2(0,0);
+	emp.update(frameTime);
 	incPosition(foo);
 	Image::setX(getPositionX());
 	Image::setY(getPositionY());
     Entity::update(frameTime);
+	emp.setPos(spriteData.x-emp.getWidth()*emp.getScale()/2,spriteData.y-emp.getHeight()*emp.getScale()/2);
 }
 
 void Boss::evade()

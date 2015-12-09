@@ -391,7 +391,7 @@ void CollisionTypes::update()
  				enemy[i].getEMP()->setActive(true);
 				enemy[i].getEMP()->setVisible();
 			}
-		if(!(rand()%30000)&&boss.getVisible()&&!boss.getEMP()->getActive()) 
+		if(!(rand()%300)&&boss.getVisible()&&!boss.getEMP()->getActive()) 
 		{
  			boss.getEMP()->setActive(true);
 			boss.getEMP()->setVisible();
@@ -1180,6 +1180,7 @@ void CollisionTypes::levelReset()
 		enemy[i].getEMP()->resetScale();
 	}
 	boss.getEMP()->setActive(false);
+	boss.setEMPCounter(0);
 	player.setVisible();
 	player.getShield()->setInvisible();
 	player.getEMP()->setInvisible();
