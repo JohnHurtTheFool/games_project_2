@@ -93,7 +93,7 @@ void Boss::update(float frameTime)
 	Image::setX(getPositionX());
 	Image::setY(getPositionY());
     Entity::update(frameTime);
-	emp.setPos(spriteData.x-emp.getWidth()*emp.getScale()/2,spriteData.y-emp.getHeight()*emp.getScale()/2);
+	emp.setPos(spriteData.x-(emp.getWidth()*emp.getScale()-getWidth()*getScale())/2,spriteData.y-(emp.getHeight()*emp.getScale()-getWidth()*getScale())/2);
 }
 
 void Boss::evade()

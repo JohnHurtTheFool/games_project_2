@@ -939,8 +939,6 @@ void CollisionTypes::collisions()
 			}
 			if (player.getShield()->collidesWith(boss, collisionVector) && boss.getVisible() && player.getVisible())//player with boss collision
 			{
-				ref = true;
-				refVec= VECTOR2(-player.getVelocity().x,-player.getVelocity().y);
 				audio->playCue(CRASH);
 				player.getShield()->setInvisible();
 			}
