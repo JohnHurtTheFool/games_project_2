@@ -623,7 +623,7 @@ void CollisionTypes::update()
 			}
 			else if((enemy[i]).getHits() > 0.3f *currentEnemyMaxHits && (enemy[i]).getHits() <= 0.6f *currentEnemyMaxHits)
 			{
-				(enemy[i]).setFrames(10,11);
+ 				(enemy[i]).setFrames(10,11);
 			}
 			else if((enemy[i]).getHits() > 0.6f *currentEnemyMaxHits && (enemy[i]).getHits() <=currentEnemyMaxHits)
 			{
