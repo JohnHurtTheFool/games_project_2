@@ -651,7 +651,7 @@ void CollisionTypes::update()
 			}
 			else if(boss.getHitPercentage() <= 60.00 && boss.getHitPercentage() > 30.00&& boss.getVisible())
 			{
-  				boss.setFrames(8,9);
+   				boss.setFrames(8,9);
 			}
 			else if(boss.getHitPercentage() <= 30.00 && boss.getHitPercentage() >= 0.00&& boss.getVisible())
 			{
@@ -1223,6 +1223,7 @@ void CollisionTypes::levelReset()
 	boss.setInvisible();
 	currentBossMaxHits += 15;
 	boss.setMaxHits(currentBossMaxHits);
+	boss.setHits(0);
 	audio->stopCue(BACKGROUND);
 	if(musicOn)
 		audio->playCue(BACKGROUND);
