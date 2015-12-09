@@ -696,6 +696,7 @@ void CollisionTypes::updateState()
 		gameEndTime = 0.0;
 		levelNumber=1;
 		player.setHealth(100);
+		boss.setMaxHits(15);
 		levelReset();
 		gameState = NEW_LEVEL;
 		timeInState = 0;
