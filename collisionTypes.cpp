@@ -635,11 +635,7 @@ void CollisionTypes::update()
 				break;
 			}
 		}
-		if(!enemiesRemain && gameEndTime == 0.0f)
-		{
-			boss.setVisible();
-		}
-		if(boss.getVisible())
+		if(boss.getVisible()&&player.getVisible())
 		{
 			boss.update(frameTime);
 			if(boss.getHitPercentage() >= 60.00)
@@ -677,12 +673,20 @@ void CollisionTypes::update()
 void CollisionTypes::updateState()
 {
 	timeInState+=frameTime;
-
-	if(!player.getVisible() || (!boss.getVisible() && !enemiesRemain))
+	if(gameState==GAME_PLAY)
 	{
- 		gameEndTime+=frameTime;
-	}
+		if(!enemiesRemain && draw)
+		{
+ 			boss.setVisible();
+			draw = false;
+		}
+		if(!player.getVisible() || (!boss.getVisible() && !enemiesRemain))
+		{
+ 			gameEndTime+=frameTime;
+		}
 	
+		
+	}
 	if(gameState==SPLASH && timeInState >3)
 	{
 		gameState = MENU;
@@ -802,7 +806,8 @@ void CollisionTypes::ai()
 	{
 		enemy[i].ai(frameTime, player);
 	}
-	boss.ai(frameTime, player);
+	if(player.getVisible())
+		boss.ai(frameTime, player);
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		if (allPatterns[i][patternStepIndex[i]].isFinished())
@@ -1016,10 +1021,10 @@ void CollisionTypes::collisions()
 					}
 					else if(r==1)
 					{
-						if(levelNumber > 1)
+						//if(levelNumber > 1)
 							empPowerup[j].setVisible();
-						else if(levelNumber==1)
-							bonus[j].setVisible();
+						/*else if(levelNumber==1)
+							bonus[j].setVisible();*/
 					}
 					score+=4;
 				}
@@ -1205,6 +1210,8 @@ void CollisionTypes::resetAll()
 }
 void CollisionTypes::levelReset()
 {
+	draw = true;
+	gameEndTime = 0.0f;
 	player.setHealth(100.00);
 	boss.setHealth(100.00);
 	boss.setInvisible();

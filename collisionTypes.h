@@ -99,6 +99,7 @@ private:
 	bool forcefield;
 	bool maiman;
 	bool sp;
+	bool draw;
 public:
     // Constructor
     CollisionTypes();
