@@ -106,8 +106,9 @@ const double empDamage = 7.5;
 const int MAX_HIGH_SCORE = 5;
 const float MAX_PARTICLE_LIFETIME = 1.5f;
 const int MAX_NUMBER_PARTICLES = 500;
-const char DUST_IMAGE[]   = "..\\games_project_2\\pictures\\fire.png";
+const float MAX_REF_TIME = 0.5f;
 // graphic images
+const char DUST_IMAGE[]   = "..\\games_project_2\\pictures\\fire.png";
 const char PUCK_IMAGE[] = "..\\games_project_2\\pictures\\homework.jpg";  // game textures
 const char PADDLE_IMAGE[] =     "..\\games_project_2\\pictures\\student.jpg";      // menu texture
 const char BACKGROUND_IMAGE[] =     "..\\games_project_2\\pictures\\Background.png";      // menu texture

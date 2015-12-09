@@ -289,6 +289,14 @@ void CollisionTypes::createParticleEffect(VECTOR2 pos, VECTOR2 vel, int numParti
 //=============================================================================
 void CollisionTypes::update()
 {
+	refTime += frameTime;
+	if(refTime>MAX_REF_TIME)
+		ref = false;
+
+	if(ref)
+	{
+		player.setVelocity(VECTOR2(player.getVelocity().x+refVec.x/10,player.getVelocity().y+refVec.y/10));
+	}
 	if(input->isKeyDown(VK_ESCAPE))
 		this->exitGame();
 	VECTOR2 playerVel = player.getVelocity();
@@ -534,6 +542,7 @@ void CollisionTypes::update()
 		if(input->isKeyDown(PLAYER_SHOOT) && !shootKeyDownLastFrame)
 		{
 			(playerLaser[playerNextLaserIndex]).setVisible();
+			(playerLaser[playerNextLaserIndex]).setCurrentFrame(0);
 			(playerLaser[playerNextLaserIndex]).setPositionX((player.getPositionX()+SPACESHIP_SIZE/4));//Center of the player's width
 			(playerLaser[playerNextLaserIndex]).setPositionY((player.getPositionY()+SPACESHIP_SIZE/4));//top of player
 			float rad = player.getRadians();
@@ -917,8 +926,8 @@ void CollisionTypes::collisions()
 			}
 			if (player.getShield()->collidesWith(boss, collisionVector) && boss.getVisible() && player.getVisible())//player with boss collision
 			{
-				VECTOR2 negVel(-player.getVelocity().x,-player.getVelocity().y);
-				player.setVelocity(negVel);
+				ref = true;
+				refVec= VECTOR2(-player.getVelocity().x,-player.getVelocity().y);
 				audio->playCue(CRASH);
 				player.getShield()->setInvisible();
 			}
@@ -1007,7 +1016,10 @@ void CollisionTypes::collisions()
 					}
 					else if(r==1)
 					{
-						empPowerup[j].setVisible();
+						if(levelNumber > 1)
+							empPowerup[j].setVisible();
+						else if(levelNumber==1)
+							bonus[j].setVisible();
 					}
 					score+=4;
 				}
@@ -1201,6 +1213,8 @@ void CollisionTypes::levelReset()
 	audio->stopCue(BACKGROUND);
 	if(musicOn)
 		audio->playCue(BACKGROUND);
+	ref = false;
+	refTime = 0.0f;
 	currentEnemyMaxHits+=3;
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{

@@ -87,6 +87,9 @@ private:
 	std::string cheatAttempt;
 	std::string nameAttempt;
 	std::string cheatMSG;
+	double refTime;
+	bool ref;
+	VECTOR2 refVec;
 	bool musicOn;
 	bool toggleKeyPressedLastFrame;
 	bool anyCheatKeyPressedLastFrame[24];
