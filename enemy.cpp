@@ -29,6 +29,16 @@ Enemy::Enemy() : Entity()
 	emp.setInvisible();
 	//maxHits = 3;
 }
+
+void Enemy::empHit()
+{
+	hits += 5;
+	if(hits>=maxHits)
+	{
+		setInvisible();
+	}
+}
+
 bool Enemy::wasHit()
 {
 	hits += 1;

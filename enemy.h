@@ -44,6 +44,7 @@ public:
 	//void setMaxHits(int max){maxHits = max;}
 	//int getMaxHits(){return maxHits;}
 	bool wasHit();
+	void empHit();
 	EMP* getEMP(){return &emp;}
 
     // inherited member functions

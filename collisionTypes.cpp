@@ -959,7 +959,7 @@ void CollisionTypes::collisions()
 			//forcefield with enemy collision
 			if (player.getEMP()->collidesWith(enemy[i], collisionVector) /*&& enemy[i].getVisible()*/ /*&& player.getVisible()*/)
 			{	
-				enemy[i].setInvisible();
+				enemy[i].empHit();
 				foo = VECTOR2(enemy[i].getCenterX()-10, enemy[i].getCenterY());
 				bar = VECTOR2(-1,0);
 				createParticleEffect(foo, bar, 20);
