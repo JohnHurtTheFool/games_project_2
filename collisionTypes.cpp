@@ -440,7 +440,7 @@ void CollisionTypes::update()
 		}
 		if(input->isKeyDown(LAUNCH_EMP) )
 		{
-			if(!empKeyDownLastFrame && player.getHasEmp())
+			if(!empKeyDownLastFrame && player.getHasEmp() && player.getVisible())
 			{
 				empKeyDownLastFrame = true;
 				if(!sp)player.empTakeAway();
@@ -902,7 +902,7 @@ void CollisionTypes::collisions()
 			if (player.collidesWith(*(enemy[i]).getEMP(), collisionVector) && enemy[i].getEMP()->getActive() && player.getVisible())
 			{
 				player.setHealth(player.getHealth() - empDamage);
-				(enemy[i]).getEMP()->setActive(false);
+				(enemy[i]).getEMP()->setInvisible();
 				//audio->playCue(CRASH);
 			}
 		}
@@ -921,7 +921,7 @@ void CollisionTypes::collisions()
 	{
 		if(boss.getVisible())
 		{
-			if(player.getEMP()->collidesWith(boss, collisionVector) /*&& enemy[i].getVisible()*/ /*&& player.getVisible()*/)
+			if(player.getEMP()->collidesWith(boss, collisionVector) && boss.getVisible() /*&& enemy[i].getVisible()*/ /*&& player.getVisible()*/)
 			{	
 				if(boss.empHit())
 				{
@@ -1244,6 +1244,7 @@ void CollisionTypes::levelReset()
 	player.getShield()->setInvisible();
 	player.getEMP()->setInvisible();
 	player.setEMPCount(0);
+	player.getEMP()->setCurrentEMPTime(0);
 	player.getEMP()->resetScale();
 	player.setPosition(VECTOR2(rand()%GAME_WIDTH, rand()%GAME_HEIGHT));
 	int bossY =rand()%(GAME_HEIGHT-boss.getHeight());
