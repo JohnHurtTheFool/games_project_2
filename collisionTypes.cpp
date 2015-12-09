@@ -225,6 +225,8 @@ void CollisionTypes::initialize(HWND hwnd)
 	bossPatterns[7].setAction(TRACK);
 	bossPatterns[7].setTimeForStep(9);
 
+	gameEndTime = 0.0;
+
 	playerNextLaserIndex = 0;
 	enemyNextLaserIndex = 0;
 	bossNextLaserIndex = 0;
@@ -290,6 +292,7 @@ void CollisionTypes::update()
 		keyPressedThisFrame[i] = false;
 	}
 	int x = 0;
+	VECTOR2 foo, bar;
 	switch(gameState)
 	{
 	case LOSE_SCREEN:
@@ -448,6 +451,9 @@ void CollisionTypes::update()
 				else if(player.getHealth() <= 0.00)
 				{
 					player.setInvisible();
+					foo = VECTOR2(player.getCenterX(), player.getCenterY());
+					bar = VECTOR2(-1,0);
+					createParticleEffect(foo, bar, 20);
 				}
 			}
 			else if(magSquared > (playerNS::MAX_VELOCITY_SQUARED/3) && magSquared < (2 * playerNS::MAX_VELOCITY_SQUARED/3))
@@ -634,6 +640,12 @@ void CollisionTypes::update()
 			else if(boss.getHitPercentage() <= 0.00)
 			{
 				boss.setInvisible();
+				foo = VECTOR2(boss.getCenterX(), boss.getCenterY());
+				bar = VECTOR2(-1,0);
+				createParticleEffect(foo, bar, 20);
+				foo = VECTOR2(boss.getCenterX()-10, boss.getCenterY());
+				bar = VECTOR2(-1,0);
+				createParticleEffect(foo, bar, 20);
 			}
 		}
 		pm.update(frameTime);
@@ -648,6 +660,11 @@ void CollisionTypes::update()
 void CollisionTypes::updateState()
 {
 	timeInState+=frameTime;
+
+	if(!player.getVisible() || (!boss.getVisible() && !enemiesRemain))
+	{
+		gameEndTime+=frameTime;
+	}
 	
 	if(gameState==SPLASH && timeInState >3)
 	{
@@ -658,6 +675,7 @@ void CollisionTypes::updateState()
 	{
 		mainMenu->setSelectedItem(-1);
 		currentEnemyMaxHits = 0;
+		gameEndTime = 0.0;
 		levelNumber=1;
 		player.setHealth(100);
 		levelReset();
@@ -678,7 +696,7 @@ void CollisionTypes::updateState()
 		gameState = OPTIONS;
 		timeInState = 0;
 	}
-	else if(gameState==GAME_PLAY && (!player.getVisible()))
+	else if(gameState==GAME_PLAY && (!player.getVisible()) && gameEndTime>=4.0f)
 	{
 		nameAttempt = "";
 		gameState = LOSE_SCREEN;
@@ -691,7 +709,7 @@ void CollisionTypes::updateState()
 		gameState = MENU;
 		timeInState = 0;
 	}
-	else if(gameState==GAME_PLAY && !enemiesRemain && !boss.getVisible())
+	else if(gameState==GAME_PLAY && !enemiesRemain && !boss.getVisible() && gameEndTime>=3.0f)
 	{
 		score+=25;
 		levelNumber++;
@@ -842,6 +860,7 @@ void CollisionTypes::collisions()
 			//player with enemy collision
 			if (player.collidesWith(enemy[i], collisionVector) && enemy[i].getVisible() && player.getVisible())
 			{
+				VECTOR2 foo, bar;
 				player.setHealth(player.getHealth() - kamikazeDamage);
 				enemy[i].setInvisible();
 				foo = VECTOR2(enemy[i].getCenterX()-10, enemy[i].getCenterY());
