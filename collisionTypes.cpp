@@ -418,25 +418,25 @@ void CollisionTypes::update()
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 			if(enemy[i].getEMP()->getActive())
 			{
- 				enemy[i].setEMPCounter(enemy[i].getEMPCounter()+frameTime);
+ 				enemy[i].getEMP()->setCurrentEMPTime(enemy[i].getEMP()->getCurrentEMPTime() + frameTime);
 				enemy[i].getEMP()->setScale(enemy[i].getEMP()->getScale()*EMPNS::growthRatePerFrame);
-				if(enemy[i].getEMPCounter()>=EMPNS::maxEMPTime)
+				if(enemy[i].getEMP()->getCurrentEMPTime()>=enemy[i].getEMP()->getMaxEMPTime())
 				{
 					enemy[i].getEMP()->setActive(false);
 					enemy[i].getEMP()->setInvisible();
-					enemy[i].setEMPCounter(0);
+					enemy[i].getEMP()->setCurrentEMPTime(0);
 					enemy[i].getEMP()->resetScale();
 				}
 			}
 		if(boss.getEMP()->getActive())
 			{
- 				boss.setEMPCounter(boss.getEMPCounter()+frameTime);
+				boss.getEMP()->setCurrentEMPTime(boss.getEMP()->getCurrentEMPTime() + frameTime);
 				boss.getEMP()->setScale(boss.getEMP()->getScale()*EMPNS::growthRatePerFrame);
-				if(boss.getEMPCounter()>=EMPNS::maxEMPTime)
+				if(boss.getEMP()->getCurrentEMPTime()>=boss.getEMP()->getMaxEMPTime())
 				{
 					boss.getEMP()->setActive(false);
 					boss.getEMP()->setInvisible();
-					boss.setEMPCounter(0);
+					boss.getEMP()->setCurrentEMPTime(0);
 					boss.getEMP()->resetScale();
 				}
 			}

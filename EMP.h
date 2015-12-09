@@ -22,7 +22,10 @@ private:
 	bool counterActive;
 	float maxEMPTime;
 public:
-	void setEMPTime(float time){maxEMPTime = time;};
+	void setMaxEMPTime(float time){maxEMPTime = time;};
+	float getMaxEMPTime(){return maxEMPTime;}
+	float getCurrentEMPTime(){return currentTime;}
+	void setCurrentEMPTime(float time){currentTime = time;}
 	EMP(void);
 	~EMP(void);
 	virtual void draw();

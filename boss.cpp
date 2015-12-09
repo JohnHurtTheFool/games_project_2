@@ -29,8 +29,7 @@ Boss::Boss() : Entity()
 	hits = 0;
 	setInvisible();
 	emp.resetScale();
-	empCounter=0;
-	emp.setEMPTime(0.3f);
+	emp.setMaxEMPTime(0.3f);
 	//maxHits = 3;
 }
 void Boss::wasHit()
