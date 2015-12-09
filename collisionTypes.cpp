@@ -146,6 +146,14 @@ void CollisionTypes::initialize(HWND hwnd)
 
 	hs.changeFileName("../games_project_2/highscores.txt");
 	player.setFrames(0,1);
+	for(int i = 0; i < MAX_ENEMY_LASERS; i++)
+	{
+		enemyLaser[i].setFrames(0,1);
+	}
+	for(int i = 0; i < MAX_PLAYER_LASERS; i++)
+	{
+		playerLaser[i].setFrames(0,1);
+	}
 	for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)
 	{
 		(enemy[i]).setFrames(2,3);
@@ -905,9 +913,12 @@ void CollisionTypes::collisions()
 			if(player.getEMP()->collidesWith(boss, collisionVector) /*&& enemy[i].getVisible()*/ /*&& player.getVisible()*/)
 			{	
 				boss.empHit();
+				score+=5;
 			}
 			if (player.getShield()->collidesWith(boss, collisionVector) && boss.getVisible() && player.getVisible())//player with boss collision
 			{
+				VECTOR2 negVel(-player.getVelocity().x,-player.getVelocity().y);
+				player.setVelocity(negVel);
 				audio->playCue(CRASH);
 				player.getShield()->setInvisible();
 			}
@@ -932,6 +943,7 @@ void CollisionTypes::collisions()
 				foo = VECTOR2(enemy[i].getCenterX()-10, enemy[i].getCenterY());
 				bar = VECTOR2(-1,0);
 				createParticleEffect(foo, bar, 20);
+				score+=5;
 				break;
 			}
 			if (player.getShield()->collidesWith(bonus[i], collisionVector) && bonus[i].getVisible() && player.getVisible())
