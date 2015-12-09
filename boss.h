@@ -44,11 +44,11 @@ public:
 	void setHits(int h) {hits = h;}
 	//void setMaxHits(int max){maxHits = max;}
 	int getMaxHits(){return maxHits;}
-	void wasHit();
+	bool wasHit();
 
 	float getHitPercentage(){return 100 - (float)(hits/maxHits)*100;};
 
-	void empHit();
+	bool empHit();
 
     // inherited member functions
     virtual bool initialize(Game *gamePtr, int width, int height, int ncols,

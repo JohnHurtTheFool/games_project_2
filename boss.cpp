@@ -32,13 +32,15 @@ Boss::Boss() : Entity()
 	emp.setMaxEMPTime(0.4f);
 	//maxHits = 3;
 }
-void Boss::wasHit()
+bool Boss::wasHit()
 {
 	hits += 1;
 	if(hits>=maxHits)
 	{
 		setInvisible();
+		return true;
 	}
+	return false;
 }
 void Boss::setMaxHits(int max)
 {
@@ -135,13 +137,15 @@ void Boss::vectorTrack()//We're going to want to change this so that it takes an
 		setRadians(getRadians()+PI);
 }
 
-void Boss::empHit()
+bool Boss::empHit()
 {
 	hits += 5;
 	if(hits>=maxHits)
 	{
 		setInvisible();
+		return true;
 	}
+	return false;
 }
 
 

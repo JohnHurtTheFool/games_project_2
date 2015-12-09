@@ -657,16 +657,6 @@ void CollisionTypes::update()
 			{
 				boss.setFrames(18,19);
 			}
-			else if(boss.getHitPercentage() <= 0.00&& boss.getVisible())
-			{
-				//boss.setInvisible();
-				foo = VECTOR2(boss.getCenterX(), boss.getCenterY());
-				bar = VECTOR2(-1,0);
-				createParticleEffect(foo, bar, 20);
-				foo = VECTOR2(boss.getCenterX()-10, boss.getCenterY());
-				bar = VECTOR2(-1,0);
-				createParticleEffect(foo, bar, 20);
-			}
 		}
 		pm.update(frameTime);
 		scoreMsg= "Score: "+std::to_string(score);
@@ -724,7 +714,7 @@ void CollisionTypes::updateState()
 		gameState = OPTIONS;
 		timeInState = 0;
 	}
-	else if(gameState==GAME_PLAY && (!player.getVisible()) && gameEndTime>=2.0f)
+	else if(gameState==GAME_PLAY && (!player.getVisible()) && gameEndTime>=3.0f)
 	{
 		nameAttempt = "";
 		gameState = LOSE_SCREEN;
@@ -737,7 +727,7 @@ void CollisionTypes::updateState()
 		gameState = MENU;
 		timeInState = 0;
 	}
-	else if(gameState==GAME_PLAY && !enemiesRemain && !boss.getVisible() && gameEndTime>=2.0f)
+	else if(gameState==GAME_PLAY && !enemiesRemain && !boss.getVisible() && gameEndTime>=3.0f)
 	{
 		score+=25;
 		levelNumber++;
@@ -933,7 +923,12 @@ void CollisionTypes::collisions()
 		{
 			if(player.getEMP()->collidesWith(boss, collisionVector) /*&& enemy[i].getVisible()*/ /*&& player.getVisible()*/)
 			{	
-				boss.empHit();
+				if(boss.empHit())
+				{
+					foo = VECTOR2(boss.getCenterX(), boss.getCenterY());
+					bar = VECTOR2(-30,0);
+					createParticleEffect(foo, bar, 500);
+				}
 				score+=5;
 				player.getEMP()->setInvisible();
 			}
@@ -1046,7 +1041,12 @@ void CollisionTypes::collisions()
 			if(boss.collidesWith(playerLaser[x], collisionVector) && playerLaser[x].getVisible())
 			{
 				playerLaser[x].setInvisible();
-				boss.wasHit();
+				if(boss.wasHit())
+				{
+					foo = VECTOR2(boss.getCenterX()-10, boss.getCenterY());
+					bar = VECTOR2(-30,0);
+					createParticleEffect(foo, bar, 100);
+				}
 				score++;
 				//update score
 			}
