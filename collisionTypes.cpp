@@ -619,19 +619,19 @@ void CollisionTypes::update()
 		if(boss.getVisible())
 		{
 			boss.update(frameTime);
-			if(boss.getHealth() >= 60.00)
+			if(boss.getHitPercentage() >= 60.00)
 			{
 				boss.setFrames(2,3);
 			}
-			else if(boss.getHealth() <= 60.00 && boss.getHealth() > 30.00)
+			else if(boss.getHitPercentage() <= 60.00 && boss.getHealth() > 30.00)
 			{
-				boss.setFrames(10,11);
+				boss.setFrames(8,9);
 			}
-			else if(boss.getHealth() <= 30.00 && boss.getHealth() >= 0.00)
+			else if(boss.getHitPercentage() <= 30.00 && boss.getHealth() >= 0.00)
 			{
 				boss.setFrames(18,19);
 			}
-			else if(boss.getHealth() <= 0.00)
+			else if(boss.getHitPercentage() <= 0.00)
 			{
 				boss.setInvisible();
 			}
@@ -809,16 +809,13 @@ void CollisionTypes::collisions()
 {
     collisionVector = D3DXVECTOR2(0,0);
 	collision = false;
-<<<<<<< HEAD
 	VECTOR2 foo, bar;
-=======
 	if (player.collidesWith(*(boss).getEMP(), collisionVector) && boss.getEMP()->getActive() && player.getVisible())
 	{
 		player.setHealth(player.getHealth() - empDamage);
 		(boss).getEMP()->setActive(false);
 		//audio->playCue(CRASH);
 	}
->>>>>>> origin/master
 	if(!player.getShield()->getActive()&&!player.getEMP()->getActive())//shield and emp are not active
 	{
 		if(boss.getVisible())
@@ -894,9 +891,6 @@ void CollisionTypes::collisions()
 			{
 				audio->playCue(CRASH);
 				player.getShield()->setInvisible();
-				/*VECTOR2 vel = player.getVelocity();
-				VECTOR2 newVel = VECTOR2(-vel.x,-vel.y);
-				player.setVelocity(newVel);*/
 			}
 		}
 		for(int i = 0; i < NUM_ENEMIES_INITIAL; i++)

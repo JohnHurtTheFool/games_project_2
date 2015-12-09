@@ -46,6 +46,8 @@ public:
 	int getMaxHits(){return maxHits;}
 	void wasHit();
 
+	float getHitPercentage(){return (float)(hits/maxHits)*100;};
+
 	void empHit();
 
     // inherited member functions
